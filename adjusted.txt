@@ -26,6 +26,9 @@ Spectral Altovite 36,998,400,000
 Legacy Andromidium 62,040,000
 Ionized Legacy Andromidium 2,481,600,000
 Spectral Legacy Andromidium 37,224,000,000
+Vantivium 73,696,000
+Ionized Vantivium 2,947,840,000
+Spectral Vantivium 44,217,600,000
 R136a1 109,604,000
 Ionized R136a1 4,384,160,000
 Spectral R136a1 65,762,400,000
