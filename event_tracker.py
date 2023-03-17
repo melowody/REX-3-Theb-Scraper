@@ -189,6 +189,8 @@ class OreEvent:
                         rarity += "\nAdjusted Rarity: 1 in 5,207,976,000,000"
                     else:
                         rarity += "\nAdjusted Rarity: 1 in 8,679,960,000"
+            if 'Legacy Neomandelite' in ore:
+                ore = "Legacy <@900479607202017330>mandelite"
             
             tracker_name = ""
             match event_type:
