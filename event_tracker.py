@@ -174,7 +174,7 @@ class OreEvent:
                         if ore in line and not (' ' + ore) in line and not event_found:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
                             event_found = True
-            if 'Hyperheated Quasar' in ore:
+            elif 'Hyperheated Quasar' in ore:
                 if '57' in pickaxe:
                     if 'Ionized' in ore:
                         rarity += "\nAdjusted Rarity: 1 in 3,471,984,000"
@@ -189,8 +189,10 @@ class OreEvent:
                         rarity += "\nAdjusted Rarity: 1 in 5,207,976,000,000"
                     else:
                         rarity += "\nAdjusted Rarity: 1 in 8,679,960,000"
-            if 'Legacy Neomandelite' in ore:
+            elif 'Legacy Neomandelite' in ore:
                 ore = "Legacy <@900479607202017330>mandelite"
+            elif 'Cerlustrium' in ore:
+                ore = "Cerlustrium @everyone"
             
             tracker_name = ""
             match event_type:
