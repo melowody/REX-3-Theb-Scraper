@@ -193,6 +193,8 @@ class OreEvent:
                 ore = "Legacy <@900479607202017330>mandelite"
             elif 'Cerlustrium' in ore:
                 ore = "Cerlustrium @everyone"
+            elif 'a flare v2' in ore:
+                ore = "a flare v2 (Hi <@1058009130817822852>)"
             
             tracker_name = ""
             match event_type:
