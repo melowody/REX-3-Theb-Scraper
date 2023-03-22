@@ -190,11 +190,11 @@ class OreEvent:
                     else:
                         rarity += "\nAdjusted Rarity: 1 in 8,679,960,000"
             elif 'Legacy Neomandelite' in ore:
-                ore = "Legacy <@900479607202017330>mandelite"
+                ore = ore.replace("Neo", "<@900479607202017330>")
             elif 'Cerlustrium' in ore:
-                ore = "Cerlustrium @everyone"
+                ore = ore + " @everyone"
             elif 'a flare v2' in ore:
-                ore = "a flare v2 (Hi <@1058009130817822852>)"
+                ore = ore + " (Hi <@1058009130817822852>)"
             
             tracker_name = ""
             match event_type:
