@@ -193,8 +193,6 @@ class OreEvent:
                 ore = ore.replace("Neo", "<@900479607202017330>")
             elif 'Cerlustrium' in ore:
                 ore = ore + " @everyone"
-            elif 'a flare v2' in ore:
-                ore = ore + " (Hi <@1058009130817822852>)"
             
             tracker_name = ""
             match event_type:
