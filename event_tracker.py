@@ -147,6 +147,8 @@ class OreEvent:
         if self.username in item_manager.get_scoville_dict().keys():
             print("SCOVILLE: " + self.username)
             name = item_manager.get_username(self.username, 2)
+            if self.username == "zetexfake" and self.rarity.value + self.special.value < 6:
+                return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.SCOVILLE)
         return out
