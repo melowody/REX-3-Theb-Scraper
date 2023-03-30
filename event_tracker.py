@@ -210,7 +210,7 @@ class OreEvent:
                         tier = tier.replace("@everyone", "")
                 case EventType.BEGINNER:
                     tracker_name = ":beginner:"
-                    tier = tier.replace("@everyone", "<@1090797544939999343>")
+                    tier = tier.replace("@everyone", "<@&1090797544939999343>")
                 case EventType.ZETEX_SERVER:
                     tracker_name = "ZETEX REALM"
                     tier = tier.replace("@everyone", "")
