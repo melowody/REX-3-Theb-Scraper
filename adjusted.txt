@@ -71,9 +71,9 @@ Spectral Laniakea Supercluster 310,200,000,000
 Machina 1,417,520,000
 Ionized Machina 28,350,400,000
 Spectral Machina 425,256,000,000
-Cerlustrium 2,256,000,000
-Ionized Cerlustrium 45,120,000,000
-Spectral Cerlustrium 676,800,000,000
+Cerlustrium 385,024,000
+Ionized Cerlustrium 11,550,720,000
+Spectral Cerlustrium 173,260,800,000
 NILNAL 3,609,600,000
 Ionized NILNAL 72,192,000,000
 Spectral NILNAL 1,082,880,000,000
