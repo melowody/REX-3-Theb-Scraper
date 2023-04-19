@@ -24,6 +24,7 @@ class EventType(Enum):
     TEST = item_manager.get_channel("TEST_CHANNEL")
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
+    GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
 
 
 @total_ordering
@@ -144,9 +145,14 @@ class OreEvent:
             name = item_manager.get_username(self.username, 1)
             self.print_username[EventType.THEB] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.THEB)
+        if self.username in item_manager.get_gooberville_dict().keys():
+            print("GOOBERVILLE: " + self.username)
+            name = item_manager.get_username(self.username, 2)
+            self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.GOOBERVILLE)
         if self.username in item_manager.get_scoville_dict().keys():
             print("SCOVILLE: " + self.username)
-            name = item_manager.get_username(self.username, 2)
+            name = item_manager.get_username(self.username, 3)
             if self.username == "zetexfake" and self.rarity.value + self.special.value < 6:
                 return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
@@ -218,6 +224,8 @@ class OreEvent:
                 case EventType.BEGINNER:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
+                case EventType.GOOBERVILLE:
+                    tracker_name = "GOOBERVILLE"
                 case EventType.ZETEX_SERVER:
                     tracker_name = "ZETEX REALM"
                     tier = tier.replace("@everyone", "")
