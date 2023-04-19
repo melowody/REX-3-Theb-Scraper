@@ -46,7 +46,7 @@ class ZetexJr(discord.Bot):
             for event_type in event.get_event_types():
                 self.et.tracks += 1
                 await self.get_channel(event_type.value).send(
-                    event.format(event_type) + f"\nTracks Without Incident: {self.et.tracks}")
+                    event.format(event_type))
 
 
 zetex_jr = ZetexJr()
