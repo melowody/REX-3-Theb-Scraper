@@ -33,6 +33,10 @@ def get_scoville_dict():
 def get_zetex_dict():
     with open("zetex_names.json", "r") as f:
         return json.load(f)
+    
+def get_gooberville_dict():
+    with open("gooberville.json", "r") as f:
+        return json.load(f)
 
 
 def get_username(old_name, channel_id):
@@ -40,6 +44,8 @@ def get_username(old_name, channel_id):
         data = get_zetex_dict()
     elif channel_id == 1:
         data = get_theb_dict()
+    elif channel_id == 2:
+        data = get_gooberville_dict()
     else:
         data = get_scoville_dict()
     if old_name in data:
