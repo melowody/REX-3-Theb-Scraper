@@ -19,6 +19,7 @@ class SpecialType(Enum):
 class EventType(Enum):
     THEB = item_manager.get_channel("THEB_CHANNEL")
     GLOBAL = item_manager.get_channel("GLOBAL_CHANNEL")
+    GLOBAL2 = item_manager.get_channel("GLOBAL2_CHANNEL")
     BEGINNER = item_manager.get_channel("BEGINNER_CHANNEL")
     ZETEX_SERVER = item_manager.get_channel("ZETEXSERVER")
     TEST = item_manager.get_channel("TEST_CHANNEL")
@@ -127,6 +128,8 @@ class OreEvent:
         if self.should_ping_everyone():
             self.print_username[EventType.GLOBAL] = self.username
             out.append(EventType.GLOBAL)
+            self.print_username[EventType.GLOBAL2] = self.username
+            out.append(EventType.GLOBAL2)
         if self.username in ' MomSonGaming ':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
             print("MOMSONGAMING: " + self.username)
@@ -210,6 +213,16 @@ class OreEvent:
                 case EventType.THEB:
                     tracker_name = "THEB"
                 case EventType.GLOBAL:
+                    tracker_name = "GLOBAL"
+                    if 'Spectral' in tier and 'Unfathomable' in tier:
+                        print("OH SHIT")
+                    elif 'Spectral' in tier and 'Otherworldly' in tier:
+                        print("OH REALLY SHIT")
+                    elif 'Spectral' in tier and 'Zenith' in tier:
+                        print("OH EXTREMELY SHIT")
+                    else:
+                        tier = tier.replace("@everyone", "")
+                case EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
                         print("OH SHIT")
