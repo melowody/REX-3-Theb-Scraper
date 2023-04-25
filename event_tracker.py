@@ -212,6 +212,8 @@ class OreEvent:
                     tracker_name = "MOMSONGAMING"
                 case EventType.THEB:
                     tracker_name = "THEB"
+                    if 'Hyperheated Quasar' in ore and '@everyone' not in tier:
+                        tier = tier + " @everyone"
                 case EventType.GLOBAL:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
