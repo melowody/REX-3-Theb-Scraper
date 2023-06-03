@@ -1,3 +1,6 @@
+import json
+import logging
+
 import websocket
 import socket_based
 import item_manager
@@ -48,7 +51,7 @@ class Rarity(Enum):
 
 class OreEvent:
     
-    def __init__(self, event):
+    def __init__(self, event={}):
         self.print_username = {}
         self.event = None
         self.pickaxe = None
@@ -58,8 +61,9 @@ class OreEvent:
         self.ore = None
         self.base_rarity = None
         self.username = None
-        self.__embed = event['d']['embeds'][0]
-        self.get_bases()
+        if event != {}:
+            self.__embed = event['d']['embeds'][0]
+            self.get_bases()
     
     def get_bases(self):
         title_groups = re.search(r"^\*\*(.+)\*\* has found(?: an? )?((?:spectral|ionized)?)\*\* (.+)\*\*", self.__embed['title'])
@@ -120,6 +124,7 @@ class OreEvent:
     def get_event_types(self) -> list[EventType]:
         out = []
         if item_manager.is_testing():
+            self.print_username[EventType.TEST] = self.username
             out.append(EventType.TEST)
         if self.blocks < 100000:
             self.print_username[EventType.BEGINNER] = self.username
@@ -279,19 +284,21 @@ class EventTracker(socket_based.SocketBased):
         while True:
             try:
                 event = self.receive_json_response()
+                logging.info(json.dumps(event))
             except Exception as err:
                 # SHITTY FIX ALERT
                 print(f"et loop error 1: {err}")
                 os.execl(sys.executable, 'python', "main.py")
                 return
             try:
-                if 'd' in event.keys() and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots():
+                if 'd' in event.keys() and type(event['d']) == dict and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots():
                     self.handle_event(event)
                 op_code = event['op']
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
                 print(f"et loop error 2: {e}")
+                print(f"Bad Event: {event}")
                 pass
 
     def handle_event(self, event_data):

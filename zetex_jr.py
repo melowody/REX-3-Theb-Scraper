@@ -56,3 +56,37 @@ zetex_jr = ZetexJr()
 async def hefuckingdied(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
+
+
+async def get_event(ctx: discord.AutocompleteContext):
+    world = ctx.options['world']
+    match world:
+        case 'World 1':
+            return ["None", "Vaporwave Crystal", "Inclemetite", "Spristium", "Candilium", "Lucidium", "Sentient Viscera", "Temporum", "Idolium", "Vitrilyx", "Magnetyx", "Cleopatrite", "Euclideum", "Combustal", "Quandrium", "Pastelorium", "Ω", "Inkonium", "Blazuine", "Illusory Bubblegram"]
+        case 'Subworld 1':
+            return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar", "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
+
+
+@zetex_jr.command()
+async def manual(_,
+                 username: str,
+                 ore: str,
+                 special: discord.Option(str, choices=["None", "Ionized", "Spectral"]),
+                 tier: discord.Option(str, choices=["Rare", "Master", "Surreal", "Mythic", "Exotic", "Transcendent", "Enigmatic", "Unfathomable", "Zenith"]),
+                 rarity: int,
+                 blocks: int,
+                 pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager", "Big Slammer", "Darkstone Pick", "Trinity Claymore", "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore", "Nostalgic Axe", "NilAxe"]),
+                 world: discord.Option(str, choices=["World 1", "Subworld 1"]),
+                 event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
+                 ):
+    ore_event = event_tracker.OreEvent()
+    ore_event.event = event
+    ore_event.pickaxe = pickaxe
+    ore_event.blocks = blocks
+    ore_event.special = event_tracker.SpecialType[special.upper()]
+    ore_event.rarity = event_tracker.Rarity[tier.upper()]
+    ore_event.ore = ore
+    ore_event.base_rarity = rarity
+    ore_event.username = username
+    zetex_jr.et.queue.put(ore_event)
+    return
