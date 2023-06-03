@@ -68,6 +68,7 @@ async def get_event(ctx: discord.AutocompleteContext):
 
 
 @zetex_jr.command()
+@zetex_jr.check(lambda ctx: ctx.author.id in [797942648932794398, 190804082032640000])
 async def manual(_,
                  username: str,
                  ore: str,
