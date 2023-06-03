@@ -198,16 +198,16 @@ class OreEvent:
             elif 'Hyperheated Quasar' in ore:
                 if '57' in pickaxe:
                     if 'Ionized' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 3,471,984,000"
+                        rarity += "\nAdjusted Rarity: 1 in 2,603,988,000"
                     elif 'Spectral' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 52,079,760,000"
+                        rarity += "\nAdjusted Rarity: 1 in 39,059,820,000"
                     else:
                         rarity += "\nAdjusted Rarity: 1 in 86,799,600"
                 else:
                     if 'Ionized' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 347,198,400,000"
+                        rarity += "\nAdjusted Rarity: 1 in 260,398,800,000"
                     elif 'Spectral' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 5,207,976,000,000"
+                        rarity += "\nAdjusted Rarity: 1 in 3,905,982,000,000"
                     else:
                         rarity += "\nAdjusted Rarity: 1 in 8,679,960,000"
             
@@ -217,6 +217,8 @@ class OreEvent:
                     tracker_name = "MOMSONGAMING"
                 case EventType.THEB:
                     tracker_name = "THEB"
+                    if 'Hyperheated Quasar' in ore and '@everyone' not in tier:
+                        tier = tier + " @everyone"
                 case EventType.GLOBAL:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
