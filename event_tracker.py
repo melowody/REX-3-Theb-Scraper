@@ -286,10 +286,10 @@ class EventTracker(socket_based.SocketBased):
         while True:
             try:
                 event = self.receive_json_response()
-                logging.info(json.dumps(event))
             except Exception as err:
                 # SHITTY FIX ALERT
                 print(f"et loop error 1: {err}")
+                logging.info(json.dumps(event))
                 os.execl(sys.executable, 'python', "main.py")
                 return
             try:

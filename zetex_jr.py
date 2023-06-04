@@ -1,6 +1,6 @@
 import discord
 from discord import ApplicationCommand
-from discord.ext import tasks
+from discord.ext import tasks, commands
 import websocket
 import os
 
@@ -66,9 +66,11 @@ async def get_event(ctx: discord.AutocompleteContext):
         case 'Subworld 1':
             return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar", "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
 
+def check_owner(ctx):
+	return ctx.author.id in [797942648932794398, 190804082032640000]
 
 @zetex_jr.command()
-@zetex_jr.check(lambda ctx: ctx.author.id in [797942648932794398, 190804082032640000])
+@commands.check(check_owner)
 async def manual(_,
                  username: str,
                  ore: str,
@@ -90,4 +92,4 @@ async def manual(_,
     ore_event.base_rarity = rarity
     ore_event.username = username
     zetex_jr.et.queue.put(ore_event)
-    return
+    await ctx.send("Ore successfully submitted :thumbsup:")
