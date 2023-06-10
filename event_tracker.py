@@ -143,11 +143,6 @@ class OreEvent:
             self.print_username[EventType.MOMSONGAMING] = self.username + " (Mother of <@&1078460377920180276>)"
             print("MOMSONGAMING: " + self.username)
             out.append(EventType.MOMSONGAMING)
-        if self.username in item_manager.get_zetex_dict().keys():
-            print("ZETEXSERVER: " + self.username)
-            name = item_manager.get_username(self.username, 0)
-            self.print_username[EventType.ZETEX_SERVER] = f"{self.username} {'(' + name + ')' if name is not None else ''}"
-            out.append(EventType.ZETEX_SERVER)
         if self.username in item_manager.get_theb_dict().keys():
             print("THEB: " + self.username)
             name = item_manager.get_username(self.username, 1)
@@ -244,9 +239,6 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
-                case EventType.ZETEX_SERVER:
-                    tracker_name = "ZETEX REALM"
-                    tier = tier.replace("@everyone", "")
                 case EventType.TEST:
                     tracker_name = "TEST"
                 case EventType.SCOVILLE:
