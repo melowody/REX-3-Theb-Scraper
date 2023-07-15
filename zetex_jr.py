@@ -29,7 +29,7 @@ class ZetexJr(discord.Bot):
 
     async def get_channels(self):
         self.test_channel = self.get_channel(1075585315483439166)
-
+	    
     async def start_tracking(self):
         ws = websocket.WebSocket()
         self.hb = heartbeat.HeartBeat(ws)
@@ -37,10 +37,10 @@ class ZetexJr(discord.Bot):
 
         task_hb = asyncio.create_task(self.hb.start())
         task_et = asyncio.create_task(self.et.start())
-	    
-	await asyncio.sleep(0.1)
-	await task_hb
-	await task_et
+	
+        await asyncio.sleep(0.1)
+        await task_hb
+        await task_et
         self.send_event.start()
 
     @tasks.loop(seconds=1.0)
