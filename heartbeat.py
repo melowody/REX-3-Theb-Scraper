@@ -13,7 +13,7 @@ class HeartBeat(socket_based.SocketBased):
         self.main_thread = None
         self.heartbeat_interval = None
 
-    def start(self):
+    async def start(self):
         self.socket.connect("wss://gateway.discord.gg/?v=6&encoding=json")
         event = self.receive_json_response()
         
