@@ -3,7 +3,7 @@ from discord import ApplicationCommand
 from discord.ext import tasks, commands
 import websocket
 import os
-
+import asyncio
 import heartbeat
 import event_tracker
 
