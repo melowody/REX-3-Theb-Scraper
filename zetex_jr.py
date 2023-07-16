@@ -35,8 +35,8 @@ class ZetexJr(discord.Bot):
         self.hb = heartbeat.HeartBeat(ws)
         self.et = event_tracker.EventTracker(ws)
 
-        task_hb = asyncio.create_task(self.hb.start)
-        task_et = asyncio.create_task(self.et.start)
+        task_hb = asyncio.create_task(self.hb.start())
+        task_et = asyncio.create_task(self.et.start())
 	
         await asyncio.sleep(0.1)
         await task_hb
