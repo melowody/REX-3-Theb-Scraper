@@ -38,9 +38,9 @@ class ZetexJr(discord.Bot):
         task_hb = asyncio.create_task(self.hb.start())
         task_et = asyncio.create_task(self.et.start())
 	
-        await asyncio.sleep(0.1)
         await task_hb
         await task_et
+        await asyncio.sleep(0.5)
         self.send_event.start()
 
     @tasks.loop(seconds=1.0)
