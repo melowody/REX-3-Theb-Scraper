@@ -94,4 +94,4 @@ async def manual(ctx,
     ore_event.base_rarity = rarity
     ore_event.username = username
     zetex_jr.et.queue.put(ore_event)
-    await ctx.send("Ore successfully submitted :thumbsup:")
+    await ctx.respond("manual ore successfully submitted :3")
