@@ -73,7 +73,7 @@ def check_owner(ctx):
 
 @zetex_jr.command()
 @commands.check(check_owner)
-async def manual(_,
+async def manual(ctx,
                  username: str,
                  ore: str,
                  special: discord.Option(str, choices=["None", "Ionized", "Spectral"]),
