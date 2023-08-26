@@ -219,17 +219,7 @@ class OreEvent:
                     tracker_name = "THEB"
                     if 'Hyperheated Quasar' in ore and '@everyone' not in tier:
                         tier = tier + " @everyone"
-                case EventType.GLOBAL:
-                    tracker_name = "GLOBAL"
-                    if 'Spectral' in tier and 'Unfathomable' in tier:
-                        print("OH SHIT")
-                    elif 'Spectral' in tier and 'Otherworldly' in tier:
-                        print("OH REALLY SHIT")
-                    elif 'Spectral' in tier and 'Zenith' in tier:
-                        print("OH EXTREMELY SHIT")
-                    else:
-                        tier = tier.replace("@everyone", "")
-                case EventType.GLOBAL2:
+                case EventType.GLOBAL | EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
                         print("OH SHIT")
@@ -250,7 +240,7 @@ class OreEvent:
                     tracker_name = "SCOVILLE"
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as e:
-            print(f"format error: {e}")
+            print(f"format error: {traceback.format_exc()}")
         
         
 class EventTracker(socket_based.SocketBased):
