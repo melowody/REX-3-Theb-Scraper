@@ -77,11 +77,11 @@ async def manual(ctx,
                  username: str,
                  ore: str,
                  special: discord.Option(str, choices=["None", "Ionized", "Spectral"]),
-                 tier: discord.Option(str, choices=["Rare", "Master", "Surreal", "Mythic", "Exotic", "Transcendent", "Enigmatic", "Unfathomable", "Zenith"]),
+                 tier: discord.Option(str, choices=[str(e.value).capitalize() in event_tracker.Rarity]),
                  rarity: int,
                  blocks: int,
                  pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager", "Big Slammer", "Darkstone Pick", "Trinity Claymore", "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore", "Nostalgic Axe", "NilAxe"]),
-                 world: discord.Option(str, choices=["World 1", "Subworld 1"]),
+                 world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2"]),
                  event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
                  ):
     ore_event = event_tracker.OreEvent()
