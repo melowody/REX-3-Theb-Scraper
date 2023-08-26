@@ -69,7 +69,7 @@ async def get_event(ctx: discord.AutocompleteContext):
             return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar", "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
 
 def check_owner(ctx):
-	return ctx.author.id in [797942648932794398, 190804082032640000, 609478516655915044]
+	return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
 
 @zetex_jr.command()
 @commands.check(check_owner)
