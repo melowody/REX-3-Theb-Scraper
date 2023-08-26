@@ -40,10 +40,12 @@ class Rarity(Enum):
     SURREAL = 3
     MYTHIC = 4
     EXOTIC = 5
-    TRANSCENDENT = 6
-    ENIGMATIC = 7
-    UNFATHOMABLE = 8
-    ZENITH = 9
+    EXQUISITE = 6
+    TRANSCENDENT = 7
+    ENIGMATIC = 8
+    UNFATHOMABLE = 9
+    OTHERWORLDLY = 10
+    ZENITH = 11
     
     def __lt__(self, other):
         if self.__class__ is other.__class__:
@@ -112,7 +114,7 @@ class OreEvent:
         return f"**{self.rarity.name.title()}** {('(' + self.special.name.title() + ')') if self.special != SpecialType.NONE else ''} {'@everyone' if self.should_ping_everyone() else ''}"
 
     def should_ping_everyone(self):
-        return self.rarity.value + self.special.value >= 8
+        return self.rarity.value + self.special.value >= 9
 
     def get_base_rarity(self):
         return "1 in " + '{:,}'.format(self.base_rarity)
