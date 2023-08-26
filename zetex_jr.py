@@ -82,7 +82,7 @@ async def manual(ctx,
                  tier: discord.Option(str, choices=[e.capitalize() for e in event_tracker.Rarity.__members__]),
                  rarity: int,
                  blocks: int,
-                 pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager", "Big Slammer", "Darkstone Pick", "Trinity Claymore", "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore", "Nostalgic Axe", "NilAxe"]),
+                 pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager", "Big Slammer", "Darkstone Pick", "Trinity Claymore", "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore", "Nostalgic Axe", "NilAxe", "Christmas Crusher", "Permafrost Pick", "Poison Pick", "Electraver", "Dimensional Scythe", "Celestial Smasher", "Moon Scepter", "Soul Scythe", "Prism of Chaos"]),
                  world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2"]),
                  event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
                  ):
