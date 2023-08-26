@@ -34,6 +34,7 @@ class EventType(Enum):
 
 @total_ordering
 class Rarity(Enum):
+    UNKNOWN = 0
     RARE = 1
     MASTER = 2
     SURREAL = 3
@@ -79,8 +80,11 @@ class OreEvent:
         
         self.rarity = None
         color_names = item_manager.get_color_names()
-        rarity_name = color_names[str(self.__embed['color'])]
-        self.rarity = Rarity[rarity_name.upper()]
+        if self.__embed['color'] == 16777215:
+            self.rarity = Rarity.UNKNOWN
+        else:
+            rarity_name = color_names[str(self.__embed['color'])]
+            self.rarity = Rarity[rarity_name.upper()]
             
         match (title_groups.group(2)):
             case "ionized":
