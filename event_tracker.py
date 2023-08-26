@@ -79,6 +79,7 @@ class OreEvent:
             self.ore = ore[0].upper() + ore[1:]
         else:
             self.ore = ore
+        self.ore = self.ore.replace("*","")
         
         self.rarity = None
         color_names = item_manager.get_color_names()
