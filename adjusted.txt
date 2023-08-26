@@ -80,3 +80,18 @@ Spectral NILNAL 1,082,880,000,000
 π 159,464,012
 Ionized π 4,783,920,360
 Spectral π 71,758,805,400
+Exdeus 791,171,680
+Ionized Exdeus 15,823,433,600
+Spectral Exdeus 237,351,504,000
+Cygnus 315,265,472
+Ionized Cygnus 9,457,964,160
+Spectral Cygnus 141,869,462,400
+Asterium 14,930,960
+Ionized Asterium 746,548,000
+Spectral Asterium 11,198,220,000
+Lavortia 86,118,777
+Ionized Lavortia 3,444,751,072
+Spectral Lavortia 51,671,266,080
+Lunarian 33,225,240
+Ionized Lunarian 1,661,262,000
+Spectral Lunarian 24,918,930,000

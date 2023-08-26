@@ -82,3 +82,48 @@ Spectral RGB Pulsar 11,475,000,000
 Legacy Codex 213,337
 Ionized Legacy Codex 10,666,850
 Spectral Legacy Codex 160,002,750
+Galactic Rupture 16,250,000
+Ionized Galactic Rupture 650,000,000
+Spectral Galactic Rupture 9,750,000,000
+Heart of the Frosted 11,750,000
+Ionized Heart of the Frosted 470,000,000
+Spectral Heart of the Frosted 7,050,000,000
+Atomium 6,110,020
+Ionized Atomium 244,400,800
+Spectral Atomium 3,666,012,000
+Coronal Flare 50,505,050
+Ionized Coronal Flare 1,515,151,500
+Spectral Coronal Flare 22,727,272,500
+Neutronium 4,418,000
+Ionized Neutronium 220,900,000
+Spectral Neutronium 3,313,500,000
+Estrela 10,520,000
+Ionized Estrela 420,800,000
+Spectral Estrela 6,312,000,000
+Circeterra 8,100,000
+Ionized Circeterra 324,000,000
+Spectral Circeterra 4,860,000,000
+NOO S-Sing. T1 28,310,000
+Ionized NOO S-Sing. T1 1,132,400,000
+Spectral NOO S-Sing. T1 16,986,000,000
+Spiritian 19,828,000
+Ionized Spiritian 793,120,000
+Spectral Spiritian 11,896,800,000
+Vitriol 71,749,500
+Ionized Vitriol 2,152,485,000
+Spectral Vitriol 32,287,275,000
+Catastormite 22,530,000
+Ionized Catastormite 901,200,000
+Spectral Catastormite 13,518,000,000
+Plasmonium 17,725,000
+Ionized Plasmonium 709,000,000
+Spectral Plasmonium 10,635,000,000
+Frostranium 66,288,400
+Ionized Frostranium 1,988,652,000
+Spectral Frostranium 29,829,780,000
+Obliveracy Endmost 75,000,750
+Ionized Obliveracy Endmost 2,250,022,500
+Spectral Obliveracy Endmost 33,750,337,500
+Acrimony 191,847,000
+Ionized Acrimony 3,836,940,000
+Spectral Acrimony 57,554,100,000
