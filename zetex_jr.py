@@ -91,7 +91,7 @@ async def manual(ctx,
     ore_event.special = event_tracker.SpecialType[special.upper()]
     ore_event.rarity = event_tracker.Rarity[tier.upper()]
     ore_event.ore = ore
-    ore_event.base_rarity = rarity
+    ore_event.base_rarity = '{:,}'.format(rarity)
     ore_event.username = username
     zetex_jr.et.queue.put(ore_event)
     await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
