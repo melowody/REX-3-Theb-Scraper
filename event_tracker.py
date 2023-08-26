@@ -117,7 +117,7 @@ class OreEvent:
         return self.rarity.value + self.special.value >= 9
 
     def get_base_rarity(self):
-        return "1 in " + '{:,}'.format(self.base_rarity)
+        return "1 in " + self.base_rarity
 
     def get_blocks(self):
         return '{:,}'.format(self.blocks)
