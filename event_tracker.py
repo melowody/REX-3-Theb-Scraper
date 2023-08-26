@@ -282,7 +282,7 @@ class EventTracker(socket_based.SocketBased):
                 os.execl(sys.executable, 'python', "main.py")
                 return
             try:
-                if 'd' in event.keys() and type(event['d']) == dict and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots():
+                if 'd' in event.keys() and type(event['d']) == dict and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots() and 't' in event.keys() and event['t'] == 'MESSAGE_CREATE':
                     self.handle_event(event)
                 op_code = event['op']
                 if op_code == 11:
