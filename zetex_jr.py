@@ -67,7 +67,7 @@ async def get_event(ctx: discord.AutocompleteContext):
             return ["None", "Vaporwave Crystal", "Inclemetite", "Spristium", "Candilium", "Lucidium", "Sentient Viscera", "Temporum", "Idolium", "Vitrilyx", "Magnetyx", "Cleopatrite", "Euclideum", "Combustal", "Quandrium", "Pastelorium", "Ω", "Inkonium", "Blazuine", "Illusory Bubblegram"]
         case 'Subworld 1':
             return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar", "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
-	case 'World 2':
+        case 'World 2':
 	    return ["None", "Galactic Rupture", "Heart of the Frosted", "Atomium", "Coronal Flare", "Neutronium", "Estrela", "Circeterra", "NOO S-Sing. T1", "Spiritian", "Vitriol", "Catastormite", "Plasmonium", "Frostranium", "Obliveracy Endmost", "Acrimony"]
 
 def check_owner(ctx):
