@@ -9,6 +9,7 @@ import os
 import sys
 import re
 import queue
+import traceback
 from enum import Enum
 from functools import total_ordering
 
@@ -291,7 +292,7 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
-                print(f"et loop error 2: {e}")
+                print(f"et loop error 2: {traceback.format_exc()}")
                 print(f"Bad Event: {event}")
                 pass
 
