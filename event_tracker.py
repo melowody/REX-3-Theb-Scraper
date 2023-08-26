@@ -91,7 +91,7 @@ class OreEvent:
         
         self.base_rarity = self.__embed["fields"][0]["value"].replace('1/', '')
         
-        self.blocks = self.__embed["fields"][1]["value"]
+        self.blocks = int(self.__embed["fields"][1]["value"].replace(',',''))
         
         self.pickaxe = self.__embed["fields"][2]["value"]
         
