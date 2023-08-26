@@ -89,9 +89,9 @@ class OreEvent:
             case _:
                 self.special = SpecialType.NONE
         
-        self.base_rarity = int(self.__embed["fields"][0]["value"].replace('1/', '').replace(',', ''))
+        self.base_rarity = self.__embed["fields"][0]["value"].replace('1/', '')
         
-        self.blocks = int(self.__embed["fields"][1]["value"].replace(',', ''))
+        self.blocks = self.__embed["fields"][1]["value"]
         
         self.pickaxe = self.__embed["fields"][2]["value"]
         
