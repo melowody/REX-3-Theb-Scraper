@@ -182,11 +182,6 @@ class OreEvent:
 
             adjusted_found = False
             event_found = False
-            if 'Unfathomable' in tier:
-                with open('otherworldly.txt', 'r') as otherworldlyList:
-                    contents = otherworldlyList.read()
-                    if ore in contents:
-                        tier = tier.replace("Unfathomable", "Otherworldly")
             with open('adjusted.txt', 'r') as adjustedRarities:
                 for num, line in enumerate(adjustedRarities):
                     if ore in line and not (' ' + ore) in line and not adjusted_found:
