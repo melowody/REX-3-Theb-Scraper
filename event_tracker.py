@@ -194,7 +194,8 @@ class OreEvent:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
                             event_found = True
             elif 'Gilded Cave' in ore:
-                GildedAdjust = rarity.replace("1 in ", "").replace(",","").replace(" ","")
+                GildedAdjust = rarity.replace("1 in ", "")
+                GildedAdjust = re.sub("[^0-9]", "", GildedAdjust)
                 if not "57" in pickaxe:
                     GildedAdjust += "00"
                 GildedAdjust = int(GildedAdjust) * 1.88 * 57
