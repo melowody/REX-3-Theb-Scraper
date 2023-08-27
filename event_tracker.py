@@ -183,10 +183,18 @@ class OreEvent:
             adjusted_found = False
             event_found = False
             with open('adjusted.txt', 'r') as adjustedRarities:
+                CaveName = ore[ore.index("("):]
+                CaveName = CaveName.replace("(","").replace(" Cave)", "")
+                print(CaveName)
                 for num, line in enumerate(adjustedRarities):
-                    if ore in line and not (' ' + ore) in line and not adjusted_found:
-                        rarity += "\nAdjusted Rarity: 1 in " + line.split()[-1]
+                    if CaveName in line and not adjusted_found:
                         adjusted_found = True
+                        CaveRarity = int(line.split()[-1])
+                        RarityNum = rarity.replace("1 in ", "")
+                        RarityNum = int(re.sub("[^0-9]", "", RarityNum))
+                        AdjustedRarity = str('{:,}'.format(int(RarityNum * CaveRarity * 1.88)))
+                        rarity += "\nAdjusted Rarity: 1 in " + AdjustedRarity
+                        print(rarity)
             if event in ore or 'Protoflare' in ore:
                 with open('events.txt', 'r') as eventRarities:
                     for num, line in enumerate(eventRarities):
