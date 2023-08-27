@@ -190,6 +190,8 @@ class OreEvent:
                     for num, line in enumerate(adjustedRarities):
                         if CaveName in line and not adjusted_found:
                             adjusted_found = True
+                            if not "Caves" in rarity:
+                                rarity += " in " + CaveName + " Caves"
                             CaveRarity = int(line.split()[-1])
                             RarityNum = rarity.replace("1 in ", "")
                             RarityNum = int(re.sub("[^0-9]", "", RarityNum))
