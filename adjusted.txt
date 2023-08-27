@@ -1,97 +1,16 @@
-Ionized Legacy Galaxite (Interstellar Cave) 14,724,160
-Spectral Legacy Galaxite (Interstellar Cave) 220,862,400
-Ionized Tektite (Interstellar Cave) 16,544,000
-Spectral Tektite (Interstellar Cave) 248,160,000
-Legacy Pulsar Crystal (Interstellar Cave) 17,578,000
-Ionized Legacy Pulsar Crystal (Interstellar Cave) 878,900,000
-Spectral Legacy Pulsar Crystal (Interstellar Cave) 13,183,500,000
-Legacy Andromidium (Interstellar Cave) 62,040,000
-Ionized Legacy Andromidium (Interstellar Cave) 2,481,600,000
-Spectral Legacy Andromidium (Interstellar Cave) 37,224,000,000
-R136a1 (Interstellar Cave) 109,604,000
-Ionized R136a1 (Interstellar Cave) 4,384,160,000
-Spectral R136a1 (Interstellar Cave) 65,762,400,000
-Legacy HR 5171 A (Interstellar Cave) 186,120,000
-Ionized Legacy HR 5171 A (Interstellar Cave) 5,583,600,000
-Spectral Legacy HR 5171 A (Interstellar Cave) 83,754,000,000
-HD 160529 (Interstellar Cave) 330,880,000
-Ionized HD 160529 (Interstellar Cave) 9,926,400,000
-Spectral HD 160529 (Interstellar Cave) 148,896,000,000
-Laniakea Supercluster (Interstellar Cave) 1,034,000,000
-Ionized Laniakea Supercluster (Interstellar Cave) 20,680,000,000
-Spectral Laniakea Supercluster (Interstellar Cave) 310,200,000,000
-Ionized Intoxium 55,930,000
-Spectral Intoxium 838,950,000
-Ionized Actinium 148,896,000
-Spectral Actinium 2,233,440,000
-Ionized Cryotic	185,894,400
-Spectral Cryotic 2,788,416,000
-Legacy Coronium 12,408,000
-Ionized Legacy Coronium 620,400,000
-Spectral Legacy Coronium 9,306,000,000
-Legacy Neptunium 16,544,000
-Ionized Legacy Neptunium 827,200,000
-Spectral Legacy Neptunium 12,408,000,000
-Surgium 20,163,000
-Ionized Surgium 1,008,150,000
-Spectral Surgium 15,122,250,000
-Altovite 61,664,000
-Ionized Altovite 2,466,560,000
-Spectral Altovite 36,998,400,000
-Vantivium 73,696,000
-Ionized Vantivium 2,947,840,000
-Spectral Vantivium 44,217,600,000
-Legacy Lawrencium 124,080,000
-Ionized Legacy Lawrencium 4,963,200,000
-Spectral Legacy Lawrencium 74,448,000,000
-Ascended Flare 124,080,000
-Ionized Ascended Flare 4,963,200,000
-Spectral Ascended Flare 74,448,000,000
-Legacy Gargantium 134,420,000
-Ionized Legacy Gargantium 5,376,800,000
-Spectral Legacy Gargantium 80,652,000,000
-Oganesson 256,432,000
-Ionized Oganesson 7,692,960,000
-Spectral Oganesson 115,394,400,000
-Accesinite 270,720,000
-Ionized Accesinite 8,121,600,000
-Spectral Accesinite 121,824,000,000
-Legacy Coronal Flare 271,942,000
-Ionized Legacy Coronal Flare 8,158,260,000
-Spectral Legacy Coronal Flare 122,373,900,000
-Genuinium 288,768,000
-Ionized Genuinium 8,663,040,000
-Spectral Genuinium 129,945,600,000
-Fire Crystal 297,792,000
-Ionized Fire Crystal 8,933,760,000
-Spectral Fire Crystal 134,006,400,000
-Pandorite 306,816,000
-Ionized Pandorite 9,204,480,000
-Spectral Pandorite 138,067,200,000
-Machina 1,417,520,000
-Ionized Machina 28,350,400,000
-Spectral Machina 425,256,000,000
-Cerlustrium 385,024,000
-Ionized Cerlustrium 11,550,720,000
-Spectral Cerlustrium 173,260,800,000
-NILNAL 3,609,600,000
-Ionized NILNAL 72,192,000,000
-Spectral NILNAL 1,082,880,000,000
-π 159,464,012
-Ionized π 4,783,920,360
-Spectral π 71,758,805,400
-Exdeus 791,171,680
-Ionized Exdeus 15,823,433,600
-Spectral Exdeus 237,351,504,000
-Cygnus 315,265,472
-Ionized Cygnus 9,457,964,160
-Spectral Cygnus 141,869,462,400
-Asterium 14,930,960
-Ionized Asterium 746,548,000
-Spectral Asterium 11,198,220,000
-Lavortia 86,118,777
-Ionized Lavortia 3,444,751,072
-Spectral Lavortia 51,671,266,080
-Lunarian 33,225,240
-Ionized Lunarian 1,661,262,000
-Spectral Lunarian 24,918,930,000
+Frozen 8
+Metallic 11
+Geode 12
+Elemental 17
+Divine 20
+Prismatic 27
+Void 35
+Magmatic 11
+Radioactive 11
+Interstellar 11
+nil 48
+Unstable 13
+Galactic 16
+Enchanted 22
+Luminous 34
+Nightfall 43
