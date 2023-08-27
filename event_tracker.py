@@ -198,21 +198,13 @@ class OreEvent:
                         if ore in line and not (' ' + ore) in line and not event_found:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
                             event_found = True
-            elif 'Hyperheated Quasar' in ore:
-                if '57' in pickaxe:
-                    if 'Ionized' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 2,603,988,000"
-                    elif 'Spectral' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 39,059,820,000"
-                    else:
-                        rarity += "\nAdjusted Rarity: 1 in 86,799,600"
-                else:
-                    if 'Ionized' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 260,398,800,000"
-                    elif 'Spectral' in ore:
-                        rarity += "\nAdjusted Rarity: 1 in 3,905,982,000,000"
-                    else:
-                        rarity += "\nAdjusted Rarity: 1 in 8,679,960,000"
+            elif 'Gilded Cave' in ore:
+                GildedAdjust = rarity.replace("1 in ", "").replace(",","").replace(" ","")
+                if not "57" in pickaxe:
+                    GildedAdjust += "00"
+                GildedAdjust = int(GildedAdjust) * 1.88 * 57
+                GildedAdjust = str('{:,}'.format(int(GildedAdjust)))
+                rarity += "\nAdjusted Rarity: 1 in " + GildedAdjust
             
             tracker_name = ""
             match event_type:
