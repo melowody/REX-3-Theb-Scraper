@@ -98,6 +98,7 @@ class OreEvent:
                 self.special = SpecialType.NONE
         
         self.base_rarity = self.__embed["fields"][0]["value"].replace('1/', '')
+        self.base_rarity = re.sub("[^0-9]", "", self.base_rarity)
         
         self.blocks = int(self.__embed["fields"][1]["value"].replace(',',''))
         
@@ -118,7 +119,7 @@ class OreEvent:
         return self.rarity.value + self.special.value >= 9
 
     def get_base_rarity(self):
-        return "1 in " + self.base_rarity
+        return "1 in " + str('{:,}'.format(int(self.base_rarity)))
 
     def get_blocks(self):
         return '{:,}'.format(self.blocks)
