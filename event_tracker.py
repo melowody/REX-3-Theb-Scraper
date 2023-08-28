@@ -83,7 +83,7 @@ class OreEvent:
 
         if "(" in self.__embed['title']:
             print("THIS IS THE CAVE TYPE MAYBE: " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_",""))
-            ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
+            self.ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
             print(self.username + " " + self.ore + " has a cave")
         else:
             print(self.username + " " + self.ore + " has no cave")
