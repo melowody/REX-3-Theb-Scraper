@@ -71,13 +71,6 @@ class OreEvent:
     
     def get_bases(self):
         title_groups = re.search(r"^\*\*(.+)\*\* has found(?: an? )?((?:spectral|ionized)?)\*\* (.+)\*\*", self.__embed['title'])
-        print(title_groups.group(1))
-        print(title_groups.group(2))
-        print(title_groups.group(3))
-        try:
-            print(title_groups.group(1))
-        except:
-            print("no group 4 lol")
         
         self.username = title_groups.group(1)
         ore = f"{title_groups.group(2)} {title_groups.group(3)}"
@@ -87,6 +80,8 @@ class OreEvent:
         else:
             self.ore = ore
         self.ore = self.ore.replace("*","")
+
+        ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
         
         self.rarity = None
         color_names = item_manager.get_color_names()
