@@ -218,6 +218,8 @@ class OreEvent:
                     GildedAdjust += "00"
                 GildedAdjust = int(GildedAdjust) * 1.88 * 57
                 GildedAdjust = str('{:,}'.format(int(GildedAdjust)))
+                if not "Caves" in rarity:
+                    rarity += " in Gilded Caves"
                 rarity += "\nAdjusted Rarity: 1 in " + GildedAdjust
             
             tracker_name = ""
