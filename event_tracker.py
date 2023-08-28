@@ -71,7 +71,13 @@ class OreEvent:
     
     def get_bases(self):
         title_groups = re.search(r"^\*\*(.+)\*\* has found(?: an? )?((?:spectral|ionized)?)\*\* (.+)\*\*", self.__embed['title'])
-        print(title_groups)
+        print(title_groups.group(1))
+        print(title_groups.group(2))
+        print(title_groups.group(3))
+        try:
+            print(title_groups.group(1))
+        except:
+            print("no group 4 lol")
         
         self.username = title_groups.group(1)
         ore = f"{title_groups.group(2)} {title_groups.group(3)}"
