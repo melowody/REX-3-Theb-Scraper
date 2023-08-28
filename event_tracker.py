@@ -81,7 +81,8 @@ class OreEvent:
             self.ore = ore
         self.ore = self.ore.replace("*","")
 
-        ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
+        if "(" in self.__embed['title']:
+            ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
         
         self.rarity = None
         color_names = item_manager.get_color_names()
