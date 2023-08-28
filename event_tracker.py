@@ -83,6 +83,9 @@ class OreEvent:
 
         if "(" in self.__embed['title']:
             ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
+            print("cave")
+        else:
+            print("no cave")
         
         self.rarity = None
         color_names = item_manager.get_color_names()
