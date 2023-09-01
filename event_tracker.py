@@ -271,7 +271,7 @@ class OreEvent:
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
-            zetex_jr.error_logger("format error: " + str({err}), True)
+            zetex_jr.error_logger(zetex_jr, "format error: " + str({err}), True)
         
         
 class EventTracker(socket_based.SocketBased):
