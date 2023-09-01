@@ -92,7 +92,7 @@ class OreEvent:
             self.rarity = Rarity[rarity_name.upper()]
             print("Color: " + str(self.__embed['color']))
             print("Tier: " + self.rarity)
-        except:
+        except Exception as e:
             self.rarity = Rarity.UNKNOWN
             print("Color not listed in color_names.json: " + str(self.__embed['color']))
             
@@ -202,7 +202,7 @@ class OreEvent:
                             if not "Caves" in rarity:
                                 rarity += " in " + cave_name + " Caves"
                             cave_rarity = int(line.split()[-1])
-                            print(cave_name + " Cave, 1 in " + cave_rarity)
+                            print(cave_name + " Cave, 1 in " + str(cave_rarity))
                             rarity_num = rarity.replace("1 in ", "")
                             rarity_num = int(re.sub("[^0-9]", "", rarity_num))
                             adjusted_rarity = str('{:,}'.format(int(rarity_num * cave_rarity * 1.88)))
@@ -213,27 +213,27 @@ class OreEvent:
                 gilded_adjust = re.sub("[^0-9]", "", gilded_adjust)
                 if not "57 Leaf Clover" in pickaxe:
                     gilded_adjust += "00"
-                    print("Gilded Cave, 1 in 5,700")
+                    "Gilded Cave, 1 in 5,700")
                 else:
-                    print("Gilded Cave, 1 in 57")
+                    "Gilded Cave, 1 in 57")
                 gilded_adjust = int(gilded_adjust) * 1.88 * 57
                 gilded_adjust = str('{:,}'.format(int(gilded_adjust)))
-                print("Adjusted rarity calculated: " + gilded_adjust)
+                "Adjusted rarity calculated: " + gilded_adjust)
                 if not "Caves" in rarity:
                     rarity += " in Gilded Caves"
                 rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
             else:
-                print("No adjustment for ore")
+                "No adjustment for ore")
 
             if (event in ore or 'Protoflare' in ore) and not adjusted_found:
                 with open('events.txt', 'r') as eventRarities:
                     for num, line in enumerate(eventRarities):
                         if ore in line and not (' ' + ore) in line and not event_found:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
-                            print("Event rarity added: 1 in " + line.split()[-1])
+                            "Event rarity added: 1 in " + line.split()[-1])
                             event_found = True
             else:
-                print("No event for ore")
+                "No event for ore")
             
             tracker_name = ""
             match event_type:
@@ -246,11 +246,11 @@ class OreEvent:
                 case EventType.GLOBAL | EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
-                        print("OH SHIT")
+                        "OH SHIT")
                     elif 'Spectral' in tier and 'Otherworldly' in tier:
-                        print("OH REALLY SHIT")
+                        "OH REALLY SHIT")
                     elif 'Spectral' in tier and 'Zenith' in tier:
-                        print("OH EXTREMELY SHIT")
+                        "OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
                 case EventType.BEGINNER:
