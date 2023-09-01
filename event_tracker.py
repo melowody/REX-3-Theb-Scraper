@@ -218,12 +218,12 @@ class OreEvent:
                     "Gilded Cave, 1 in 57")
                 gilded_adjust = int(gilded_adjust) * 1.88 * 57
                 gilded_adjust = str('{:,}'.format(int(gilded_adjust)))
-                "Adjusted rarity calculated: " + gilded_adjust)
+                print("Adjusted rarity calculated: " + gilded_adjust)
                 if not "Caves" in rarity:
                     rarity += " in Gilded Caves"
                 rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
             else:
-                "No adjustment for ore")
+                print("No adjustment for ore")
 
             if (event in ore or 'Protoflare' in ore) and not adjusted_found:
                 with open('events.txt', 'r') as eventRarities:
@@ -233,7 +233,7 @@ class OreEvent:
                             "Event rarity added: 1 in " + line.split()[-1])
                             event_found = True
             else:
-                "No event for ore")
+                print("No event for ore")
             
             tracker_name = ""
             match event_type:
