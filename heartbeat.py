@@ -5,6 +5,7 @@ import time
 import os
 import sys
 import random
+import zetex_jr
 
 
 class HeartBeat(socket_based.SocketBased):
@@ -37,5 +38,5 @@ class HeartBeat(socket_based.SocketBased):
             except Exception as err:
                 print("\n\n\nHeartbeat send failed:")
                 print({err})
-                print("Running restart script.")
-                os.system('cd ~ ; ./restart.sh')
+                print("sending this shit to zetex...")
+                zetex_jr.error_logger(err, True)
