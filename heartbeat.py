@@ -24,6 +24,7 @@ class HeartBeat(socket_based.SocketBased):
     
     def loop(self):
         print('\n--------------------------------------------------\n\nREX3 SCRAPE TRACKER\nby zetexfake and GDNewbie')
+        print(os.system('dir'))
         while True:
             jitter = random.random()
             time.sleep(self.heartbeat_interval * jitter + 0.1)
