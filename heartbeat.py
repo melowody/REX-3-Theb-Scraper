@@ -39,4 +39,3 @@ class HeartBeat(socket_based.SocketBased):
                 print("\n\n\nHeartbeat send failed:")
                 print({err})
                 print("sending this shit to zetex...")
-                zetex_jr.ZetexJr.lerror_logger(err, True)
