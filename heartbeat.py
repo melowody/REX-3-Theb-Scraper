@@ -33,6 +33,6 @@ class HeartBeat(socket_based.SocketBased):
             }
             try:
                 self.send_json_request(heartbeatJSON)
-                print("\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
+                print("\nHEARTBEAT.PY\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
                 print("\nheartbeat send failed")
