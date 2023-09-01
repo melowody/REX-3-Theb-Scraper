@@ -95,7 +95,7 @@ class OreEvent:
             print("Tier: " + rarity_name.upper())
         except Exception as err:
             self.rarity = Rarity.UNKNOWN
-            zetex_jr.error_logger("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err}, False)
+            zetex_jr.error_logger(zetex_jr, "Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err}, False)
             
         match (title_groups.group(2)):
             case "ionized":
@@ -305,7 +305,7 @@ class EventTracker(socket_based.SocketBased):
             try:
                 event = self.receive_json_response()
             except Exception as err:
-                zetex_jr.error_logger("event_tracker.py loop error 1: " + str({err}), False)
+                zetex_jr.error_logger(zetex_jr, "event_tracker.py loop error 1: " + str({err}), False)
                 logging.info(json.dumps(event))
                 return
             try:
@@ -315,7 +315,7 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
-                zetex_jr.event_logger("event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}), False)
+                zetex_jr.event_logger(zetex_jr, "event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}), False)
                 pass
 
     def handle_event(self, event_data):
