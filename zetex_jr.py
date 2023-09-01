@@ -8,7 +8,7 @@ import heartbeat
 import event_tracker
 
 
-class ZetexJr(discord.Bot):
+class TrackerBot(discord.Bot):
 
     async def register_command(self, command: ApplicationCommand, force: bool = True,
                                guild_ids: list[int] | None = None) -> None:
@@ -50,7 +50,7 @@ class ZetexJr(discord.Bot):
     def test_thing(self, input_string):
         print(input_string)
 
-zetex_jr = ZetexJr()
+zetex_jr = TrackerBot()
 
 
 async def get_event(ctx: discord.AutocompleteContext):
