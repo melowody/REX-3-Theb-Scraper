@@ -50,7 +50,6 @@ class TrackerBot(discord.Bot):
 
     async def send_error(self, error_data, do_restart):
         channel = self.get_channel(1076318101769039972)
-        time.sleep(2)
         await channel.send("new error just dropped\n```" + error_data + "```")
         if do_restart:
             os.system("cd ~ ; ./restart.sh")
@@ -102,4 +101,4 @@ async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
 
-asyncio.run(tracker_bot.send_error("blablabla", False))
+asyncio.run(tracker_bot.send_error(tracker_bot, "blablabla", False))
