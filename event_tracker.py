@@ -213,9 +213,9 @@ class OreEvent:
                 gilded_adjust = re.sub("[^0-9]", "", gilded_adjust)
                 if not "57 Leaf Clover" in pickaxe:
                     gilded_adjust += "00"
-                    "Gilded Cave, 1 in 5,700")
+                    print("Gilded Cave, 1 in 5,700")
                 else:
-                    "Gilded Cave, 1 in 57")
+                    print("Gilded Cave, 1 in 57")
                 gilded_adjust = int(gilded_adjust) * 1.88 * 57
                 gilded_adjust = str('{:,}'.format(int(gilded_adjust)))
                 print("Adjusted rarity calculated: " + gilded_adjust)
@@ -230,7 +230,7 @@ class OreEvent:
                     for num, line in enumerate(eventRarities):
                         if ore in line and not (' ' + ore) in line and not event_found:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
-                            "Event rarity added: 1 in " + line.split()[-1])
+                            print("Event rarity added: 1 in " + line.split()[-1])
                             event_found = True
             else:
                 print("No event for ore")
@@ -246,11 +246,11 @@ class OreEvent:
                 case EventType.GLOBAL | EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
-                        "OH SHIT")
+                        print("OH SHIT")
                     elif 'Spectral' in tier and 'Otherworldly' in tier:
-                        "OH REALLY SHIT")
+                        print("OH REALLY SHIT")
                     elif 'Spectral' in tier and 'Zenith' in tier:
-                        "OH EXTREMELY SHIT")
+                        print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
                 case EventType.BEGINNER:
