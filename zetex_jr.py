@@ -35,7 +35,10 @@ class ZetexJr(discord.Bot):
 
         self.hb.start()
         task_et = asyncio.create_task(self.et.start())
-    
+
+        channel = self.get_channel(1076318101769039972)
+        await channel.send("restarted!")
+        
         await task_et
         self.send_event.start()
 
@@ -99,4 +102,6 @@ async def restart(ctx):
 
 async def error_logger(err):
     channel = self.get_channel(1076318101769039972)
-    await channel.send("oops! ;w; ```" + str({err}) + "```")
+    await channel.send("this shit just happened: ```" + str({err}) + "``` attempting a restart")
+    os.system('cd ~ ; ./restart.sh')
+    
