@@ -287,9 +287,8 @@ class EventTracker(socket_based.SocketBased):
                 event = self.receive_json_response()
             except Exception as err:
                 # SHITTY FIX ALERT
-                print(f"et loop error 1: {err}")
+                print(f"event tracker loop error 1: {err}")
                 logging.info(json.dumps(event))
-                os.execl(sys.executable, 'python', "main.py")
                 return
             try:
                 if 'd' in event.keys() and type(event['d']) == dict and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots() and 't' in event.keys() and event['t'] == 'MESSAGE_CREATE':
