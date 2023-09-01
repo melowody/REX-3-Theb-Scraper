@@ -197,6 +197,8 @@ class OreEvent:
             pickaxe = self.get_pickaxe()
             event = self.get_event()
 
+            BOTFUCKERFIFTY = 59 + "hi"
+
             adjusted_found = False
             event_found = False
             if "(" in ore and not "Gilded Cave" in ore:
