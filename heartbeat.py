@@ -39,5 +39,4 @@ class HeartBeat(socket_based.SocketBased):
                 print("\n\n\nheartbeat send failed:")
                 print({err})
                 print("Running restart script... (please work)")
-                os.system('cd ~')
-                os.system('./restart.sh')
+                os.system('cd ~ ; ./restart.sh')
