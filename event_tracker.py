@@ -91,7 +91,7 @@ class OreEvent:
             rarity_name = color_names[str(self.__embed['color'])]
             self.rarity = Rarity[rarity_name.upper()]
             print("Color: " + str(self.__embed['color']))
-            print("Tier: " + self.rarity)
+            print("Tier: " + rarity_name.upper())
         except Exception as e:
             print(e)
             self.rarity = Rarity.UNKNOWN
