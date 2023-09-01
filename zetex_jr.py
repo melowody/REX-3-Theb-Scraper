@@ -100,7 +100,7 @@ async def restart(ctx):
     os.system("/root/restart.sh")
 
 
-async def error_logger(err, do_restart):
+def error_logger(err, do_restart):
     channel = self.get_channel(1076318101769039972)
     await channel.send("this shit just happened: ```" + str({err}) + "```")
     if do_restart:
