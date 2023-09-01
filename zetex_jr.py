@@ -55,7 +55,8 @@ zetex_jr = ZetexJr()
 
 
 @zetex_jr.command()
-async def hefuckingdied(ctx):
+@commands.check(check_owner)
+async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
 
