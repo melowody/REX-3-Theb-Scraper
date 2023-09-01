@@ -10,6 +10,7 @@ import sys
 import re
 import queue
 import traceback
+import zetex_jr
 from enum import Enum
 from functools import total_ordering
 
@@ -94,8 +95,7 @@ class OreEvent:
             print("Tier: " + rarity_name.upper())
         except Exception as err:
             self.rarity = Rarity.UNKNOWN
-            print("Color not listed in color_names.json: " + str(self.__embed['color']))
-            print({err})
+            zetex_jr.error_logger("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err}, False)
             
         match (title_groups.group(2)):
             case "ionized":
@@ -268,8 +268,8 @@ class OreEvent:
                     tracker_name = "SCOVILLE"
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
-        except Exception as e:
-            print(f"format error: {traceback.format_exc()}")
+        except Exception as err:
+            zetex_jr.error_logger("format error: " + str({err}), True)
         
         
 class EventTracker(socket_based.SocketBased):
@@ -303,7 +303,7 @@ class EventTracker(socket_based.SocketBased):
             try:
                 event = self.receive_json_response()
             except Exception as err:
-                print(f"event_tracker.py loop error 1: {err}")
+                zetex_jr.error_logger("event_tracker.py loop error 1: " + str({err}), False)
                 logging.info(json.dumps(event))
                 return
             try:
@@ -313,8 +313,7 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
-                print(f"event_tracker.py loop error 2: {traceback.format_exc()}")
-                print(f"Bad Event: {event}")
+                zetex_jr.event_logger("event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}), False)
                 pass
 
     def handle_event(self, event_data):
