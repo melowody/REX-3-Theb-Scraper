@@ -32,11 +32,10 @@ class HeartBeat(socket_based.SocketBased):
                 "d": "null"
             }
             try:
-                print(6998983 + "STRING")
                 self.send_json_request(heartbeatJSON)
                 print("\nHEARTBEAT.PY\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
-                print("\n\n\nheartbeat send failed:")
+                print("\n\n\nHeartbeat send failed:")
                 print({err})
-                print("Running restart script... (please work)")
+                print("Running restart script.")
                 os.system('cd ~ ; ./restart.sh')
