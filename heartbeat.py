@@ -24,7 +24,6 @@ class HeartBeat(socket_based.SocketBased):
     
     def loop(self):
         print('\n--------------------------------------------------\n\nREX3 SCRAPE TRACKER\nby zetexfake and GDNewbie')
-        print(os.system('dir'))
         while True:
             jitter = random.random()
             time.sleep(self.heartbeat_interval * jitter + 0.1)
@@ -33,8 +32,12 @@ class HeartBeat(socket_based.SocketBased):
                 "d": "null"
             }
             try:
+                print(6998983 + "STRING")
                 self.send_json_request(heartbeatJSON)
                 print("\nHEARTBEAT.PY\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
-                print("\nheartbeat send failed:")
+                print("\n\n\nheartbeat send failed:")
                 print({err})
+                print("Running restart script... (please work)")
+                os.system('cd ~')
+                os.system('./restart.sh')
