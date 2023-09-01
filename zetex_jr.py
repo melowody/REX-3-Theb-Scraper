@@ -47,7 +47,7 @@ class TrackerBot(discord.Bot):
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
 
-    async def send_error(self, error_data, do_restart):
+    def send_error(self, error_data, do_restart):
         channel = self.get_channel(1076318101769039972)
         await channel.send("new error just dropped\n```" + error_data + "```")
         if do_restart:
