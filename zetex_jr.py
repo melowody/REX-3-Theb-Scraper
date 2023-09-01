@@ -47,6 +47,8 @@ class ZetexJr(discord.Bot):
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
 
+    def test_thing(self, input_string):
+        print(input_string)
 
 zetex_jr = ZetexJr()
 
@@ -94,3 +96,7 @@ async def manual(ctx,
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
+
+
+
+zetex_jr.test_thing("OMG HI")
