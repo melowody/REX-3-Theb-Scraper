@@ -95,7 +95,7 @@ class OreEvent:
             print("Tier: " + rarity_name.upper())
         except Exception as err:
             self.rarity = Rarity.UNKNOWN
-            zetex_jr.ZetexJr.error_logger("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err}, False)
+            print("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err}, False)
             
         match (title_groups.group(2)):
             case "ionized":
@@ -272,7 +272,7 @@ class OreEvent:
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             print("sending this shit to zetex...")
-            zetex_jr.ZetexJr.error_logger("format error: " + str({err}), True)
+            print("format error: " + str({err}), True)
         
         
 class EventTracker(socket_based.SocketBased):
@@ -307,7 +307,7 @@ class EventTracker(socket_based.SocketBased):
                 event = self.receive_json_response()
             except Exception as err:
                 print("sending this shit to zetex...")
-                zetex_jr.ZetexJr.error_logger("event_tracker.py loop error 1: " + str({err}), False)
+                print("event_tracker.py loop error 1: " + str({err}), False)
                 logging.info(json.dumps(event))
                 return
             try:
