@@ -25,7 +25,6 @@ class EventType(Enum):
     GLOBAL = item_manager.get_channel("GLOBAL_CHANNEL")
     GLOBAL2 = item_manager.get_channel("GLOBAL2_CHANNEL")
     BEGINNER = item_manager.get_channel("BEGINNER_CHANNEL")
-    ZETEX_SERVER = item_manager.get_channel("ZETEXSERVER")
     TEST = item_manager.get_channel("TEST_CHANNEL")
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
