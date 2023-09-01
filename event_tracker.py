@@ -18,6 +18,7 @@ from functools import total_ordering
 
 def send_error(error_data, do_restart):
     print("sending error to logging channel on discord")
+    discord_bot = zetex_jr.TrackerBot()
     asyncio.run(discord_bot.send_error(error_data, do_restart))
 
 class SpecialType(Enum):
