@@ -102,4 +102,4 @@ async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
 
-await tracker_bot.send_error("blablabla", False)
+asyncio.run(tracker_bot.send_error("blablabla", False))
