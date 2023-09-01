@@ -271,6 +271,7 @@ class OreEvent:
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
+            print("sending this shit to zetex...")
             zetex_jr.ZetexJr.error_logger("format error: " + str({err}), True)
         
         
@@ -305,6 +306,7 @@ class EventTracker(socket_based.SocketBased):
             try:
                 event = self.receive_json_response()
             except Exception as err:
+                print("sending this shit to zetex...")
                 zetex_jr.ZetexJr.error_logger("event_tracker.py loop error 1: " + str({err}), False)
                 logging.info(json.dumps(event))
                 return
@@ -315,6 +317,7 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
+                print("sending this shit to zetex...")
                 zetex_jr.event_logger(zetex_jr, "event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}), False)
                 pass
 
