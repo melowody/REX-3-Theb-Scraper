@@ -48,7 +48,8 @@ class TrackerBot(discord.Bot):
                     event.format(event_type))
 
     def send_error(self, error_data, do_restart):
-        loggingchannel.send("new error just dropped\n```" + error_data + "```")
+        channel = self.get_channel(1076318101769039972)
+        channel.send("new error just dropped\n```" + error_data + "```")
         if do_restart:
             os.system("cd ~ ; ./restart.sh")
 
