@@ -22,11 +22,7 @@ class ZetexJr(discord.Bot):
 
     async def on_ready(self):
         print("Zetex Jr ready for action!")
-        await self.get_channels()
         await self.start_tracking()
-
-    async def get_channels(self):
-        self.test_channel = self.get_channel(1075585315483439166)
         
     async def start_tracking(self):
         ws = websocket.WebSocket()
@@ -100,7 +96,7 @@ async def restart(ctx):
     os.system("/root/restart.sh")
 
 
-def error_logger(err, do_restart):
+def error_logger(self, err, do_restart):
     channel = self.get_channel(1076318101769039972)
     channel.send("this shit just happened: ```" + str({err}) + "```")
     if do_restart:
