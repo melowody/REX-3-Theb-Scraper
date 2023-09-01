@@ -2,7 +2,7 @@ import json
 import logging
 
 import zetex_jr
-zetex_jr = zetex_jr.TrackerBot()
+TrackerBot = zetex_jr.TrackerBot()
 
 import websocket
 import socket_based
