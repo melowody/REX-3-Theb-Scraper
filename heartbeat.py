@@ -4,6 +4,7 @@ import threading
 import time
 import os
 import sys
+import random
 
 
 class HeartBeat(socket_based.SocketBased):
@@ -24,7 +25,7 @@ class HeartBeat(socket_based.SocketBased):
     def loop(self):
         print('\n--------------------------------------------------\n\nREX3 SCRAPE TRACKER\nby zetexfake and GDNewbie')
         while True:
-            time.sleep(self.heartbeat_interval)
+            time.sleep(self.heartbeat_interval * random.random() + 1)
             heartbeatJSON = {
                 "op": 1,
                 "d": "null"
