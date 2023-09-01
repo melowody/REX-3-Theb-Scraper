@@ -21,7 +21,7 @@ class TrackerBot(discord.Bot):
         self.test_channel = None
 
     async def on_ready(self):
-        print("Zetex Jr ready for action!")
+        print("zetex jr. ready")
         await self.start_tracking()
         
     async def start_tracking(self):
