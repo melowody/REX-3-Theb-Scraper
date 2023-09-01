@@ -99,7 +99,3 @@ async def manual(ctx,
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
-
-
-
-zetex_jr.test_thing("OMG HI")
