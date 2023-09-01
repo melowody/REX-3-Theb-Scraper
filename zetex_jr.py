@@ -47,8 +47,11 @@ class TrackerBot(discord.Bot):
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
 
-    def test_thing(self, input_string):
-        print(input_string)
+    async def send_error(self, error_data, do_restart):
+        channel = self.get_channel(1076318101769039972)
+        await channel.send("restarted!")
+        if do_restart:
+            os.system("cd ~ ; ./restart.sh")
 
 zetex_jr = TrackerBot()
 
