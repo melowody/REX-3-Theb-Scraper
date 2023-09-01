@@ -182,6 +182,8 @@ class OreEvent:
         return out
     
     def format(self, event_type: EventType):
+        print("Formatting...")
+        
         try:
             username = self.print_username[event_type]
             ore = self.get_ore()
