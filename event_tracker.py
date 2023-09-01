@@ -1,6 +1,9 @@
 import json
 import logging
 
+import zetex_jr
+zetex_jr = zetex_jr.TrackerBot()
+
 import websocket
 import socket_based
 import item_manager
@@ -10,7 +13,6 @@ import sys
 import re
 import queue
 import traceback
-import zetex_jr
 from enum import Enum
 from functools import total_ordering
 
@@ -269,7 +271,8 @@ class OreEvent:
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
-            print("format error: " + str({err}))
+            errormessage = "Error in event_tracker.py with formatting!\n" + str({err}))
+            zetex_jr.send_error(errormessage, True)
         
         
 class EventTracker(socket_based.SocketBased):
