@@ -54,13 +54,6 @@ class ZetexJr(discord.Bot):
 zetex_jr = ZetexJr()
 
 
-@zetex_jr.command()
-@commands.check(check_owner)
-async def restart(ctx):
-    await ctx.respond("Restarting!")
-    os.system("/root/restart.sh")
-
-
 async def get_event(ctx: discord.AutocompleteContext):
     world = ctx.options['world']
     match world:
@@ -98,3 +91,9 @@ async def manual(ctx,
     ore_event.username = username
     zetex_jr.et.queue.put(ore_event)
     await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
+
+@zetex_jr.command()
+@commands.check(check_owner)
+async def restart(ctx):
+    await ctx.respond("Restarting!")
+    os.system("/root/restart.sh")
