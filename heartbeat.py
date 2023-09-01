@@ -33,6 +33,4 @@ class HeartBeat(socket_based.SocketBased):
                 self.send_json_request(heartbeatJSON)
                 print("\nheartbeat sent after " + str(self.heartbeat_interval) + "s")
             except Exception as err:
-                # SHITTY FIX 2
-                print(f"loop error: {err}")
-                os.execl(sys.executable, 'python', "main.py")
+                print("\nheartbeat send failed")
