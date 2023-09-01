@@ -23,6 +23,7 @@ class TrackerBot(discord.Bot):
     async def on_ready(self):
         print("zetex jr. ready")
         await self.start_tracking()
+        await self.send_error()
         
     async def start_tracking(self):
         ws = websocket.WebSocket()
