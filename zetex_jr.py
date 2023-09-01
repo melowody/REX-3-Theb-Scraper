@@ -46,6 +46,11 @@ class ZetexJr(discord.Bot):
                 self.et.tracks += 1
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
+    def error_logger(self, err, do_restart):
+        channel = self.get_channel(1076318101769039972)
+        channel.send("this shit just happened: ```" + str({err}) + "```")
+        if do_restart:
+            os.system('cd ~ ; ./restart.sh')
 
 
 zetex_jr = ZetexJr()
@@ -94,10 +99,3 @@ async def manual(ctx,
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
-
-
-def error_logger(self, err, do_restart):
-    channel = self.get_channel(1076318101769039972)
-    channel.send("this shit just happened: ```" + str({err}) + "```")
-    if do_restart:
-        os.system('cd ~ ; ./restart.sh')
