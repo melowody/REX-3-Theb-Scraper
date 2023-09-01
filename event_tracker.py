@@ -93,6 +93,7 @@ class OreEvent:
             print("Color: " + str(self.__embed['color']))
             print("Tier: " + self.rarity)
         except Exception as e:
+            print(e)
             self.rarity = Rarity.UNKNOWN
             print("Color not listed in color_names.json: " + str(self.__embed['color']))
             
