@@ -25,13 +25,14 @@ class HeartBeat(socket_based.SocketBased):
     def loop(self):
         print('\n--------------------------------------------------\n\nREX3 SCRAPE TRACKER\nby zetexfake and GDNewbie')
         while True:
-            time.sleep(self.heartbeat_interval * random.random() + 1)
+            jitter = random.random()
+            time.sleep(self.heartbeat_interval * jitter + 0.1)
             heartbeatJSON = {
                 "op": 1,
                 "d": "null"
             }
             try:
                 self.send_json_request(heartbeatJSON)
-                print("\nheartbeat sent after " + str(self.heartbeat_interval) + "s")
+                print("\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
                 print("\nheartbeat send failed")
