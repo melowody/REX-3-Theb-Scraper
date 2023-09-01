@@ -12,13 +12,14 @@ import sys
 import re
 import queue
 import traceback
+import asyncio
 from enum import Enum
 from functools import total_ordering
 
 def send_error(error_data, do_restart):
     print("sending error: " + error_data)
     discord_bot = zetex_jr.TrackerBot()
-    discord_bot.send_error(error_data, do_restart)
+    discord_bot.give_bot_error(error_data, do_restart)
 
 class SpecialType(Enum):
     NONE = 0
