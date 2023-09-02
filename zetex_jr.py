@@ -103,4 +103,4 @@ async def restart(ctx):
     os.system("/root/restart.sh")
 
 def give_bot_error(error_data, do_restart):
-    asyncio.ensure_future(send_error(error_data, do_restart))
+    asyncio.ensure_future(tracker_bot.send_error(error_data, do_restart))
