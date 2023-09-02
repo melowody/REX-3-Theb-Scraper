@@ -278,6 +278,7 @@ class OreEvent:
         except Exception as err:
             errormessage = "Error in event_tracker.py with formatting!\n" + str({err})
             send_error(errormessage, True)
+            return "-"
         
         
 class EventTracker(socket_based.SocketBased):
