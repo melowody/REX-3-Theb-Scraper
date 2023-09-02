@@ -72,7 +72,7 @@ async def get_event(ctx: discord.AutocompleteContext):
 def check_owner(ctx):
     return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
 
-@zetex_jr.command()
+@commands.command()
 @commands.check(check_owner)
 async def manual(ctx,
                  username: str,
@@ -97,7 +97,7 @@ async def manual(ctx,
     tracker_bot.et.queue.put(ore_event)
     await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
 
-@zetex_jr.command()
+@commands.command()
 @commands.check(check_owner)
 async def restart(ctx):
     await ctx.respond("Restarting!")
