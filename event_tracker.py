@@ -186,8 +186,6 @@ class OreEvent:
         print("Formatting...")
 
         try:
-            botfucker50 = 19 + "Hello"
-
             username = self.print_username[event_type]
             ore = self.get_ore()
             tier = self.get_tier()
