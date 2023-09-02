@@ -114,5 +114,6 @@ async def restart(ctx):
     os.system("/root/restart.sh")
 
 def give_bot_error(data, restart):
+    error_present = True
     error_data = data
     error_restart = restart
