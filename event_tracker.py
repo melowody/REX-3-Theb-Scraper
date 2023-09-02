@@ -188,6 +188,7 @@ class OreEvent:
     
     def format(self, event_type: EventType):
         print("Formatting...")
+        send_error("test", False)
         
         try:
             username = self.print_username[event_type]
