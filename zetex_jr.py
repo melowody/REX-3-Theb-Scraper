@@ -33,7 +33,7 @@ class TrackerBot(discord.Bot):
         self.hb.start()
         task_et = asyncio.create_task(self.et.start())
 
-        loggingchannel = self.get_channel(1076318101769039972)
+        loggingchannel = self.get_channel(1147287507608805406)
         await loggingchannel.send("restarted!")
         
         await task_et
