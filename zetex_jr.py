@@ -8,10 +8,6 @@ import asyncio
 import heartbeat
 import event_tracker
 
-error_present = False
-error_data = ""
-error_restart = False
-
 class TrackerBot(discord.Bot):
 
     async def register_command(self, command: ApplicationCommand, force: bool = True,
@@ -41,15 +37,6 @@ class TrackerBot(discord.Bot):
         
         await task_et
         self.send_event.start()
-
-    async def send_error(self, error_data, do_restart):
-        print("yo will this thing fucking send")
-        channel = self.get_channel(1076318101769039972)
-        print("PLEASE")
-        await channel.send(f"new error just dropped\n``` {error_data} ```")
-        print("hopefully sent")
-        if do_restart:
-            os.system("cd ~ ; ./restart.sh")
 
     @tasks.loop(seconds=1.0)
     async def send_event(self):
@@ -115,8 +102,3 @@ async def manual(ctx,
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
-
-def give_bot_error(data, restart):
-    error_present = True
-    error_data = data
-    error_restart = restart
