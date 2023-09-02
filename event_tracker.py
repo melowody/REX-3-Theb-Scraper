@@ -285,7 +285,7 @@ class OreEvent:
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
-            return "-"
+            return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
         
         
 class EventTracker(socket_based.SocketBased):
