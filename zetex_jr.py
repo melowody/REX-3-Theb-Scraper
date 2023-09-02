@@ -8,6 +8,9 @@ import asyncio
 import heartbeat
 import event_tracker
 
+error_present = False
+error_data = ""
+error_restart = False
 
 class TrackerBot(discord.Bot):
 
@@ -57,6 +60,11 @@ class TrackerBot(discord.Bot):
                 message = event.format(event_type)
                 if message != "-":
                     await self.get_channel(event_type.value).send(message)
+        if error_present:
+            channel = self.get_channel(1076318101769039972)
+            await channel.send(f"new error just dropped\n``` {error_data} ```")
+            if do_restart:
+                os.system("cd ~ ; ./restart.sh")
 
 tracker_bot = TrackerBot()
 
@@ -105,6 +113,6 @@ async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
 
-def give_bot_error(error_data, do_restart):
-    print("this is running now")
-    errortask = asyncio.create_task(tracker_bot.send_error(error_data, do_restart))
+def give_bot_error(data, restart):
+    error_data = data
+    error_restart = restart
