@@ -4,6 +4,8 @@ import threading
 import time
 import os
 import sys
+import random
+import zetex_jr
 
 
 class HeartBeat(socket_based.SocketBased):
@@ -24,13 +26,16 @@ class HeartBeat(socket_based.SocketBased):
     def loop(self):
         print('\n--------------------------------------------------\n\nREX3 SCRAPE TRACKER\nby zetexfake and GDNewbie')
         while True:
-            time.sleep(self.heartbeat_interval)
+            jitter = random.random()
+            time.sleep(self.heartbeat_interval * jitter + 0.1)
             heartbeatJSON = {
                 "op": 1,
                 "d": "null"
             }
             try:
                 self.send_json_request(heartbeatJSON)
-                print("\nheartbeat sent after " + str(self.heartbeat_interval) + "s")
+                print("\nHEARTBEAT.PY\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
-                print("\nheartbeat send failed")
+                print("\n\n\nHeartbeat send failed:")
+                print({err})
+                print("sending this shit to zetex...")

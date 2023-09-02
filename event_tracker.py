@@ -1,6 +1,8 @@
 import json
 import logging
 
+import zetex_jr
+
 import websocket
 import socket_based
 import item_manager
@@ -10,9 +12,9 @@ import sys
 import re
 import queue
 import traceback
+import asyncio
 from enum import Enum
 from functools import total_ordering
-
 
 class SpecialType(Enum):
     NONE = 0
@@ -80,28 +82,32 @@ class OreEvent:
             self.ore = ore
         self.ore = self.ore.replace("*","")
 
-        if "(" in self.__embed['title']:
-            print("THIS IS THE CAVE TYPE MAYBE: " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_",""))
-            self.ore += " " + self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
-            print(self.username + " " + self.ore + " has a cave")
-        else:
-            print(self.username + " " + self.ore + " has no cave")
+        print("\nEVENT_TRACKER.PY\nTracking: " + self.username + " / " + self.ore)
         
-        self.rarity = None
+        if "(" in self.__embed['title']:
+            cave_type = self.__embed['title'][self.__embed['title'].index("("):].replace("*", "").replace("_","")
+            self.ore += " " + cave_type
+        
         color_names = item_manager.get_color_names()
-        if self.__embed['color'] == 16777215:
-            self.rarity = Rarity.UNKNOWN
-        else:
+        try:
             rarity_name = color_names[str(self.__embed['color'])]
             self.rarity = Rarity[rarity_name.upper()]
+            print("Color: " + str(self.__embed['color']))
+            print("Tier: " + rarity_name.upper())
+        except Exception as err:
+            self.rarity = Rarity.UNKNOWN
+            print("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err})
             
         match (title_groups.group(2)):
             case "ionized":
                 self.special = SpecialType.IONIZED
+                print("Variant: Ionized")
             case "spectral":
                 self.special = SpecialType.SPECTRAL
+                print("Variant: Spectral")
             case _:
                 self.special = SpecialType.NONE
+                print("Variant: Normal")
         
         self.base_rarity = self.__embed["fields"][0]["value"].replace('1/', '')
         
@@ -109,7 +115,7 @@ class OreEvent:
         
         self.pickaxe = self.__embed["fields"][2]["value"]
         
-        self.event = self.__embed["fields"][3]["value"]  
+        self.event = self.__embed["fields"][3]["value"]
     
     def get_username(self):
         return self.username
@@ -142,7 +148,7 @@ class OreEvent:
             out.append(EventType.TEST)
         if self.blocks < 100000:
             self.print_username[EventType.BEGINNER] = self.username
-            print("Beginner: " + self.username)
+            print("Beginner (" + str(self.blocks) + " blocks)")
             out.append(EventType.BEGINNER)
         if self.should_ping_everyone():
             self.print_username[EventType.GLOBAL] = self.username
@@ -151,24 +157,24 @@ class OreEvent:
             out.append(EventType.GLOBAL2)
         if self.username in ' MomSonGaming ':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
-            print("MOMSONGAMING: " + self.username)
+            print("is this still even used lol: " + self.username)
             out.append(EventType.MOMSONGAMING)
         if self.username in ' Lettyon26s ':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (Mother of <@&1078460377920180276>)"
-            print("MOMSONGAMING: " + self.username)
+            print("oh wow it's mom of momsongaming: " + self.username)
             out.append(EventType.MOMSONGAMING)
         if self.username in item_manager.get_theb_dict().keys():
-            print("THEB: " + self.username)
+            print("Player is a Thebian: " + self.username)
             name = item_manager.get_username(self.username, 1)
             self.print_username[EventType.THEB] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.THEB)
         if self.username in item_manager.get_gooberville_dict().keys():
-            print("GOOBERVILLE: " + self.username)
+            print("Player is a Goober: " + self.username)
             name = item_manager.get_username(self.username, 2)
             self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.GOOBERVILLE)
         if self.username in item_manager.get_scoville_dict().keys():
-            print("SCOVILLE: " + self.username)
+            print("Player is a Scovillager: " + self.username)
             name = item_manager.get_username(self.username, 3)
             if self.username == "zetexfake" and self.rarity.value + self.special.value < 6:
                 return out
@@ -177,6 +183,8 @@ class OreEvent:
         return out
     
     def format(self, event_type: EventType):
+        print("Formatting...")
+        
         try:
             username = self.print_username[event_type]
             ore = self.get_ore()
@@ -188,38 +196,48 @@ class OreEvent:
 
             adjusted_found = False
             event_found = False
-            if "(" in ore:
+            if "(" in ore and not "Gilded Cave" in ore:
                 with open('adjusted.txt', 'r') as adjustedRarities:
-                    CaveName = ore[ore.index("("):]
-                    CaveName = CaveName.replace("(","").replace(" Cave)", "")
-                    print(CaveName)
+                    cave_name = ore[ore.index("("):]
+                    cave_name = cave_name.replace("(","").replace(" Cave)", "")
                     for num, line in enumerate(adjustedRarities):
-                        if CaveName in line and not adjusted_found:
+                        if cave_name in line and not adjusted_found:
                             adjusted_found = True
                             if not "Caves" in rarity:
-                                rarity += " in " + CaveName + " Caves"
-                            CaveRarity = int(line.split()[-1])
-                            RarityNum = rarity.replace("1 in ", "")
-                            RarityNum = int(re.sub("[^0-9]", "", RarityNum))
-                            AdjustedRarity = str('{:,}'.format(int(RarityNum * CaveRarity * 1.88)))
-                            rarity += "\nAdjusted Rarity: 1 in " + AdjustedRarity
-                            print(rarity)
-            if event in ore or 'Protoflare' in ore:
+                                rarity += " in " + cave_name + " Caves"
+                            cave_rarity = int(line.split()[-1])
+                            print(cave_name + " Cave, 1 in " + str(cave_rarity))
+                            rarity_num = rarity.replace("1 in ", "")
+                            rarity_num = int(re.sub("[^0-9]", "", rarity_num))
+                            adjusted_rarity = str('{:,}'.format(int(rarity_num * cave_rarity * 1.88)))
+                            print("Adjusted rarity calculated: " + adjusted_rarity)
+                            rarity += "\nAdjusted Rarity: 1 in " + adjusted_rarity
+            elif 'Gilded Cave' in ore:
+                gilded_adjust = rarity.replace("1 in ", "")
+                gilded_adjust = re.sub("[^0-9]", "", gilded_adjust)
+                if not "57 Leaf Clover" in pickaxe:
+                    gilded_adjust += "00"
+                    print("Gilded Cave, 1 in 5,700")
+                else:
+                    print("Gilded Cave, 1 in 57")
+                gilded_adjust = int(gilded_adjust) * 1.88 * 57
+                gilded_adjust = str('{:,}'.format(int(gilded_adjust)))
+                print("Adjusted rarity calculated: " + gilded_adjust)
+                if not "Caves" in rarity:
+                    rarity += " in Gilded Caves"
+                rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
+            else:
+                print("No adjustment for ore")
+
+            if (event in ore or 'Protoflare' in ore) and not adjusted_found:
                 with open('events.txt', 'r') as eventRarities:
                     for num, line in enumerate(eventRarities):
                         if ore in line and not (' ' + ore) in line and not event_found:
                             rarity += "\nEvent Rarity: 1 in " + line.split()[-1]
+                            print("Event rarity added: 1 in " + line.split()[-1])
                             event_found = True
-            elif 'Gilded Cave' in ore:
-                GildedAdjust = rarity.replace("1 in ", "")
-                GildedAdjust = re.sub("[^0-9]", "", GildedAdjust)
-                if not "57" in pickaxe:
-                    GildedAdjust += "00"
-                GildedAdjust = int(GildedAdjust) * 1.88 * 57
-                GildedAdjust = str('{:,}'.format(int(GildedAdjust)))
-                if not "Caves" in rarity:
-                    rarity += " in Gilded Caves"
-                rarity += "\nAdjusted Rarity: 1 in " + GildedAdjust
+            else:
+                print("No event for ore")
             
             tracker_name = ""
             match event_type:
@@ -249,9 +267,11 @@ class OreEvent:
                     tier = tier.replace("@everyone", "Nuh Uh")
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
+            print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
-        except Exception as e:
-            print(f"format error: {traceback.format_exc()}")
+        except Exception as err:
+            print("Error in event_tracker.py with formatting!\n" + str({err}))
+            return "-"
         
         
 class EventTracker(socket_based.SocketBased):
@@ -285,8 +305,8 @@ class EventTracker(socket_based.SocketBased):
             try:
                 event = self.receive_json_response()
             except Exception as err:
-                # SHITTY FIX ALERT
-                print(f"event tracker loop error 1: {err}")
+                print("sending this shit to zetex...")
+                print("event_tracker.py loop error 1: " + str({err}))
                 logging.info(json.dumps(event))
                 return
             try:
@@ -296,8 +316,7 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception as e:
-                print(f"et loop error 2: {traceback.format_exc()}")
-                print(f"Bad Event: {event}")
+                print("event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}))
                 pass
 
     def handle_event(self, event_data):

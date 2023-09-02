@@ -1,14 +1,14 @@
 import discord
 from discord import ApplicationCommand
 from discord.ext import tasks, commands
+import time
 import websocket
 import os
 import asyncio
 import heartbeat
 import event_tracker
 
-
-class ZetexJr(discord.Bot):
+class TrackerBot(discord.Bot):
 
     async def register_command(self, command: ApplicationCommand, force: bool = True,
                                guild_ids: list[int] | None = None) -> None:
@@ -21,14 +21,10 @@ class ZetexJr(discord.Bot):
         self.test_channel = None
 
     async def on_ready(self):
-        print("Zetex Jr ready for action!")
-        await self.get_channels()
+        print("zetex jr. ready")
         await self.start_tracking()
-        channel = self.get_channel(1061709849391534082)
-        await channel.send("<:sober:1077353673052672120>")
-
-    async def get_channels(self):
-        self.test_channel = self.get_channel(1075585315483439166)
+        channel = self.get_channel(1147287507608805406)
+        await channel.send("restarted!")
         
     async def start_tracking(self):
         ws = websocket.WebSocket()
@@ -37,7 +33,7 @@ class ZetexJr(discord.Bot):
 
         self.hb.start()
         task_et = asyncio.create_task(self.et.start())
-    
+        
         await task_et
         self.send_event.start()
 
@@ -49,15 +45,16 @@ class ZetexJr(discord.Bot):
                 self.et.tracks += 1
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
+        #print(error_present)
+        #print(error_data)
+        #print(error_restart)
+        #if error_present:
+            #channel = self.get_channel(1076318101769039972)
+            #await channel.send(f"new error just dropped\n``` {error_data} ```")
+            #if do_restart:
+                #os.system("cd ~ ; ./restart.sh")
 
-
-zetex_jr = ZetexJr()
-
-
-@zetex_jr.command()
-async def hefuckingdied(ctx):
-    await ctx.respond("Restarting!")
-    os.system("/root/restart.sh")
+tracker_bot = TrackerBot()
 
 
 async def get_event(ctx: discord.AutocompleteContext):
@@ -73,7 +70,7 @@ async def get_event(ctx: discord.AutocompleteContext):
 def check_owner(ctx):
     return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
 
-@zetex_jr.command()
+@tracker_bot.command()
 @commands.check(check_owner)
 async def manual(ctx,
                  username: str,
@@ -95,5 +92,11 @@ async def manual(ctx,
     ore_event.ore = ore
     ore_event.base_rarity = '{:,}'.format(rarity)
     ore_event.username = username
-    zetex_jr.et.queue.put(ore_event)
+    tracker_bot.et.queue.put(ore_event)
     await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
+
+@tracker_bot.command()
+@commands.check(check_owner)
+async def restart(ctx):
+    await ctx.respond("Restarting!")
+    os.system("/root/restart.sh")
