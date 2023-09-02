@@ -44,9 +44,8 @@ class TrackerBot(discord.Bot):
             event = self.et.queue.get()
             for event_type in event.get_event_types():
                 self.et.tracks += 1
-                message = event.format(event_type)
-                if message != "-":
-                    await self.get_channel(event_type.value).send(message)
+                await self.get_channel(event_type.value).send(
+                    event.format(event_type))
         #print(error_present)
         #print(error_data)
         #print(error_restart)
