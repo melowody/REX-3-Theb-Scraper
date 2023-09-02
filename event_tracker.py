@@ -201,6 +201,7 @@ class OreEvent:
 
             adjusted_found = False
             event_found = False
+            is_exclusive = False
             if "(" in ore and not "Gilded Cave" in ore:
                 with open('adjusted.txt', 'r') as adjustedRarities:
                     cave_name = ore[ore.index("("):]
@@ -218,6 +219,7 @@ class OreEvent:
                             print("Adjusted rarity calculated: " + adjusted_rarity)
                             rarity += "\nAdjusted Rarity: 1 in " + adjusted_rarity
             elif 'Gilded Cave' in ore:
+                adjusted_found = True
                 gilded_adjust = rarity.replace("1 in ", "")
                 gilded_adjust = re.sub("[^0-9]", "", gilded_adjust)
                 if not "57 Leaf Clover" in pickaxe:
@@ -233,6 +235,13 @@ class OreEvent:
                 rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
             else:
                 print("No adjustment for ore")
+
+            if adjusted_found:
+                with open('exclusive.txt', 'r') as exclusiveOres:
+                    for num, line in enumerate(exclusiveOres):
+                        if ore in line and not ' ' + ore in line and not is_exclusive:
+                            is_exclusive = True
+                            ore = ore.replace(")", " Exclusive)")
 
             if (event in ore or 'Protoflare' in ore) and not adjusted_found:
                 with open('events.txt', 'r') as eventRarities:
