@@ -53,21 +53,13 @@ class TrackerBot(discord.Bot):
                 self.et.tracks += 1
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
-        # print(error_present)
-        # print(error_data)
-        # print(error_restart)
-        # if error_present:
-        # channel = self.get_channel(1076318101769039972)
-        # await channel.send(f"new error just dropped\n``` {error_data} ```")
-        # if do_restart:
-        # os.system("cd ~ ; ./restart.sh")
 
     @tasks.loop(seconds=1.0)
     async def send_error(self):
         if len(self.error_queue) != 0:
             err = self.error_queue.pop()
             await self.get_channel(item_manager.get_channel("ERROR_CHANNEL")).send(
-                f"New Error just Dropped: ```{err}```"
+                f"new error just dropped :bangbang: :fire: ```{err}```"
             )
 
 
