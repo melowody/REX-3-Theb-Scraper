@@ -39,6 +39,15 @@ class TrackerBot(discord.Bot):
         await task_et
         self.send_event.start()
 
+    async def send_error(self, error_data, do_restart):
+        print("yo will this thing fucking send")
+        channel = self.get_channel(1076318101769039972)
+        print("PLEASE")
+        await channel.send(f"new error just dropped\n``` {error_data} ```")
+        print("hopefully sent")
+        if do_restart:
+            os.system("cd ~ ; ./restart.sh")
+
     @tasks.loop(seconds=1.0)
     async def send_event(self):
         if self.et.queue.qsize() != 0:
@@ -48,15 +57,6 @@ class TrackerBot(discord.Bot):
                 message = event.format(event_type)
                 if message != "-":
                     await self.get_channel(event_type.value).send(message)
-
-    async def send_error(self, error_data, do_restart):
-        print("yo will this thing fucking send")
-        channel = self.get_channel(1076318101769039972)
-        print("PLEASE")
-        await channel.send(f"new error just dropped\n``` {error_data} ```")
-        print("hopefully sent")
-        if do_restart:
-            os.system("cd ~ ; ./restart.sh")
 
 tracker_bot = TrackerBot()
 
