@@ -60,6 +60,9 @@ class TrackerBot(discord.Bot):
                 message = event.format(event_type)
                 if message != "-":
                     await self.get_channel(event_type.value).send(message)
+        print(error_present)
+        print(error_data)
+        print(error_restart)
         if error_present:
             channel = self.get_channel(1076318101769039972)
             await channel.send(f"new error just dropped\n``` {error_data} ```")
