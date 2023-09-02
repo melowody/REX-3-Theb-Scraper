@@ -52,6 +52,7 @@ class TrackerBot(discord.Bot):
     async def send_error(self, error_data, do_restart):
         print("yo will this thing fucking send")
         channel = self.get_channel(1076318101769039972)
+        print("PLEASE")
         await channel.send(f"new error just dropped\n``` {error_data} ```")
         print("hopefully sent")
         if do_restart:
