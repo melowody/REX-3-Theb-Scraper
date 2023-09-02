@@ -27,6 +27,7 @@ def get_gooberville_dict():
     with open("gooberville.json", "r") as f:
         return json.load(f)
 
+
 def get_username(old_name, channel_id):
     if channel_id == 1:
         data = get_theb_dict()

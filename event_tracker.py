@@ -96,8 +96,8 @@ class OreEvent:
             print("Tier: " + rarity_name.upper())
         except Exception as err:
             self.rarity = Rarity.UNKNOWN
-            print("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + {err})
-            
+            zetex_jr.send_error("Color not listed in color_names.json: " + str(self.__embed['color']) + "\n" + traceback.format_exc())
+
         match (title_groups.group(2)):
             case "ionized":
                 self.special = SpecialType.IONIZED
@@ -184,8 +184,10 @@ class OreEvent:
     
     def format(self, event_type: EventType):
         print("Formatting...")
-        
+
         try:
+            botfucker50 = 19 + "Hello"
+
             username = self.print_username[event_type]
             ore = self.get_ore()
             tier = self.get_tier()
@@ -275,7 +277,7 @@ class OreEvent:
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
-            print("Error in event_tracker.py with formatting!\n" + str({err}))
+            zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return "-"
         
         
@@ -309,10 +311,9 @@ class EventTracker(socket_based.SocketBased):
         while True:
             try:
                 event = self.receive_json_response()
-            except Exception as err:
-                print("sending this shit to zetex...")
-                print("event_tracker.py loop error 1: " + str({err}))
+            except Exception:
                 logging.info(json.dumps(event))
+                zetex_jr.send_error("event_tracker.py loop error 1: " + traceback.format_exc())
                 return
             try:
                 if 'd' in event.keys() and type(event['d']) == dict and 'author' in event['d'].keys() and int(event['d']['author']['id']) in item_manager.get_tracker_bots() and 't' in event.keys() and event['t'] == 'MESSAGE_CREATE':
@@ -320,8 +321,8 @@ class EventTracker(socket_based.SocketBased):
                 op_code = event['op']
                 if op_code == 11:
                     print('heartbeat received')
-            except Exception as e:
-                print("event_tracker.py loop error 2: " + str({traceback.format_exc()}) + "\nBad Event: " + str({event}))
+            except Exception:
+                zetex_jr.send_error("event_tracker.py loop error 2: " + traceback.format_exc())
                 pass
 
     def handle_event(self, event_data):

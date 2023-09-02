@@ -6,6 +6,7 @@ import os
 import sys
 import random
 import zetex_jr
+import traceback
 
 
 class HeartBeat(socket_based.SocketBased):
@@ -36,6 +37,5 @@ class HeartBeat(socket_based.SocketBased):
                 self.send_json_request(heartbeatJSON)
                 print("\nHEARTBEAT.PY\nheartbeat sent after " + str(self.heartbeat_interval * jitter + 0.1) + "s")
             except Exception as err:
-                print("\n\n\nHeartbeat send failed:")
-                print({err})
+                zetex_jr.send_error("Heartbeat send failed: " + traceback.format_exc())
                 os.system("cd ~ ; ./restart.sh")

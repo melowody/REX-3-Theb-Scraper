@@ -7,8 +7,14 @@ import os
 import asyncio
 import heartbeat
 import event_tracker
+import item_manager
+import asyncio
+
 
 class TrackerBot(discord.Bot):
+
+    def add_error(self, err):
+        self.error_queue.append(err)
 
     async def register_command(self, command: ApplicationCommand, force: bool = True,
                                guild_ids: list[int] | None = None) -> None:
@@ -19,13 +25,14 @@ class TrackerBot(discord.Bot):
         self.et = None
         self.hb = None
         self.test_channel = None
+        self.error_queue = []
 
     async def on_ready(self):
         print("zetex jr. ready")
         await self.start_tracking()
         channel = self.get_channel(1147287507608805406)
         await channel.send("restarted!")
-        
+
     async def start_tracking(self):
         ws = websocket.WebSocket()
         self.hb = heartbeat.HeartBeat(ws)
@@ -33,9 +40,10 @@ class TrackerBot(discord.Bot):
 
         self.hb.start()
         task_et = asyncio.create_task(self.et.start())
-        
+
         await task_et
         self.send_event.start()
+        self.send_error.start()
 
     @tasks.loop(seconds=1.0)
     async def send_event(self):
@@ -45,14 +53,23 @@ class TrackerBot(discord.Bot):
                 self.et.tracks += 1
                 await self.get_channel(event_type.value).send(
                     event.format(event_type))
-        #print(error_present)
-        #print(error_data)
-        #print(error_restart)
-        #if error_present:
-            #channel = self.get_channel(1076318101769039972)
-            #await channel.send(f"new error just dropped\n``` {error_data} ```")
-            #if do_restart:
-                #os.system("cd ~ ; ./restart.sh")
+        # print(error_present)
+        # print(error_data)
+        # print(error_restart)
+        # if error_present:
+        # channel = self.get_channel(1076318101769039972)
+        # await channel.send(f"new error just dropped\n``` {error_data} ```")
+        # if do_restart:
+        # os.system("cd ~ ; ./restart.sh")
+
+    @tasks.loop(seconds=1.0)
+    async def send_error(self):
+        if len(self.error_queue) != 0:
+            err = self.error_queue.pop()
+            await self.get_channel(item_manager.get_channel("ERROR_CHANNEL")).send(
+                f"New Error just Dropped: ```{err}```"
+            )
+
 
 tracker_bot = TrackerBot()
 
@@ -61,14 +78,21 @@ async def get_event(ctx: discord.AutocompleteContext):
     world = ctx.options['world']
     match world:
         case 'World 1':
-            return ["None", "Vaporwave Crystal", "Inclemetite", "Spristium", "Candilium", "Lucidium", "Sentient Viscera", "Temporum", "Idolium", "Vitrilyx", "Magnetyx", "Cleopatrite", "Euclideum", "Combustal", "Quandrium", "Pastelorium", "Ω", "Inkonium", "Blazuine", "Illusory Bubblegram"]
+            return ["None", "Vaporwave Crystal", "Inclemetite", "Spristium", "Candilium", "Lucidium",
+                    "Sentient Viscera", "Temporum", "Idolium", "Vitrilyx", "Magnetyx", "Cleopatrite", "Euclideum",
+                    "Combustal", "Quandrium", "Pastelorium", "Ω", "Inkonium", "Blazuine", "Illusory Bubblegram"]
         case 'Subworld 1':
-            return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar", "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
+            return ["None", "Sagittarius Quasar", "Legacy Flaeon", "Legacy Freon", "Legacy Poiseon", "Vaporwave Pulsar",
+                    "Legacy Codex", "Legacy Astatine", "Protoflare", "RGB Pulsar"]
         case 'World 2':
-            return ["None", "Galactic Rupture", "Heart of the Frosted", "Atomium", "Coronal Flare", "Neutronium", "Estrela", "Circeterra", "NOO S-Sing. T1", "Spiritian", "Vitriol", "Catastormite", "Plasmonium", "Frostranium", "Obliveracy Endmost", "Acrimony"]
+            return ["None", "Galactic Rupture", "Heart of the Frosted", "Atomium", "Coronal Flare", "Neutronium",
+                    "Estrela", "Circeterra", "NOO S-Sing. T1", "Spiritian", "Vitriol", "Catastormite", "Plasmonium",
+                    "Frostranium", "Obliveracy Endmost", "Acrimony"]
+
 
 def check_owner(ctx):
     return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
+
 
 @tracker_bot.command()
 @commands.check(check_owner)
@@ -79,7 +103,13 @@ async def manual(ctx,
                  tier: discord.Option(str, choices=[e.capitalize() for e in event_tracker.Rarity.__members__]),
                  rarity: int,
                  blocks: int,
-                 pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager", "Big Slammer", "Darkstone Pick", "Trinity Claymore", "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore", "Nostalgic Axe", "NilAxe", "Christmas Crusher", "Permafrost Pick", "Poison Pick", "Electraver", "Dimensional Scythe", "Celestial Smasher", "Moon Scepter", "Soul Scythe", "Prism of Chaos"]),
+                 pickaxe: discord.Option(str, choices=["Default", "Steel Sickle", "Miner's Mallet", "Stone Ravager",
+                                                       "Big Slammer", "Darkstone Pick", "Trinity Claymore",
+                                                       "57 Leaf Clover", "Poly Pickaxe", "Legacy Trinity Claymore",
+                                                       "Nostalgic Axe", "NilAxe", "Christmas Crusher",
+                                                       "Permafrost Pick", "Poison Pick", "Electraver",
+                                                       "Dimensional Scythe", "Celestial Smasher", "Moon Scepter",
+                                                       "Soul Scythe", "Prism of Chaos"]),
                  world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2"]),
                  event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
                  ):
@@ -95,8 +125,13 @@ async def manual(ctx,
     tracker_bot.et.queue.put(ore_event)
     await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
 
+
 @tracker_bot.command()
 @commands.check(check_owner)
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
+
+
+def send_error(err):
+    tracker_bot.add_error(err)
