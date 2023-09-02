@@ -194,6 +194,11 @@ class OreEvent:
             pickaxe = self.get_pickaxe()
             event = self.get_event()
 
+            if "Ionized" in tier and not "Ionized" in ore:
+                ore = "Ionized " + ore
+            elif "Spectral" in tier and not "Spectral" in ore:
+                ore = "Spectral " + ore
+
             adjusted_found = False
             event_found = False
             if "(" in ore and not "Gilded Cave" in ore:
