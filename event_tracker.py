@@ -16,10 +16,6 @@ import asyncio
 from enum import Enum
 from functools import total_ordering
 
-def send_error(error_data, do_restart):
-    print("sending error to logging channel on discord")
-    zetex_jr.give_bot_error(error_data, do_restart)
-
 class SpecialType(Enum):
     NONE = 0
     IONIZED = 1
@@ -188,7 +184,6 @@ class OreEvent:
     
     def format(self, event_type: EventType):
         print("Formatting...")
-        send_error("test", False)
         
         try:
             username = self.print_username[event_type]
@@ -275,8 +270,7 @@ class OreEvent:
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
-            errormessage = "Error in event_tracker.py with formatting!\n" + str({err})
-            send_error(errormessage, True)
+            print("Error in event_tracker.py with formatting!\n" + str({err}))
             return "-"
         
         
