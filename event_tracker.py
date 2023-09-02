@@ -277,7 +277,7 @@ class OreEvent:
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             errormessage = "Error in event_tracker.py with formatting!\n" + str({err})
-            send_error(errormessage, True)
+            send_error(errormessage, False)
         
         
 class EventTracker(socket_based.SocketBased):
