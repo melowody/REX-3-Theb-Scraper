@@ -102,3 +102,6 @@ async def manual(ctx,
 async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
+
+tracker_bot.add_command(restart)
+tracker_bot.add_command(manual)
