@@ -23,6 +23,8 @@ class TrackerBot(discord.Bot):
     async def on_ready(self):
         print("zetex jr. ready")
         await self.start_tracking()
+        channel = self.get_channel(1147287507608805406)
+        await channel.send("restarted!")
         
     async def start_tracking(self):
         ws = websocket.WebSocket()
@@ -31,9 +33,6 @@ class TrackerBot(discord.Bot):
 
         self.hb.start()
         task_et = asyncio.create_task(self.et.start())
-
-        loggingchannel = self.get_channel(1147287507608805406)
-        await loggingchannel.send("restarted!")
         
         await task_et
         self.send_event.start()
