@@ -38,4 +38,4 @@ class HeartBeat(socket_based.SocketBased):
             except Exception as err:
                 print("\n\n\nHeartbeat send failed:")
                 print({err})
-                print("sending this shit to zetex...")
+                os.system("cd ~ ; ./restart.sh")
