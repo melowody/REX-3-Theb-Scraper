@@ -61,6 +61,7 @@ class TrackerBot(discord.Bot):
             await self.get_channel(item_manager.get_channel("ERROR_CHANNEL")).send(
                 f"new error just dropped :bangbang: :fire: ```{err}```"
             )
+            os.system("cd ~ ; ./restart.sh")
 
 
 tracker_bot = TrackerBot()
