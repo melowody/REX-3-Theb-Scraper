@@ -9,6 +9,7 @@ import heartbeat
 import event_tracker
 import item_manager
 import asyncio
+import json
 
 
 class TrackerBot(discord.Bot):
