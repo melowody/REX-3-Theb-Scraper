@@ -140,6 +140,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         for i in cave_ores[cave_type]["ores"]:
             if ore.lower() == i.lower():
                 adjusted_found = True
+                message_contents = message_contents.replace(ore, i)
                 match variant:
                     case "Normal":   variantnum = 0
                     case "Ionized":  variantnum = 1
