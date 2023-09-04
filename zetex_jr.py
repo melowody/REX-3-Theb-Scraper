@@ -168,7 +168,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
 async def cave(ctx, cave: discord.Option(str, choices=json.load(open("cave_ores.json")).keys())):
     file = open("cave_ores.json")
     cave_ores = json.load(file)
-    message_contents = "# " + cave + " Cave"
+    message_contents = "# " + cave + " Cave "
     message_contents += "\n## Rarity: 1 in " + format_num(cave_ores[cave]["rarity"])
     message_contents += "\n**Ores:**"
     for ore in cave_ores[cave]["ores"]:
