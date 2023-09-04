@@ -164,5 +164,16 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
             message_contents = "nice try"
     await ctx.respond(message_contents)
 
+@tracker_bot.command()
+async def cave(ctx, cave: discord.Option(str, choices=json.load(open("cave_ores.json")).keys())):
+    file = open("cave_ores.json")
+    cave_ores = json.load(file)
+    message_contents = "# " + cave + " Cave"
+    message_contents += "\n## Rarity: 1 in " + format_num(cave_ores[cave]["rarity"])
+    message_contents += "\n**Ores:**"
+    for ore in cave_ores[cave]["ores"]:
+        message_contents += "\n" + ore + ": 1 in " + format_num(cave_ores[cave]["ores"][ore][0])
+    await ctx.respond(message_contents)
+
 def send_error(err):
     tracker_bot.add_error(err)
