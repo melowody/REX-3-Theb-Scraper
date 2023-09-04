@@ -144,7 +144,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     adjusted_found = False
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
-            if ore.lower() == i.lower():
+            if ore.lower() == i.lower() or (ore.lower() + " [unobtainable]") == i.lower():
                 adjusted_found = True
                 message_contents = message_contents.replace(ore, i)
                 match variant:
