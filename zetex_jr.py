@@ -144,9 +144,9 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     adjusted_found = False
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
-            if ore.lower() == i.lower() or (ore.lower() + " [unobtainable]") == i.lower():
+            if ore.lower() == i.lower().replace("*", "") or (ore.lower() + " [unobtainable]") == i.lower().replace("*", ""):
                 adjusted_found = True
-                message_contents = message_contents.replace(ore, i)
+                message_contents = message_contents.replace(ore, i.replace("*", ""))
                 match variant:
                     case "Normal":   variantnum = 0
                     case "Ionized":  variantnum = 1
@@ -172,7 +172,8 @@ async def cave(ctx, cave: discord.Option(str, choices=json.load(open("cave_ores.
     message_contents += "\n## Rarity: 1 in " + format_num(cave_ores[cave]["rarity"])
     message_contents += "\n**Ores:**"
     for ore in cave_ores[cave]["ores"]:
-        message_contents += "\n" + ore + ": 1 in " + format_num(cave_ores[cave]["ores"][ore][0])
+        if "*" not in ore:
+            message_contents += "\n" + ore + ": 1 in " + format_num(cave_ores[cave]["ores"][ore][0])
     await ctx.respond(message_contents)
 
 def send_error(err):
