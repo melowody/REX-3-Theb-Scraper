@@ -132,6 +132,10 @@ def format_num(number):
 @tracker_bot.command()
 async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal", "Ionized", "Spectral"])):
     ore = ore.strip()
+    if "Ionized " in ore:
+        ore = ore.replace("Ionized ", "")
+    if "Spectral " in ore:
+        ore = ore.replace("Spectral ", "")
     file = open("cave_ores.json")
     cave_ores = json.load(file)
     message_contents = "# " + variant + " " + ore
