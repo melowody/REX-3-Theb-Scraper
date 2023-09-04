@@ -125,6 +125,36 @@ async def restart(ctx):
     await ctx.respond("Restarting!")
     os.system("/root/restart.sh")
 
+def format_num(number):
+    return str('{:,}'.format(int(number)))
+
+@tracker_bot.command()
+async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal", "Ionized", "Spectral"])):
+    file = open("cave_ores.json")
+    cave_ores = json.load(file)
+    message_contents = "# " + variant + " " + ore
+    if variant == "Normal": message_contents = message_contents.replace("Normal ", "")
+    adjusted_found = False
+    for cave_type in cave_ores:
+        for i in cave_ores[cave_type]["ores"]:
+            if ore.lower() == i.lower():
+                adjusted_found = True
+                match variant:
+                    case "Normal":   variantnum = 0
+                    case "Ionized":  variantnum = 1
+                    case "Spectral": variantnum = 2
+                base_rarity = cave_ores[cave_type]["ores"][ore][variantnum]
+                cave_rarity = cave_ores[cave_type]["rarity"]
+                message_contents += f"\n## {cave_type} Cave (1 in " + format_num(cave_rarity) + ")"
+                message_contents += "\n**Base Rarity**: 1 in " + format_num(base_rarity)
+                message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(base_rarity * cave_rarity * 1.88)
+    if not adjusted_found:
+        message_contents += "\nNo cave type contains this ore.\n(/adjusted does not currently support Gilded cave ores that aren't HHQ, sorry!)"
+        if ore in ["π", "Ω", "Legacy Ω", "Σ", "Legacy Σ"]:
+            message_contents += "\n(P.S. you can just type 'Pi', 'Sigma', 'Omega' etc.)"
+        if ore == "Aurora Polaris":
+            message_contents = "nice try"
+    await ctx.respond(message_contents)
 
 def send_error(err):
     tracker_bot.add_error(err)
