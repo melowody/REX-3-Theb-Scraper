@@ -135,7 +135,8 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     file = open("cave_ores.json")
     cave_ores = json.load(file)
     message_contents = "# " + variant + " " + ore
-    if variant == "Normal": message_contents = message_contents.replace("Normal ", "")
+    if variant == "Normal": 
+        message_contents = message_contents.replace("Normal ", "")
     adjusted_found = False
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
