@@ -259,7 +259,7 @@ class OreEvent:
                     tracker_name = "MOMSONGAMING"
                 case EventType.THEB:
                     tracker_name = "THEB"
-                    if 'Hyperheated Quasar' in ore and '@everyone' not in tier:
+                    if 'Hyperheated Quasar' in ore and '@everyone' not in tier and '57 Leaf Clover' not in pickaxe:
                         tier = tier + " @everyone"
                 case EventType.GLOBAL | EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
