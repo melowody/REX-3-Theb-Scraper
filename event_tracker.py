@@ -151,7 +151,7 @@ class OreEvent:
             self.print_username[EventType.BEGINNER] = self.username
             print("Beginner (" + str(self.blocks) + " blocks)")
             out.append(EventType.BEGINNER)
-        if self.should_ping_everyone() and self.username not in ' globalmessagetest ':
+        if self.should_ping_everyone():
             self.print_username[EventType.GLOBAL] = self.username
             out.append(EventType.GLOBAL)
             self.print_username[EventType.GLOBAL2] = self.username
