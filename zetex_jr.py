@@ -89,7 +89,6 @@ def check_owner(ctx):
 
 
 @tracker_bot.command()
-@commands.check(check_owner)
 async def manual(ctx,
                  username: str,
                  ore: str,
@@ -124,10 +123,12 @@ async def manual(ctx,
 
 
 @tracker_bot.command()
-@commands.check(check_owner)
 async def restart(ctx):
-    await ctx.respond("Restarting!")
-    os.system("/root/restart.sh")
+    if ctx.author.id in [190804082032640000, 302920327699103744]:
+        await ctx.respond("Restarting!")
+        os.system("/root/restart.sh")
+    else:
+        await ctx.respond("you do NOT have permission to use this command :bangbang:")
 
 def format_num(number):
     return str('{:,}'.format(int(number)))
