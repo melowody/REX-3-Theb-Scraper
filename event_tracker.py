@@ -31,6 +31,7 @@ class EventType(Enum):
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
     GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
+    ENDLESS = item_manager.get_channel("ENDLESS")
 
 
 @total_ordering
@@ -173,9 +174,14 @@ class OreEvent:
             name = item_manager.get_username(self.username, 2)
             self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.GOOBERVILLE)
+        if self.username in item_manager.get_endless_dict().keys():
+            print("Player is in Endless: " + self.username)
+            name = item_manager.get_username(self.username, 3)
+            self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.GOOBERVILLE)
         if self.username in item_manager.get_scoville_dict().keys():
             print("Player is a Scovillager: " + self.username)
-            name = item_manager.get_username(self.username, 3)
+            name = item_manager.get_username(self.username, 0)
             if self.username == "zetexfake" and self.rarity.value + self.special.value < 6:
                 return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
@@ -281,6 +287,9 @@ class OreEvent:
                     tier = tier.replace("@everyone", "Nuh Uh")
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
+                case EventType.ENDLESS:
+                    tracker_name = "ENDLESS"
+                    tier = tier.replace("@everyone", "")
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
