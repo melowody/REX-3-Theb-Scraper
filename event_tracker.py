@@ -151,7 +151,7 @@ class OreEvent:
             self.print_username[EventType.BEGINNER] = self.username
             print("Beginner (" + str(self.blocks) + " blocks)")
             out.append(EventType.BEGINNER)
-        if self.should_ping_everyone():
+        if self.should_ping_everyone() and self.username not in ' globalmessagetest ':
             self.print_username[EventType.GLOBAL] = self.username
             out.append(EventType.GLOBAL)
             self.print_username[EventType.GLOBAL2] = self.username
@@ -289,7 +289,7 @@ class OreEvent:
                     tracker_name = "SCOVILLE"
                 case EventType.ENDLESS:
                     tracker_name = "ENDLESS"
-                    tier = tier.replace("@everyone", "")
+                    tier = tier.replace("@everyone", "<@&1149541153465696320>")
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
