@@ -85,7 +85,11 @@ async def get_event(ctx: discord.AutocompleteContext):
 
 
 def check_owner(ctx):
-    return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
+    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]:
+        return True
+    else
+        await ctx.respond("you do NOT have permission to run this command :bangbang:")
+        return False
 
 
 @tracker_bot.command()
