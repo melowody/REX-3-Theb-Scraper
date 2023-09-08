@@ -177,8 +177,8 @@ class OreEvent:
         if self.username in item_manager.get_endless_dict().keys():
             print("Player is in Endless: " + self.username)
             name = item_manager.get_username(self.username, 3)
-            self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
-            out.append(EventType.GOOBERVILLE)
+            self.print_username[EventType.ENDLESS] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.ENDLESS)
         if self.username in item_manager.get_scoville_dict().keys():
             print("Player is a Scovillager: " + self.username)
             name = item_manager.get_username(self.username, 0)
