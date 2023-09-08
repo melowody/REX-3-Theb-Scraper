@@ -124,7 +124,7 @@ async def manual(ctx,
 
 @tracker_bot.command()
 async def restart(ctx):
-    if ctx.author.id in [190804082032640000, 302920327699103744]:
+    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]:
         await ctx.respond("Restarting!")
         os.system("/root/restart.sh")
     else:
