@@ -26,6 +26,7 @@ class EventType(Enum):
     THEB = item_manager.get_channel("THEB_CHANNEL")
     GLOBAL = item_manager.get_channel("GLOBAL_CHANNEL")
     GLOBAL2 = item_manager.get_channel("GLOBAL2_CHANNEL")
+    GLOBAL3 = item_manager.get_channel("GLOBAL3_CHANNEL")
     BEGINNER = item_manager.get_channel("BEGINNER_CHANNEL")
     TEST = item_manager.get_channel("TEST_CHANNEL")
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
@@ -156,6 +157,8 @@ class OreEvent:
             out.append(EventType.GLOBAL)
             self.print_username[EventType.GLOBAL2] = self.username
             out.append(EventType.GLOBAL2)
+            self.print_username[EventType.GLOBAL3] = self.username
+            out.append(EventType.GLOBAL3)
         if self.username in ' MomSonGaming ':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
             print("is this still even used lol: " + self.username)
@@ -277,6 +280,9 @@ class OreEvent:
                         print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
+                case EventType.GLOBAL3:
+                    tracker_name = "GLOBAL"
+                    tier = tier.replace("@everyone", "")
                 case EventType.BEGINNER:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
