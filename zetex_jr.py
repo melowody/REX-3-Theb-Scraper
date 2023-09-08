@@ -167,7 +167,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         message_contents += "\nNo cave type contains this ore.\n(/adjusted does not currently support Gilded cave ores that aren't HHQ, sorry!)"
         if ore in ["π", "Ω", "Legacy Ω", "Σ", "Legacy Σ"]:
             message_contents += "\n(P.S. you can just type 'Pi', 'Sigma', 'Omega' etc.)"
-        if ore.lower == "aurora polaris":
+        if "aurora polaris" in ore.lower():
             message_contents = "nice try"
     await ctx.respond(message_contents)
 
