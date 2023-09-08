@@ -27,12 +27,18 @@ def get_gooberville_dict():
     with open("gooberville.json", "r") as f:
         return json.load(f)
 
+def get_endless_dict():
+    with open("endless.json", "r") as f:
+        return json.load(f)
+
 
 def get_username(old_name, channel_id):
     if channel_id == 1:
         data = get_theb_dict()
     elif channel_id == 2:
         data = get_gooberville_dict()
+    elif channel_id == 3:
+        data = get_endless_dict()
     else:
         data = get_scoville_dict()
     if old_name in data:
