@@ -142,11 +142,14 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     if variant == "Normal": 
         message_contents = message_contents.replace("Normal ", "")
     adjusted_found = False
+    item_replaced = False
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
             if ore.lower() == i.lower().replace("*", "") or (ore.lower() + " [unobtainable]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive, unobtainable]") == i.lower().replace("*", ""):
                 adjusted_found = True
-                message_contents = message_contents.replace(ore, i.replace("*", ""))
+                if not item_replaced:
+                    message_contents = message_contents.replace(ore, i.replace("*", ""))
+                    item_replaced = True
                 match variant:
                     case "Normal":   variantnum = 0
                     case "Ionized":  variantnum = 1
@@ -160,7 +163,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         message_contents += "\nNo cave type contains this ore.\n(/adjusted does not currently support Gilded cave ores that aren't HHQ, sorry!)"
         if ore in ["π", "Ω", "Legacy Ω", "Σ", "Legacy Σ"]:
             message_contents += "\n(P.S. you can just type 'Pi', 'Sigma', 'Omega' etc.)"
-        if ore == "Aurora Polaris":
+        if ore.lower == "aurora polaris":
             message_contents = "nice try"
     await ctx.respond(message_contents)
 
