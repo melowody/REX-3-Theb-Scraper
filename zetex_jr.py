@@ -116,8 +116,11 @@ async def manual(ctx,
     ore_event.ore = ore
     ore_event.base_rarity = '{:,}'.format(rarity)
     ore_event.username = username
-    tracker_bot.et.queue.put(ore_event)
-    await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
+    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]:
+        tracker_bot.et.queue.put(ore_event)
+        await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
+    else:
+        await ctx.respond("you do NOT have permission to use this command :bangbang:")
 
 
 @tracker_bot.command()
