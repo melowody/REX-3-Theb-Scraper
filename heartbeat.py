@@ -17,7 +17,7 @@ class HeartBeat(socket_based.SocketBased):
         self.heartbeat_interval = None
 
     def start(self):
-        self.socket.connect("wss://gateway.discord.gg/?v=6&encoding=json")
+        self.socket.connect("wss://gateway.discord.gg/?v=10&encoding=json")
         event = self.receive_json_response()
         
         self.heartbeat_interval = event['d']['heartbeat_interval'] / 1000
