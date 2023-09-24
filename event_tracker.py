@@ -311,7 +311,7 @@ class EventTracker(socket_based.SocketBased):
         self.queue = queue.LifoQueue()
         self.tracks = 0
     
-    async def start(self):
+    def start(self):
         token = item_manager.get_auth_token()
         payload = {
             "op": 2,
