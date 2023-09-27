@@ -182,5 +182,48 @@ async def cave(ctx, cave: discord.Option(str, choices=json.load(open("cave_ores.
             message_contents += "\n" + ore + ": 1 in " + format_num(cave_ores[cave]["ores"][ore][0])
     await ctx.respond(message_contents)
 
+@tracker_bot.command()
+async def index(ctx, ore: str):
+    file = open("index.json")
+    data = json.load(file)
+    item = ore
+    
+    if ore.lower() == "pi":
+        ore == "π"
+    elif ore.lower() == "omega":
+        ore == "Ω"
+    elif ore.lower() == "legacy omega":
+        ore == "Legacy Ω"
+    elif ore.lower() == "sigma":
+        ore == "Σ"
+    elif ore.lower() == "noo p a":
+        ore == "NOO P α"
+    
+    try:
+        rarity = data[item]['rarity']
+        mult = data[item]['multiplier']
+        location = data[item]['location']
+        event = data[item]['event']
+        messageContents = ""
+        messageContents += "## " + item + "\n"
+        messageContents += "**Normal:** 1 in " + comma(rarity) + "\n"
+        if data[item]['multiplier'] != 0:
+            messageContents += "**Ionized:** 1 in " + comma(rarity * mult) + "\n"
+            messageContents += "**Spectral:** 1 in " + comma(rarity * mult * 15) + "\n\n"
+        else:
+            messageContents += "\n"
+        if "," in location:
+            messageContents += "Locations: **" + location + "**\n"
+        else:
+            messageContents += "Location: **" + location + "**\n"
+        if event == 0:
+            messageContents += "This ore does not have an event."
+        else:
+            messageContents += "Event Rarity: 1 in " + comma(event)
+        await ctx.respond(messageContents)
+    except:
+        await ctx.respond("Couldn't find that ore - did you spell it correctly?")
+
+
 def send_error(err):
     tracker_bot.add_error(err)
