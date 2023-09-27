@@ -212,7 +212,7 @@ async def index(ctx, ore: str):
         messageContents = ""
         messageContents += "## " + ore + "\n"
         messageContents += "**Normal:** 1 in " + format_num(rarity) + "\n"
-        if data[item]['multiplier'] != 0:
+        if data[ore]['multiplier'] != 0:
             messageContents += "**Ionized:** 1 in " + format_num(rarity * mult) + "\n"
             messageContents += "**Spectral:** 1 in " + format_num(rarity * mult * 15) + "\n\n"
         else:
