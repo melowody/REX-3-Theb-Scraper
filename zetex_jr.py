@@ -200,7 +200,7 @@ async def index(ctx, ore: str):
 
     for entry in data:
         if entry.lower() == ore.lower():
-            ore == entry
+            ore = entry
     
     try:
         print("Starting the search!")
