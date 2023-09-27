@@ -208,10 +208,10 @@ async def index(ctx, ore: str):
         print("Variables obtained!")
         messageContents = ""
         messageContents += "## " + item + "\n"
-        messageContents += "**Normal:** 1 in " + comma(rarity) + "\n"
+        messageContents += "**Normal:** 1 in " + format_num(rarity) + "\n"
         if data[item]['multiplier'] != 0:
-            messageContents += "**Ionized:** 1 in " + comma(rarity * mult) + "\n"
-            messageContents += "**Spectral:** 1 in " + comma(rarity * mult * 15) + "\n\n"
+            messageContents += "**Ionized:** 1 in " + format_num(rarity * mult) + "\n"
+            messageContents += "**Spectral:** 1 in " + format_num(rarity * mult * 15) + "\n\n"
         else:
             messageContents += "\n"
         if "," in location:
@@ -221,7 +221,7 @@ async def index(ctx, ore: str):
         if event == 0:
             messageContents += "This ore does not have an event."
         else:
-            messageContents += "Event Rarity: 1 in " + comma(event)
+            messageContents += "Event Rarity: 1 in " + format_num(event)
         await ctx.respond(messageContents)
     except Exception as e:
         await ctx.respond("Couldn't find that ore - did you spell it correctly?")
