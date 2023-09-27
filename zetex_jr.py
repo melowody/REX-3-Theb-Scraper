@@ -200,10 +200,12 @@ async def index(ctx, ore: str):
         ore == "NOO P α"
     
     try:
+        print("Starting the search!")
         rarity = data[item]['rarity']
         mult = data[item]['multiplier']
         location = data[item]['location']
         event = data[item]['event']
+        print("Variables obtained!")
         messageContents = ""
         messageContents += "## " + item + "\n"
         messageContents += "**Normal:** 1 in " + comma(rarity) + "\n"
