@@ -186,7 +186,6 @@ async def cave(ctx, cave: discord.Option(str, choices=json.load(open("cave_ores.
 async def index(ctx, ore: str):
     file = open("index.json")
     data = json.load(file)
-    item = ore
     
     if ore.lower() == "pi":
         ore == "π"
@@ -198,16 +197,20 @@ async def index(ctx, ore: str):
         ore == "Σ"
     elif ore.lower() == "noo p a":
         ore == "NOO P α"
+
+    for entry in data:
+        if entry.lower() == ore.lower():
+            ore == entry
     
     try:
         print("Starting the search!")
-        rarity = data[item]['rarity']
-        mult = data[item]['multiplier']
-        location = data[item]['location']
-        event = data[item]['event']
+        rarity = data[ore]['rarity']
+        mult = data[ore]['multiplier']
+        location = data[ore]['location']
+        event = data[ore]['event']
         print("Variables obtained!")
         messageContents = ""
-        messageContents += "## " + item + "\n"
+        messageContents += "## " + ore + "\n"
         messageContents += "**Normal:** 1 in " + format_num(rarity) + "\n"
         if data[item]['multiplier'] != 0:
             messageContents += "**Ionized:** 1 in " + format_num(rarity * mult) + "\n"
@@ -224,7 +227,7 @@ async def index(ctx, ore: str):
             messageContents += "Event Rarity: 1 in " + format_num(event)
         await ctx.respond(messageContents)
     except Exception as e:
-        await ctx.respond("Couldn't find that ore - did you spell and capitalize it correctly?")
+        await ctx.respond("Couldn't find that ore - did you spell it correctly?")
         print(e)
 
 
