@@ -223,8 +223,9 @@ async def index(ctx, ore: str):
         else:
             messageContents += "Event Rarity: 1 in " + comma(event)
         await ctx.respond(messageContents)
-    except:
+    except Exception as e:
         await ctx.respond("Couldn't find that ore - did you spell it correctly?")
+        print(e)
 
 
 def send_error(err):
