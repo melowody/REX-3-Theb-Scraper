@@ -188,15 +188,15 @@ async def index(ctx, ore: str):
     data = json.load(file)
     
     if ore.lower() == "pi":
-        ore == "π"
+        ore = "π"
     elif ore.lower() == "omega":
-        ore == "Ω"
+        ore = "Ω"
     elif ore.lower() == "legacy omega":
-        ore == "Legacy Ω"
+        ore = "Legacy Ω"
     elif ore.lower() == "sigma":
-        ore == "Σ"
+        ore = "Σ"
     elif ore.lower() == "noo p a":
-        ore == "NOO P α"
+        ore = "NOO P α"
 
     for entry in data:
         if entry.lower() == ore.lower():
