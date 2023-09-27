@@ -134,6 +134,17 @@ def format_num(number):
 
 @tracker_bot.command()
 async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal", "Ionized", "Spectral"])):
+    isExclusive = False
+    if ore.lower() == "pi":
+        ore = "π"
+    elif ore.lower() == "omega":
+        ore = "Ω"
+    elif ore.lower() == "legacy omega":
+        ore = "Legacy Ω"
+    elif ore.lower() == "sigma":
+        ore = "Σ"
+    elif ore.lower() == "noo p a":
+        ore = "NOO P α"
     ore = ore.strip()
     if "Ionized " in ore:
         ore = ore.replace("Ionized ", "")
@@ -149,6 +160,8 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
             if ore.lower() == i.lower().replace("*", "") or (ore.lower() + " [unobtainable]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive, unobtainable]") == i.lower().replace("*", ""):
+                if "[Exclusive]" in i:
+                    isExclusive = True
                 adjusted_found = True
                 if not item_replaced:
                     message_contents = message_contents.replace(ore, i.replace("*", ""))
@@ -162,12 +175,26 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 message_contents += f"\n## {cave_type} Cave (1 in " + format_num(cave_rarity) + ")"
                 message_contents += "\n**Base Rarity**: 1 in " + format_num(base_rarity)
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(base_rarity * cave_rarity * 1.88)
-    if not adjusted_found:
-        message_contents += "\nNo cave type contains this ore.\n(/adjusted does not currently support Gilded cave ores that aren't HHQ, sorry!)"
-        if ore in ["π", "Ω", "Legacy Ω", "Σ", "Legacy Σ"]:
-            message_contents += "\n(P.S. you can just type 'Pi', 'Sigma', 'Omega' etc.)"
-        if "aurora polaris" in ore.lower():
-            message_contents = "nice try"
+    if not isExclusive:
+        indexFile = open(index.json)
+        data = json.load(indexFile)
+        for entry in data:
+            if entry.lower() == ore.lower():
+                ore = entry
+        try:
+            match variant:
+                case "Normal":   newRarity = data[ore]['rarity'] * 2.5
+                case "Ionized":  newRarity = data[ore]['rarity'] * 2.5 * data[ore]['multiplier']
+                case "Spectral": newRarity = data[ore]['rarity'] * 2.5 * data[ore]['multiplier'] * 15
+            message_contents += "\n## Gilded Cave (1 in 5,700)"
+            message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
+            message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(newRarity * 1.88 * 5700)
+            message_contents += "\n## [57 Leaf Clover] Gilded Cave (1 in 57)"
+            message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
+            message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
+        except:
+            message_contents += "\n Invalid ore :( Did you spell it right?"
+            
     await ctx.respond(message_contents)
 
 @tracker_bot.command()
