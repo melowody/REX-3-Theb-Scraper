@@ -176,7 +176,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 message_contents += "\n**Base Rarity**: 1 in " + format_num(base_rarity)
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(base_rarity * cave_rarity * 1.88)
     if not isExclusive:
-        indexFile = open(index.json)
+        indexFile = open("index.json")
         data = json.load(indexFile)
         for entry in data:
             if entry.lower() == ore.lower():
