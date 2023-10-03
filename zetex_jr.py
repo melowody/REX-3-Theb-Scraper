@@ -247,6 +247,14 @@ async def index(ctx, ore: str):
             messageContents += "**Spectral:** 1 in " + format_num(rarity * mult * 15) + "\n\n"
         else:
             messageContents += "\n"
+
+        cavefile = open("cave_ores.json")
+        cavedata = json.load(cavefile)
+        for cavetype in cavedata:
+            for caveore in cavedata[cavetype]:
+                if ore == caveore and (cavetype + " Caves") not in location:
+                    location += ", " + cavetype + " Caves"
+        
         if "," in location:
             messageContents += "Locations: **" + location + "**\n"
         else:
