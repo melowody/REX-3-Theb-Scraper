@@ -186,12 +186,13 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 case "Normal":   newRarity = data[ore]['rarity'] * 2.5
                 case "Ionized":  newRarity = data[ore]['rarity'] * 2.5 * data[ore]['multiplier']
                 case "Spectral": newRarity = data[ore]['rarity'] * 2.5 * data[ore]['multiplier'] * 15
-            message_contents += "\n## Gilded Cave (1 in 5,700)"
-            message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
-            message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(newRarity * 1.88 * 5700)
-            message_contents += "\n## [57 Leaf Clover] Gilded Cave (1 in 57)"
-            message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
-            message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
+            if newRarity != 0:
+                message_contents += "\n## Gilded Cave (1 in 5,700)"
+                message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
+                message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(newRarity * 1.88 * 5700)
+                message_contents += "\n## [57 Leaf Clover] Gilded Cave (1 in 57)"
+                message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
+                message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
         except:
             message_contents += "\n Invalid ore :( Did you spell it right?"
             
@@ -236,6 +237,8 @@ async def index(ctx, ore: str):
         location = data[ore]['location']
         event = data[ore]['event']
         print("Variables obtained!")
+        if rarity == 0:
+            rarity = 2000000
         messageContents = ""
         messageContents += "## " + ore + "\n"
         messageContents += "**Normal:** 1 in " + format_num(rarity) + "\n"
