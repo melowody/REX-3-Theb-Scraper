@@ -268,7 +268,7 @@ async def index(ctx, ore: str):
         messageContents += testString
         await ctx.respond(messageContents)
     except Exception as e:
-        await ctx.respond("Couldn't find that ore - did you spell it correctly?")
+        await ctx.respond("error: ``` " + str(e) + "```")
         print(e)
 
 
