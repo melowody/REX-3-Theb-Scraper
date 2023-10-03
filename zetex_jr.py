@@ -237,6 +237,7 @@ async def index(ctx, ore: str):
         location = data[ore]['location']
         event = data[ore]['event']
         print("Variables obtained!")
+        testString = "\n\n\nIGNORE THIS PART: "
         if rarity == 0:
             rarity = 2000000
         messageContents = ""
@@ -251,6 +252,7 @@ async def index(ctx, ore: str):
         cavefile = open("cave_ores.json")
         cavedata = json.load(cavefile)
         for cavetype in cavedata:
+            testString += cavetype
             for caveore in cavedata[cavetype]:
                 if ore == caveore and (cavetype + " Caves") not in location:
                     location += ", " + cavetype + " Caves"
