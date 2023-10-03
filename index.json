@@ -136,7 +136,7 @@
 "Sunstone": {"rarity": 55000, "tier": "Master", "multiplier": 80, "location": "Outer Core, Inner Core", "event": 0},
 "Bottled Snowstorm": {"rarity": 56000, "tier": "Master", "multiplier": 80, "location": "Frost [Unobtainable]", "event": 0},
 "Adurite": {"rarity": 65000, "tier": "Master", "multiplier": 80, "location": "Obsidian, Moon Core", "event": 0},
-"Coldfirium": {"rarity": 65200, "tier": "Master", "multiplier": 80, "location": "Basalt, Frozen Caves", "event": 0},
+"Coldfirium": {"rarity": 65200, "tier": "Master", "multiplier": 80, "location": "Basalt", "event": 0},
 "Viridian": {"rarity": 65500, "tier": "Master", "multiplier": 80, "location": "Granite, Moon Core", "event": 0},
 "Cerrusite": {"rarity": 68500, "tier": "Master", "multiplier": 80, "location": "Moon Mantle", "event": 0},
 "Vitridian": {"rarity": 69000, "tier": "Master", "multiplier": 80, "location": "Moon Stone", "event": 0},
