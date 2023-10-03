@@ -237,7 +237,6 @@ async def index(ctx, ore: str):
         location = data[ore]['location']
         event = data[ore]['event']
         print("Variables obtained!")
-        testString = "\n\n\nIGNORE THIS PART: "
         if rarity == 0:
             rarity = 2000000
         messageContents = ""
@@ -264,7 +263,6 @@ async def index(ctx, ore: str):
             messageContents += "This ore does not have an event."
         else:
             messageContents += "Event Rarity: 1 in " + format_num(event)
-        messageContents += testString
         await ctx.respond(messageContents)
     except Exception as e:
         await ctx.respond("error: ``` " + str(e) + "```")
