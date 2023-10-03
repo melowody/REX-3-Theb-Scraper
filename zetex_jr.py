@@ -252,7 +252,7 @@ async def index(ctx, ore: str):
         cavefile = open("cave_ores.json")
         cavedata = json.load(cavefile)
         for cavetype in cavedata:
-            for caveore in cavedata[cavetype]:
+            for caveore in cavedata[cavetype]['ores']:
                 testString += caveore
                 if ore == caveore and (cavetype + " Caves") not in location:
                     location += ", " + cavetype + " Caves"
