@@ -160,7 +160,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
     for cave_type in cave_ores:
         for i in cave_ores[cave_type]["ores"]:
             if ore.lower() == i.lower().replace("*", "") or (ore.lower() + " [unobtainable]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive]") == i.lower().replace("*", "") or (ore.lower() + " [exclusive, unobtainable]") == i.lower().replace("*", ""):
-                if "[Exclusive]" in i:
+                if "[Exclusive" in i:
                     isExclusive = True
                 adjusted_found = True
                 if not item_replaced:
