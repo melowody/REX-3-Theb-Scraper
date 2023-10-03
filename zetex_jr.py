@@ -265,6 +265,7 @@ async def index(ctx, ore: str):
             messageContents += "This ore does not have an event."
         else:
             messageContents += "Event Rarity: 1 in " + format_num(event)
+        messageContents += testString
         await ctx.respond(messageContents)
     except Exception as e:
         await ctx.respond("Couldn't find that ore - did you spell it correctly?")
