@@ -295,7 +295,7 @@
 "Laivertine": {"rarity": 14000000, "tier": "Exquisite", "multiplier": 40, "location": "Permafrost", "event": 0},
 "Bathophobia": {"rarity": 1000000, "tier": "Transcendent", "multiplier": 40, "location": "Void Cave [Exclusive] [Unobtainable]", "event": 0},
 "Vantivium": {"rarity": 1120000, "tier": "Transcendent", "multiplier": 40, "location": "Void Cave [Exclusive]", "event": 0},
-"Protoflare": {"rarity": 2000000, "tier": "Exquisite", "multiplier": 40, "location": "Moon Mantle (Protoflare Event), Interstellar Cave", "event": 2000000},
+"Protoflare": {"rarity": 0, "tier": "Exquisite", "multiplier": 40, "location": "Moon Mantle (Protoflare Event), Interstellar Cave", "event": 2000000},
 "Legacy Andromidium": {"rarity": 3000000, "tier": "Transcendent", "multiplier": 40, "location": "Interstellar Cave [Exclusive]", "event": 0},
 "Fantivium": {"rarity": 3920000, "tier": "Transcendent", "multiplier": 40, "location": "Divine Cave [Exclusive] [Unobtainable]", "event": 0},
 "Altovite": {"rarity": 4100000, "tier": "Transcendent", "multiplier": 40, "location": "Frozen Cave [Exclusive]", "event": 0},
