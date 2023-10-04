@@ -84,7 +84,7 @@ async def get_event(ctx: discord.AutocompleteContext):
 
 
 def check_owner(ctx):
-    return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744]
+    return ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744, 900479607202017330]
 
 
 @tracker_bot.command()
