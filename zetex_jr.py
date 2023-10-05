@@ -241,7 +241,6 @@ async def index(ctx, ore: str):
             rarity = 2000000
         messageContents = ""
         messageContents += "## " + ore + "\n"
-        messageContents += "Tier: **" + data[ore]['tier'] + "**\n"
         messageContents += "**Normal:** 1 in " + format_num(rarity) + "\n"
         if data[ore]['multiplier'] != 0:
             messageContents += "**Ionized:** 1 in " + format_num(rarity * mult) + "\n"
@@ -255,7 +254,8 @@ async def index(ctx, ore: str):
             for caveore in cavedata[cavetype]['ores']:
                 if ore == caveore and (cavetype + " Caves") not in location:
                     location += ", " + cavetype + " Caves"
-        
+
+        messageContents += "Tier: **" + data[ore]['tier'] + "**\n"
         if "," in location:
             messageContents += "Locations: **" + location + "**\n"
         else:
