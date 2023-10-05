@@ -163,9 +163,9 @@ class OreEvent:
             self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
             print("is this still even used lol: " + self.username)
             out.append(EventType.MOMSONGAMING)
-        if self.username in ' AssPummeler9000 ':
-            self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
-            print("HOLY SHIT ASSPUMMELER: " + self.username)
+        if self.username in ' Lettyon26s ':
+            self.print_username[EventType.MOMSONGAMING] = self.username + " (Mother of <@&1078460377920180276>)"
+            print("hi kenny mom: " + self.username)
             out.append(EventType.MOMSONGAMING)
         if self.username in item_manager.get_theb_dict().keys():
             print("Player is a Thebian: " + self.username)
@@ -266,8 +266,6 @@ class OreEvent:
             match event_type:
                 case EventType.MOMSONGAMING:
                     tracker_name = "MOMSONGAMING"
-                    if "AssPummeler9000" in username:
-                        tracker_name = "ASSPUMMELER9000"
                 case EventType.THEB:
                     tracker_name = "THEB"
                     if 'Hyperheated Quasar' in ore and '@everyone' not in tier and '57 Leaf Clover' not in pickaxe:
