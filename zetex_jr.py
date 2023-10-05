@@ -237,7 +237,7 @@ async def index(ctx, ore: str):
         location = data[ore]['location']
         event = data[ore]['event']
         print("Variables obtained!")
-        if rarity == 0:
+        if rarity == 0 and 'protoflare' in ore.lower():
             rarity = 2000000
         messageContents = ""
         messageContents += "## " + ore + " (" + data[ore]['tier'] + ")\n"
