@@ -114,7 +114,7 @@ async def manual(ctx,
     ore_event.ore = ore
     ore_event.base_rarity = '{:,}'.format(rarity)
     ore_event.username = username
-    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744, 900479607202017330]:
+    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744, 900479607202017330, 150040671443484673]:
         tracker_bot.et.queue.put(ore_event)
         await ctx.respond("manual ore successfully submitted :3", ephemeral=True)
     else:
@@ -123,7 +123,7 @@ async def manual(ctx,
 
 @tracker_bot.command()
 async def restart(ctx):
-    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744, 900479607202017330]:
+    if ctx.author.id in [797942648932794398, 190804082032640000, 302920327699103744, 900479607202017330, 150040671443484673]:
         await ctx.respond("Restarting!")
         os.system("/root/restart.sh")
     else:
