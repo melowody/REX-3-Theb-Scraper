@@ -439,5 +439,20 @@
 "Cygnus": {"rarity": 10480900, "tier": "Enigmatic", "multiplier": 30, "location": "Galactic Caves [Exclusive]", "event": 0},
 "Asterium": {"rarity": 361000, "tier": "Exotic", "multiplier": 50, "location": "Enchanted Caves [Exclusive]", "event": 0},
 "Lavortia": {"rarity": 1347290, "tier": "Transcendent", "multiplier": 40, "location": "Luminous Caves [Exclusive]", "event": 0},
-"Lunarian": {"rarity": 411000, "tier": "Exquisite", "multiplier": 40, "location": "Nightfall Caves [Exclusive]", "event": 0}
+"Lunarian": {"rarity": 411000, "tier": "Exquisite", "multiplier": 40, "location": "Nightfall Caves [Exclusive]", "event": 0},
+"Ectoplasmido": {"rarity": 90770000, "tier": "Enigmatic", "multiplier": 30, "location": "Granite", "event": 0},
+"Exospinel": {"rarity": 76763400, "tier": "Enigmatic", "multiplier": 30, "location": "Diorite", "event": 0},
+"Feux Follets": {"rarity": 40000000, "tier": "Transcendent", "multiplier": 40, "location": "Basalt", "event": 0},
+"The All-Seeing": {"rarity": 32222222, "tier": "Transcendent", "multiplier": 40, "location": "Obsidian", "event": 0},
+"Spiritbound Tomb": {"rarity": 30000000, "tier": "Transcendent", "multiplier": 40, "location": "Stone", "event": 0},
+"Vitalium": {"rarity": 14880000, "tier": "Exquisite", "multiplier": 40, "location": "Obsidian", "event": 0},
+"Antipathy": {"rarity": 11700000, "tier": "Exquisite", "multiplier": 40, "location": "Diorite", "event": 0},
+"Flamakern": {"rarity": 9050000, "tier": "Exotic", "multiplier": 50, "location": "Outer Core, Inner Core", "event": 0},
+"Candlelight": {"rarity": 6670000, "tier": "Exotic", "multiplier": 50, "location": "Mantle", "event": 0},
+"Poltergeist": {"rarity": 89562220, "tier": "Enigmatic", "multiplier": 30, "location": "Void", "event": 0},
+"Soulshade": {"rarity": 60928950, "tier": "Enigmatic", "multiplier": 30, "location": "Void", "event": 0},
+"Nightmare Complex": {"rarity": 36667500, "tier": "Transcendent", "multiplier": 40, "location": "Void", "event": 0},
+"Arachnoxium": {"rarity": 28800880, "tier": "Transcendent", "multiplier": 40, "location": "Slate", "event": 0},
+"Hallowed Cage": {"rarity": 9050000, "tier": "Exquisite", "multiplier": 40, "location": "Riftrock", "event": 0},
+"Blood Lunarian": {"rarity": 1606636, "tier": "Exquisite", "multiplier": 40, "location": "Interstellar Caves", "event": 0}
 }
