@@ -440,7 +440,7 @@
 "Asterium": {"rarity": 361000, "tier": "Exotic", "multiplier": 50, "location": "Enchanted Caves [Exclusive]", "event": 0},
 "Lavortia": {"rarity": 1347290, "tier": "Transcendent", "multiplier": 40, "location": "Luminous Caves [Exclusive]", "event": 0},
 "Lunarian": {"rarity": 411000, "tier": "Exquisite", "multiplier": 40, "location": "Nightfall Caves [Exclusive]", "event": 0},
-"Ectoplasmido": {"rarity": 90770000, "tier": "Enigmatic", "multiplier": 30, "location": "Granite", "event": 0},
+"Ectoplasmado": {"rarity": 90770000, "tier": "Enigmatic", "multiplier": 30, "location": "Granite", "event": 0},
 "Exospinel": {"rarity": 76763400, "tier": "Enigmatic", "multiplier": 30, "location": "Diorite", "event": 0},
 "Feux Follets": {"rarity": 40000000, "tier": "Transcendent", "multiplier": 40, "location": "Basalt", "event": 0},
 "The All-Seeing": {"rarity": 32222222, "tier": "Transcendent", "multiplier": 40, "location": "Obsidian", "event": 0},
