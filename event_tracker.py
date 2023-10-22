@@ -180,7 +180,7 @@ class OreEvent:
             out.append(EventType.GOOBERVILLE)
         if self.username in item_manager.get_refuge_dict().keys():
             print("Player is a Refugee: " + self.username)
-            name = item_manager.get_username(self.username, 2)
+            name = item_manager.get_username(self.username, 4)
             self.print_username[EventType.REFUGE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.REFUGE)
         if self.username in item_manager.get_endless_dict().keys():
