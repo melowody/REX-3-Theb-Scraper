@@ -33,6 +33,7 @@ class EventType(Enum):
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
     GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
     ENDLESS = item_manager.get_channel("ENDLESS")
+    REFUGE = item_manager.get_channel("REFUGE")
 
 
 @total_ordering
@@ -177,6 +178,11 @@ class OreEvent:
             name = item_manager.get_username(self.username, 2)
             self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.GOOBERVILLE)
+        if self.username in item_manager.get_refuge_dict().keys():
+            print("Player is a Refugee: " + self.username)
+            name = item_manager.get_username(self.username, 2)
+            self.print_username[EventType.REFUGE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.REFUGE)
         if self.username in item_manager.get_endless_dict().keys():
             print("Player is in Endless: " + self.username)
             name = item_manager.get_username(self.username, 3)
@@ -296,6 +302,9 @@ class OreEvent:
                 case EventType.ENDLESS:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
+                case EventType.REFUGE:
+                    tracker_name = "REFUGE"
+                    tier = tier.replace("@everyone", "<@&1165729194995626054>")
             print("Returning tracker message")
             return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
