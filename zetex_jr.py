@@ -195,7 +195,9 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
         except:
             message_contents += "\n Invalid ore :( Did you spell it right?"
-            
+    
+    if "Aurora Polaris" in message_contents:
+        message_contents = "no"
     await ctx.respond(message_contents)
 
 @tracker_bot.command()
