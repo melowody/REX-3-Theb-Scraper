@@ -31,6 +31,10 @@ def get_endless_dict():
     with open("endless.json", "r") as f:
         return json.load(f)
 
+def get_refuge_dict():
+    with open("refuge.json", "r") as f:
+        return json.load(f)
+
 
 def get_username(old_name, channel_id):
     if channel_id == 1:
@@ -39,6 +43,8 @@ def get_username(old_name, channel_id):
         data = get_gooberville_dict()
     elif channel_id == 3:
         data = get_endless_dict()
+    elif channel_id == 4:
+        data = get_refuge_dict()
     else:
         data = get_scoville_dict()
     if old_name in data:
