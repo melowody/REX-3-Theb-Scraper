@@ -313,7 +313,7 @@ class OreEvent:
             print("Returning tracker message")
             if tracker_name in "FIVEBLOOM":
                 return f"THEY FOUND {ore}!!!!!! \nRarity: {rarity}"
-            else
+            else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
