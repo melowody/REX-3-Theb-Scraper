@@ -313,7 +313,7 @@ class OreEvent:
                     tracker_name = "FIVEBLOOM"
             print("Returning tracker message")
             if tracker_name in "FIVEBLOOM":
-                return f"THEY FOUND {ore}!!!!!! \nRarity: {rarity}"
+                return f"---------------------------------------------\nfivebloom has found **{ore}** that's crazy\nTier: {tier}\nBase Rarity: {rarity}\n---------------------------------------------"
             else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
