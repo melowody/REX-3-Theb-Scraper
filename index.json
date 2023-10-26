@@ -170,6 +170,7 @@
 "Electrolium": {"rarity": 145000, "tier": "Surreal", "multiplier": 70, "location": "Moon Mantle", "event": 0},
 "Deathinium": {"rarity": 145000, "tier": "Surreal", "multiplier": 70, "location": "Moon Core", "event": 0},
 "Rainbonite": {"rarity": 150000, "tier": "Surreal", "multiplier": 70, "location": "Marble", "event": 0},
+"Pluvonite": {"rarity": 150000, "tier": "Surreal", "multiplier": 70, "location": "Marble", "event": 0},
 "Elusium": {"rarity": 155000, "tier": "Surreal", "multiplier": 70, "location": "Stone", "event": 0},
 "Elysian": {"rarity": 155000, "tier": "Surreal", "multiplier": 70, "location": "Basalt", "event": 0},
 "Promethium": {"rarity": 198500, "tier": "Surreal", "multiplier": 70, "location": "Granite", "event": 0},
