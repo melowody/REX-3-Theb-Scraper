@@ -197,6 +197,7 @@ class OreEvent:
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.SCOVILLE)
         if self.username == "meow_fivebloom":
+            self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.FIVEBLOOM)
         return out
     
