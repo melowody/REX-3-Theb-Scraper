@@ -196,7 +196,7 @@ class OreEvent:
                 return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.SCOVILLE)
-        if self.username in "meow_fivebloom":
+        if self.username == "meow_fivebloom":
             out.append(EventType.FIVEBLOOM)
         return out
     
@@ -311,10 +311,10 @@ class OreEvent:
                 case EventType.FIVEBLOOM:
                     tracker_name = "FIVEBLOOM"
             print("Returning tracker message")
-            if tracker_name != "FIVEBLOOM":
-                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+            if tracker_name in "FIVEBLOOM":
+                return f"THEY FOUND {ore}!!!!!! \nRarity: {rarity}"
             else
-                return "THEY FOUND " + ore.upper() + f"!!!!!! \nRarity: {rarity}"
+                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
