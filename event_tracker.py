@@ -34,6 +34,7 @@ class EventType(Enum):
     GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
     ENDLESS = item_manager.get_channel("ENDLESS")
     REFUGE = item_manager.get_channel("REFUGE")
+    FIVEBLOOM = item_manager.get_channel("FIVEBLOOM")
 
 
 @total_ordering
@@ -195,6 +196,8 @@ class OreEvent:
                 return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.SCOVILLE)
+        if self.username in "meow_fivebloom":
+            out.append(EventType.FIVEBLOOM)
         return out
     
     def format(self, event_type: EventType):
@@ -267,7 +270,7 @@ class OreEvent:
                             event_found = True
             else:
                 print("No event for ore")
-            
+
             tracker_name = ""
             match event_type:
                 case EventType.MOMSONGAMING:
@@ -305,8 +308,13 @@ class OreEvent:
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
+                case EventType.FIVEBLOOM:
+                    tracker_name = "FIVEBLOOM"
             print("Returning tracker message")
-            return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+            if tracker_name != "FIVEBLOOM":
+                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+            else
+                return "THEY FOUND " + ore.upper() + f"!!!!!! \nRarity: {rarity}"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
