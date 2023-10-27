@@ -161,11 +161,11 @@ class OreEvent:
             out.append(EventType.GLOBAL2)
             self.print_username[EventType.GLOBAL3] = self.username
             out.append(EventType.GLOBAL3)
-        if self.username in ' MomSonGaming ':
+        if self.username == 'MomSonGaming':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (<@&1078460377920180276>)"
             print("is this still even used lol: " + self.username)
             out.append(EventType.MOMSONGAMING)
-        if self.username in ' Lettyon26s ':
+        if self.username == 'Lettyon26s':
             self.print_username[EventType.MOMSONGAMING] = self.username + " (Mother of <@&1078460377920180276>)"
             print("hi kenny mom: " + self.username)
             out.append(EventType.MOMSONGAMING)
