@@ -311,6 +311,7 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
                 case EventType.FIVEBLOOM:
                     tracker_name = "FIVEBLOOM"
+                    tier = tier.replace("@everyone", "<@&1167247562525380648>")
             print("Returning tracker message")
             if tracker_name in "FIVEBLOOM":
                 return f"---------------------------------------------\nfivebloom has found **{ore}** that's crazy\nTier: {tier}\nBase Rarity: {rarity}\n---------------------------------------------"
