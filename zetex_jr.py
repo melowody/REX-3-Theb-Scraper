@@ -276,8 +276,9 @@ async def servers(ctx):
         i = 0
         messageContents = ""
         while i < len(tracker_bot.guilds):
-            print(tracker_bot.guilds[i].id + " - " + tracker_bot.guilds[i].name)
+            messageContents += tracker_bot.guilds[i].id + " - " + tracker_bot.guilds[i].name + "\n"
             i += 1
+        await ctx.respond(messageContents)
     else:
         await ctx.respond("you do NOT have permission to use this command :bangbang:")
     
