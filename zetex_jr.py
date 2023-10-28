@@ -269,21 +269,6 @@ async def index(ctx, ore: str):
     except Exception as e:
         await ctx.respond("# " + ore + "\n Not in data - did you spell it correctly?")
         print(e)
-
-@tracker_bot.command()
-async def servers(ctx):
-    if ctx.author.id in [797942648932794398]:
-        i = 0
-        messageContents = ""
-        while i < len(tracker_bot.guilds):
-            messageContents += "\n" + str(tracker_bot.guilds[i].id) + " - " + tracker_bot.guilds[i].name
-            if tracker_bot.guilds[i].id not in [466799857919721473, 823701463782916156, 994817407698870312, 1061709848632361062, 1075585314975907840, 1098291233945813044, 1108749539566956706]:
-                messageContents += " - ***LEAVING***"
-                await tracker_bot.guilds[i].leave()
-            i += 1
-        await ctx.respond(messageContents)
-    else:
-        await ctx.respond("you do NOT have permission to use this command :bangbang:")
     
 def send_error(err):
     tracker_bot.add_error(err)
