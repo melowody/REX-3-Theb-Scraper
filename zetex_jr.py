@@ -276,7 +276,7 @@ async def servers(ctx):
         i = 0
         messageContents = ""
         while i < len(tracker_bot.guilds):
-            messageContents += tracker_bot.guilds[i].id + " - " + tracker_bot.guilds[i].name + "\n"
+            messageContents += str(tracker_bot.guilds[i].id) + " - " + tracker_bot.guilds[i].name + "\n"
             i += 1
         await ctx.respond(messageContents)
     else:
