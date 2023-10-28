@@ -270,6 +270,12 @@ async def index(ctx, ore: str):
         await ctx.respond("# " + ore + "\n Not in data - did you spell it correctly?")
         print(e)
 
-
+@tracker_bot.command()
+async def servers(ctx):
+    if ctx.author.id in [797942648932794398]:
+        print(tracker_bot.guilds)
+    else:
+        await ctx.respond("you do NOT have permission to use this command :bangbang:")
+    
 def send_error(err):
     tracker_bot.add_error(err)
