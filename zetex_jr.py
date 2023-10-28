@@ -276,6 +276,7 @@ async def servers(ctx):
         i = 0
         while i < len(tracker_bot.guilds):
             print(tracker_bot.guilds[i].id)
+            i += 1
     else:
         await ctx.respond("you do NOT have permission to use this command :bangbang:")
     
