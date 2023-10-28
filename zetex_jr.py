@@ -274,8 +274,9 @@ async def index(ctx, ore: str):
 async def servers(ctx):
     if ctx.author.id in [797942648932794398]:
         i = 0
+        messageContents = ""
         while i < len(tracker_bot.guilds):
-            print(tracker_bot.guilds[i].id)
+            print(tracker_bot.guilds[i].id + " - " + tracker_bot.guilds[i].name)
             i += 1
     else:
         await ctx.respond("you do NOT have permission to use this command :bangbang:")
