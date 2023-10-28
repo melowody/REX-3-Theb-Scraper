@@ -276,8 +276,11 @@ async def servers(ctx):
         i = 0
         messageContents = ""
         while i < len(tracker_bot.guilds):
-            messageContents += str(tracker_bot.guilds[i].id) + " - " + tracker_bot.guilds[i].name + "\n"
+            messageContents += "\n" + str(tracker_bot.guilds[i].id) + " - " + tracker_bot.guilds[i].name
             i += 1
+            if tracker_bot.guilds[i].id not in [466799857919721473, 823701463782916156, 994817407698870312, 1061709848632361062, 1075585314975907840, 1098291233945813044, 1108749539566956706]:
+                messageContents += " - ***LEAVING***"
+                await leave(tracker_bot.guilds[i].id)
         await ctx.respond(messageContents)
     else:
         await ctx.respond("you do NOT have permission to use this command :bangbang:")
