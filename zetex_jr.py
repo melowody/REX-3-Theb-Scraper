@@ -277,7 +277,7 @@ async def servers(ctx):
         messageContents = ""
         while i < len(tracker_bot.guilds):
             messageContents += "\n" + str(tracker_bot.guilds[i].id) + " - " + tracker_bot.guilds[i].name
-            #i += 1
+            i += 1
             #if tracker_bot.guilds[i].id not in [466799857919721473, 823701463782916156, 994817407698870312, 1061709848632361062, 1075585314975907840, 1098291233945813044, 1108749539566956706]:
             #    messageContents += " - ***LEAVING***"
             #    await tracker_bot.guilds[i].leave()
