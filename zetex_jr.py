@@ -278,7 +278,7 @@ async def epinephrine(ctx):
         await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)")
     else:
         randomRoll = format_num(randomRoll)
-        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nREWARD: https://discord.gift/4A2xMkeszggub7C8")
     
 def send_error(err):
     tracker_bot.add_error(err)
