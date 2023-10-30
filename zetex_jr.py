@@ -1,6 +1,7 @@
 import discord
 from discord import ApplicationCommand
 from discord.ext import tasks, commands
+import random
 import time
 import websocket
 import os
@@ -269,6 +270,15 @@ async def index(ctx, ore: str):
     except Exception as e:
         await ctx.respond("# " + ore + "\n Not in data - did you spell it correctly?")
         print(e)
+
+@tracker_bot.command()
+async def epinephrine(ctx):
+    randomRoll = random.randrange(1, 1000000000)
+    if randomRoll == 999999999:
+        await ctx.respond("YOU GOT EPINEPHRINE!!!!!\n(rolled 999,999,999!!!!)")
+    else:
+        randomRoll = format_num(randomRoll)
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
     
 def send_error(err):
     tracker_bot.add_error(err)
