@@ -12,6 +12,7 @@ import item_manager
 import asyncio
 import json
 
+findedIt = False
 
 class TrackerBot(discord.Bot):
 
@@ -274,7 +275,8 @@ async def index(ctx, ore: str):
 @tracker_bot.command()
 async def epinephrine(ctx):
     randomRoll = random.randrange(1, 1000000000)
-    if randomRoll == 999999999 or random.randrange(1,1000) == 1:
+    if randomRoll == 999999999 or random.randrange(1,1000) == 1 and findedIt == False:
+        findedIt = True
         await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)\nhttps://discord.gift/Y8sm4MmADxGz7wNC")
     else:
         randomRoll = format_num(randomRoll)
