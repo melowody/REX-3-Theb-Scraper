@@ -275,10 +275,10 @@ async def index(ctx, ore: str):
 async def epinephrine(ctx):
     randomRoll = random.randrange(1, 1000000000)
     if randomRoll == 999999999 or random.randrange(1,1000) == 1:
-        await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)")
+        await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)\nhttps://discord.gift/Y8sm4MmADxGz7wNC")
     else:
         randomRoll = format_num(randomRoll)
-        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nREWARD: https://discord.gift/4A2xMkeszggub7C8")
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
     
 def send_error(err):
     tracker_bot.add_error(err)
