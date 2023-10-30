@@ -275,6 +275,9 @@ async def epinephrine(ctx):
     randomRoll = random.randrange(1, 1000000000)
     if randomRoll == 999999999:
         await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)\nhttps://discord.gift/Y8sm4MmADxGz7wNC")
+    elif randomRoll > 999989443:
+        randomRoll = format_num(randomRoll)
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nOH SHIT WAIT THAT'S A NEW RAREST ACTUALLY HI <@797942648932794398> UPDATE THE THING")
     else:
         randomRoll = format_num(randomRoll)
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
