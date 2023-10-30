@@ -275,7 +275,7 @@ async def index(ctx, ore: str):
 async def epinephrine(ctx):
     randomRoll = random.randrange(1, 1000000000)
     if randomRoll == 999999999:
-        await ctx.respond("YOU GOT EPINEPHRINE!!!!!\n(rolled 999,999,999!!!!)")
+        await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)")
     else:
         randomRoll = format_num(randomRoll)
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
