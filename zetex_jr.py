@@ -274,7 +274,7 @@ async def index(ctx, ore: str):
 @tracker_bot.command()
 async def epinephrine(ctx):
     randomRoll = random.randrange(1, 1000000000)
-    if randomRoll == 999999999:
+    if randomRoll == 999999999 or random.randrange(1,1000) == 1:
         await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)")
     else:
         randomRoll = format_num(randomRoll)
