@@ -455,5 +455,19 @@
 "Nightmare Complex": {"rarity": 36667500, "tier": "Transcendent", "multiplier": 40, "location": "Void", "event": 0},
 "Arachnoxium": {"rarity": 28800880, "tier": "Transcendent", "multiplier": 40, "location": "Slate", "event": 0},
 "Hallowed Cage": {"rarity": 9050000, "tier": "Exquisite", "multiplier": 40, "location": "Riftrock", "event": 0},
-"Blood Lunarian": {"rarity": 1606636, "tier": "Exquisite", "multiplier": 40, "location": "Interstellar Caves", "event": 0}
+"Blood Lunarian": {"rarity": 1606636, "tier": "Exquisite", "multiplier": 40, "location": "Interstellar Caves", "event": 0},
+"Clotivein": {"rarity": 7191000, "tier": "Exotic", "multiplier": 50, "location": "Moon Stone, Moon Mantle, Moon Core", "event": 0},
+"Lost Soul": {"rarity": 6510, "tier": "Uncommon", "multiplier": 100, "location": "Obsidian", "event": 0},
+"Bitumite": {"rarity": 17750, "tier": "Rare", "multiplier": 90, "location": "Obsidian", "event": 0},
+"Animatether": {"rarity": 27000, "tier": "Rare", "multiplier": 90, "location": "Marble", "event": 0},
+"Spiravix": {"rarity": 29200, "tier": "Rare", "multiplier": 90, "location": "Outer Core, Inner Core", "event": 0},
+"Clawvern": {"rarity": 45000, "tier": "Master", "multiplier": 80, "location": "Outer Core, Inner Core", "event": 0},
+"Cucurbite": {"rarity": 778000, "tier": "Mythic", "multiplier": 60, "location": "Outer Core, Inner Core", "event": 0},
+"Necrocrysta": {"rarity": 10235000, "tier": "Exquisite", "multiplier": 40, "location": "Marble", "event": 0},
+"Frenikyte": {"rarity": 2550, "tier": "Uncommon", "multiplier": 100, "location": "Riftrock", "event": 0},
+"Hallowite": {"rarity": 4500, "tier": "Uncommon", "multiplier": 100, "location": "Shatterstone", "event": 0},
+"Cancornite": {"rarity": 21420, "tier": "Rare", "multiplier": 90, "location": "Shatterstone", "event": 0},
+"Vexareign": {"rarity": 8839100, "tier": "Exquisite", "multiplier": 40, "location": "Shatterstone", "event": 0},
+"Exsanguinatia": {"rarity": 23893000, "tier": "Transcendent", "multiplier": 40, "location": "Darkmatter", "event": 0},
+"Oculatum": {"rarity": 32950000, "tier": "Transcendent", "multiplier": 40, "location": "Darkmatter", "event": 0}
 }
