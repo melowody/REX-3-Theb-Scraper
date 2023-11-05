@@ -298,6 +298,7 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
+                    ore = ore.replace("Inclemetite", "𝒯𝒽𝑒 𝑀𝒶𝑔𝒾𝒸 𝑀𝑒𝒹𝒶𝓁")
                 case EventType.TEST:
                     tracker_name = "TEST"
                     tier = tier.replace("@everyone", "Nuh Uh")
