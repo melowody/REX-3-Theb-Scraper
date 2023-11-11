@@ -290,6 +290,8 @@ class OreEvent:
                         print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
+                    if EventType.GLOBAL2:
+                        ore = ore.replace("Inclemetite", "The Magic Medal")
                 case EventType.GLOBAL3:
                     tracker_name = "GLOBAL"
                     tier = tier.replace("@everyone", "")
