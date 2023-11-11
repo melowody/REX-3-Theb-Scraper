@@ -280,7 +280,7 @@ class OreEvent:
                     tracker_name = "THEB"
                     if 'Hyperheated Quasar' in ore and '@everyone' not in tier and '57 Leaf Clover' not in pickaxe:
                         tier = tier + " @everyone"
-                case EventType.GLOBAL | EventType.GLOBAL2:
+                case EventType.GLOBAL:
                     tracker_name = "GLOBAL"
                     if 'Spectral' in tier and 'Unfathomable' in tier:
                         print("OH SHIT")
@@ -290,8 +290,17 @@ class OreEvent:
                         print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
-                    if EventType.GLOBAL2:
-                        ore = ore.replace("Inclemetite", "The Magic Medal")
+                case EventType.GLOBAL2:
+                    tracker_name = "GLOBAL"
+                    if 'Spectral' in tier and 'Unfathomable' in tier:
+                        print("OH SHIT")
+                    elif 'Spectral' in tier and 'Otherworldly' in tier:
+                        print("OH REALLY SHIT")
+                    elif 'Spectral' in tier and 'Zenith' in tier:
+                        print("OH EXTREMELY SHIT")
+                    else:
+                        tier = tier.replace("@everyone", "")
+                    ore = ore.replace("Inclemetite", "The Magic Medal")
                 case EventType.GLOBAL3:
                     tracker_name = "GLOBAL"
                     tier = tier.replace("@everyone", "")
