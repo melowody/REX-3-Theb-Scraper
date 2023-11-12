@@ -199,6 +199,9 @@ class OreEvent:
         if self.username == "meow_fivebloom":
             self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.FIVEBLOOM)
+        if self.username == "TheMagicMedal":
+            self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.THEMAGICMEDAL)
         return out
     
     def format(self, event_type: EventType):
@@ -316,6 +319,8 @@ class OreEvent:
                     tier = tier.replace("@everyone", "Nuh Uh")
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
+                case EventType.THEMAGICMEDAL:
+                    tracker_name = "THE MAGIC MEDAL"
                 case EventType.ENDLESS:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
