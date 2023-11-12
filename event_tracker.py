@@ -201,7 +201,7 @@ class OreEvent:
             self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.FIVEBLOOM)
         if self.username == "TheMagicMedal":
-            self.print_username[EventType.THEMAGICMEDAL] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            self.print_username[EventType.THEMAGICMEDAL] = self.username
             out.append(EventType.THEMAGICMEDAL)
         return out
     
