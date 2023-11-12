@@ -321,7 +321,7 @@ class OreEvent:
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
                 case EventType.THEMAGICMEDAL:
-                    tracker_name = "THE MAGIC MEDAL"
+                    tracker_name = "THEMAGICMEDAL"
                 case EventType.ENDLESS:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
