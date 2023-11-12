@@ -35,6 +35,7 @@ class EventType(Enum):
     ENDLESS = item_manager.get_channel("ENDLESS")
     REFUGE = item_manager.get_channel("REFUGE")
     FIVEBLOOM = item_manager.get_channel("FIVEBLOOM")
+    THEMAGICMEDAL = item_manager.get_channel("THEMAGICMEDAL")
 
 
 @total_ordering
@@ -200,7 +201,7 @@ class OreEvent:
             self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.FIVEBLOOM)
         if self.username == "TheMagicMedal":
-            self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            self.print_username[EventType.THEMAGICMEDAL] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.THEMAGICMEDAL)
         return out
     
