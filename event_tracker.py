@@ -36,6 +36,7 @@ class EventType(Enum):
     REFUGE = item_manager.get_channel("REFUGE")
     FIVEBLOOM = item_manager.get_channel("FIVEBLOOM")
     THEMAGICMEDAL = item_manager.get_channel("THEMAGICMEDAL")
+    REFUGEGLOBAL = item_manager.get_channel("REFUGEGLOBAL")
 
 
 @total_ordering
@@ -185,6 +186,9 @@ class OreEvent:
             name = item_manager.get_username(self.username, 4)
             self.print_username[EventType.REFUGE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.REFUGE)
+            if self.should_ping_everyone():
+                self.print_username[EventType.REFUGEGLOBAL] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+                out.append(EventType.REFUGEGLOBAL)
         if self.username in item_manager.get_endless_dict().keys():
             print("Player is in Endless: " + self.username)
             name = item_manager.get_username(self.username, 3)
@@ -327,6 +331,9 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
+                    tier = tier.replace("@everyone", "")
+                case EventType.REFUGEGLOBAL:
+                    tracker_name = "REFUGE GLOBAL"
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
                 case EventType.FIVEBLOOM:
                     tracker_name = "FIVEBLOOM"
