@@ -28,6 +28,7 @@ class EventType(Enum):
     GLOBAL2 = item_manager.get_channel("GLOBAL2_CHANNEL")
     GLOBAL3 = item_manager.get_channel("GLOBAL3_CHANNEL")
     BEGINNER = item_manager.get_channel("BEGINNER_CHANNEL")
+    BEGINNER2 = item_manager.get_channel("BEGINNER2_CHANNEL")
     TEST = item_manager.get_channel("TEST_CHANNEL")
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
@@ -156,6 +157,7 @@ class OreEvent:
             self.print_username[EventType.BEGINNER] = self.username
             print("Beginner (" + str(self.blocks) + " blocks)")
             out.append(EventType.BEGINNER)
+            out.append(EventType.BEGINNER2)
         if self.should_ping_everyone():
             self.print_username[EventType.GLOBAL] = self.username
             out.append(EventType.GLOBAL)
@@ -315,6 +317,9 @@ class OreEvent:
                 case EventType.BEGINNER:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
+                case EventType.BEGINNER2:
+                    tracker_name = ":beginner:"
+                    tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
                     ore = ore.replace("Inclemetite", "The Magic Medal")
