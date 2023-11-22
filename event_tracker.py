@@ -155,6 +155,7 @@ class OreEvent:
             out.append(EventType.TEST)
         if self.blocks < 100000:
             self.print_username[EventType.BEGINNER] = self.username
+            self.print_username[EventType.BEGINNER2] = self.username
             print("Beginner (" + str(self.blocks) + " blocks)")
             out.append(EventType.BEGINNER)
             out.append(EventType.BEGINNER2)
