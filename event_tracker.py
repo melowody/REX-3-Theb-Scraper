@@ -35,7 +35,6 @@ class EventType(Enum):
     GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
     ENDLESS = item_manager.get_channel("ENDLESS")
     REFUGE = item_manager.get_channel("REFUGE")
-    FIVEBLOOM = item_manager.get_channel("FIVEBLOOM")
     THEMAGICMEDAL = item_manager.get_channel("THEMAGICMEDAL")
     REFUGEGLOBAL = item_manager.get_channel("REFUGEGLOBAL")
 
@@ -204,9 +203,6 @@ class OreEvent:
                 return out
             self.print_username[EventType.SCOVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.SCOVILLE)
-        if self.username == "meow_fivebloom":
-            self.print_username[EventType.FIVEBLOOM] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
-            out.append(EventType.FIVEBLOOM)
         if self.username == "TheMagicMedal":
             self.print_username[EventType.THEMAGICMEDAL] = self.username
             out.append(EventType.THEMAGICMEDAL)
@@ -341,14 +337,8 @@ class OreEvent:
                 case EventType.REFUGEGLOBAL:
                     tracker_name = "REFUGE GLOBAL"
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
-                case EventType.FIVEBLOOM:
-                    tracker_name = "FIVEBLOOM"
-                    tier = tier.replace("@everyone", "<@&1167247562525380648>")
             print("Returning tracker message")
-            if tracker_name in "FIVEBLOOM":
-                return f"---------------------------------------------\nfivebloom has found **{ore}** that's crazy\nTier: {tier}\nBase Rarity: {rarity}\n---------------------------------------------"
-            else:
-                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+            return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
