@@ -3,6 +3,7 @@ import logging
 
 import zetex_jr
 
+import random
 import websocket
 import socket_based
 import item_manager
@@ -307,7 +308,10 @@ class OreEvent:
                         print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
-                    ore = ore.replace("Inclemetite", "The Magic Medal")
+                    if random.randrange(1, 2) == 1:
+                        ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
+                    else:
+                        ore = ore.replace("Inclemetite", "The Magic Medal")
                 case EventType.GLOBAL3:
                     tracker_name = "GLOBAL"
                     tier = tier.replace("@everyone", "")
@@ -319,7 +323,10 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
-                    ore = ore.replace("Inclemetite", "The Magic Medal")
+                    if random.randrange(1, 2) == 1:
+                        ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
+                    else:
+                        ore = ore.replace("Inclemetite", "The Magic Medal")
                     ore = ore.replace("Ionized Acceleratium", "Sea Urchin Crystal")
                 case EventType.TEST:
                     tracker_name = "TEST"
