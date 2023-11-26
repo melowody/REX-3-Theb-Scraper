@@ -308,7 +308,7 @@ class OreEvent:
                         print("OH EXTREMELY SHIT")
                     else:
                         tier = tier.replace("@everyone", "")
-                    if random.randrange(1, 2) == 1:
+                    if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
                     else:
                         ore = ore.replace("Inclemetite", "The Magic Medal")
@@ -323,7 +323,7 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
-                    if random.randrange(1, 2) == 1:
+                    if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
                     else:
                         ore = ore.replace("Inclemetite", "The Magic Medal")
