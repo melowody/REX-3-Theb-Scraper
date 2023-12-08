@@ -382,7 +382,9 @@ class EventTracker(socket_based.SocketBased):
             try:
                 event = self.receive_json_response()
             except Exception:
+                print("loop error 1")
                 logging.info(json.dumps(event))
+                print(traceback.format_exc())
                 zetex_jr.send_error("event_tracker.py loop error 1: " + traceback.format_exc())
                 return
             try:
@@ -392,6 +394,8 @@ class EventTracker(socket_based.SocketBased):
                 if op_code == 11:
                     print('heartbeat received')
             except Exception:
+                print("loop error 2")
+                print(traceback.format_exc())
                 zetex_jr.send_error("event_tracker.py loop error 2: " + traceback.format_exc())
                 pass
 
