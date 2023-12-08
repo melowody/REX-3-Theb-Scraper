@@ -2,11 +2,9 @@ import json
 import os
 
 def get_bot_token():
-    print(type(os.getenv("BOT_TOKEN")))
     return os.getenv("BOT_TOKEN")
 
 def get_auth_token():
-    print(type(os.getenv("ZETEX_TOKEN")))
     return os.getenv("ZETEX_TOKEN")
 
 def get_tracker_bots():
