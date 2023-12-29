@@ -507,5 +507,5 @@
 "Frigite": {"rarity": 1100, "tier": "Uncommon", "multiplier": 100, "location": "Frost", "event": 0},
 "Packed Ice": {"rarity": 120, "tier": "Common", "multiplier": 110, "location": "Frost", "event": 0},
 "Glacial Shard": {"rarity": 30, "tier": "Common", "multiplier": 110, "location": "Frost", "event": 0},
-"Pitcoal": {"rarity": 25, "tier": "Common", "multiplier": 110, "location": "Jollystone", "event": 0},
+"Pitcoal": {"rarity": 25, "tier": "Common", "multiplier": 110, "location": "Jollystone", "event": 0}
 }
