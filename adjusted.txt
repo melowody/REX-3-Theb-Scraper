@@ -14,3 +14,6 @@ Galactic 16
 Enchanted 22
 Luminous 34
 Nightfall 43
+Softsnow 12
+Peppermint 25
+Fireplace 33
