@@ -127,3 +127,12 @@ Spectral Obliveracy Endmost 33,750,337,500
 Acrimony 191,847,000
 Ionized Acrimony 3,836,940,000
 Spectral Acrimony 57,554,100,000
+Cryonstelar 37,275,000
+Ionized Cryonstelar 1,118,250,000
+Spectral Cryonstelar 16,773,750,000
+Yuletide Star 74,724,000
+Ionized Yuletide Star 2,241,720,000
+Spectral Yuletide Star 33,625,800,000
+Divinis 49,641,680
+Ionized Divinis 1,489,250,400
+Spectral Divinis 22,338,756,000
