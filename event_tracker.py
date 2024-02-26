@@ -38,6 +38,7 @@ class EventType(Enum):
     REFUGE = item_manager.get_channel("REFUGE")
     THEMAGICMEDAL = item_manager.get_channel("THEMAGICMEDAL")
     REFUGEGLOBAL = item_manager.get_channel("REFUGEGLOBAL")
+    CHEX = item_manager.get_channel("CHEX")
 
 
 @total_ordering
@@ -197,6 +198,11 @@ class OreEvent:
             name = item_manager.get_username(self.username, 3)
             self.print_username[EventType.ENDLESS] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.ENDLESS)
+        if self.username in item_manager.get_chex_dict().keys():
+            print("Player is in Chex: " + self.username)
+            name = item_manager.get_username(self.username, 5)
+            self.print_username[EventType.CHEX] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
+            out.append(EventType.CHEX)
         if self.username in item_manager.get_scoville_dict().keys():
             print("Player is a Scovillager: " + self.username)
             name = item_manager.get_username(self.username, 0)
@@ -338,6 +344,8 @@ class OreEvent:
                 case EventType.ENDLESS:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
+                case EventType.CHEX:
+                    tracker_name = "CHEX"
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
                     tier = tier.replace("@everyone", "")
