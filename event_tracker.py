@@ -287,6 +287,7 @@ class OreEvent:
                 print("No event for ore")
 
             tracker_name = ""
+            isPirate = False
             match event_type:
                 case EventType.MOMSONGAMING:
                     tracker_name = "MOMSONGAMING"
@@ -328,6 +329,7 @@ class OreEvent:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
+                    isPirate = True
                     tracker_name = "GOOBERVILLE"
                     if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
@@ -353,7 +355,10 @@ class OreEvent:
                     tracker_name = "REFUGE GLOBAL"
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
             print("Returning tracker message")
-            return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+            if isPirate:
+                return f"---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{username}** HAS STOLEN **{ore}**. YARRRR!!!\nTREASURE QUALITY: {tier}\nBOOTY PRICE: {rarity}\nNAUTICAL MILES: {blocks}\nCUTLASS: {pickaxe}\nWEATHER: {event}\n---------------------------------------------"
+            else:
+                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
