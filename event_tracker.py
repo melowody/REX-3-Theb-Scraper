@@ -357,6 +357,10 @@ class OreEvent:
             print("Returning tracker message")
             if isPirate:
                 rarity = rarity.replace("Adjusted Rarity", "MARKET PRICE").replace("Event Rarity", "WEATHER PRICE")
+                rarity = rarity.replace("1 in ", "")
+                rarity = rarity += " GOLD PIECES"
+                rarity = rarity.replace("\nMARKET PRICE", "GOLD PIECES\nMARKET PRICE")
+                rarity = rarity.replace("\nWEATHER PRICE", "GOLD PIECES\nWEATHER PRICE")
                 return f"---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{username}** HAS STOLEN **{ore}**. YARRRR!!!\nTREASURE QUALITY: {tier}\nPRICE: {rarity}\nNAUTICAL MILES: {blocks}\nCUTLASS: {pickaxe}\nWEATHER: {event}\n---------------------------------------------"
             else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
