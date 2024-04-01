@@ -356,7 +356,8 @@ class OreEvent:
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
             print("Returning tracker message")
             if isPirate:
-                return f"---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{username}** HAS STOLEN **{ore}**. YARRRR!!!\nTREASURE QUALITY: {tier}\nBOOTY PRICE: {rarity}\nNAUTICAL MILES: {blocks}\nCUTLASS: {pickaxe}\nWEATHER: {event}\n---------------------------------------------"
+                rarity = rarity.replace("Adjusted Rarity", "MARKET PRICE").replace("Event Rarity", "WEATHER PRICE")
+                return f"---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{username}** HAS STOLEN **{ore}**. YARRRR!!!\nTREASURE QUALITY: {tier}\nPRICE: {rarity}\nNAUTICAL MILES: {blocks}\nCUTLASS: {pickaxe}\nWEATHER: {event}\n---------------------------------------------"
             else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
