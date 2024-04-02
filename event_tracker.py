@@ -287,7 +287,7 @@ class OreEvent:
                 print("No event for ore")
 
             tracker_name = ""
-            isPirate = True
+            isPirate = False
             match event_type:
                 case EventType.MOMSONGAMING:
                     tracker_name = "MOMSONGAMING"
@@ -329,7 +329,6 @@ class OreEvent:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
-                    isPirate = True
                     tracker_name = "GOOBERVILLE"
                     if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
