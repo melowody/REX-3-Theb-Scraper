@@ -294,14 +294,14 @@ async def epinephrine(ctx):
         f.write('{"high": ' + str(randomRoll) + ', "low": ' + str(records['low']) + '}')
         randomRoll = format_num(randomRoll)
         channel = tracker_bot.get_channel(1229914924994662420)
-        await channel.send("NEW HIGHEST: " + randomRoll)
+        await channel.send("NEW HIGHEST: " + randomRoll + "<@&1229924994986016778>")
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW HIGHEST ROLL!")
     elif randomRoll < records['low']:
         f = open(os.path.join('/root/', 'records.json'), 'w')
         f.write('{"high": ' + str(records['high']) + ', "low": ' + str(randomRoll) + '}')
         randomRoll = format_num(randomRoll)
         channel = tracker_bot.get_channel(1229914924994662420)
-        await channel.send("NEW LOWEST: " + randomRoll)
+        await channel.send("NEW LOWEST: " + randomRoll + "<@&1229924994986016778>")
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW LOWEST ROLL!")
     else:
         randomRoll = format_num(randomRoll)
