@@ -273,18 +273,36 @@ async def index(ctx, ore: str):
 
 @tracker_bot.command()
 async def epinephrine(ctx):
+    rfile = open(os.path.join('/root/', 'records.json'), 'r')
+    records = json.load(rfile)
     randomRoll = random.randrange(1, 1000000000)
     distance = format_num(999999999 - randomRoll)
     if randomRoll == 999999999:
         await ctx.respond("YOU GOT EPINEPHRINE! @everyone \n(rolled 999,999,999!)")
+        channel = self.get_channel(1229914924994662420)
+        await channel.send("EPINEPHRINE: " + randomRoll + "@everyone")
+        f = open(os.path.join('/root/', 'records.json'), 'w')
+        f.write('{"high": ' + str(randomRoll) + ', "low": ' + str(records['low']) + '}')
     elif randomRoll == 1:
         await ctx.respond("YOU GOT... as far away from Epinephrine as possible! @everyone \n(rolled 1!)")
-    elif randomRoll > 999989443:
+        channel = self.get_channel(1229914924994662420)
+        await channel.send("LOWEST POSSIBLE: " + randomRoll + "@everyone")
+        f = open(os.path.join('/root/', 'records.json'), 'w')
+        f.write('{"high": ' + str(randomRoll) + ', "low": ' + str(records['low']) + '}')
+    elif randomRoll > records['high']:
+        f = open(os.path.join('/root/', 'records.json'), 'w')
+        f.write('{"high": ' + str(randomRoll) + ', "low": ' + str(records['low']) + '}')
         randomRoll = format_num(randomRoll)
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW HIGHEST ROLL! <@797942648932794398>")
-    elif randomRoll < 5557:
+        channel = self.get_channel(1229914924994662420)
+        await channel.send("NEW HIGHEST: " + randomRoll)
+    elif randomRoll < records['low']:
+        f = open(os.path.join('/root/', 'records.json'), 'w')
+        f.write('{"high": ' + str(records['low']) + ', "low": ' + str(randomRoll) + '}')
         randomRoll = format_num(randomRoll)
-        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW LOWEST ROLL! <@797942648932794398>")
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW HIGHEST ROLL! <@797942648932794398>")
+        channel = self.get_channel(1229914924994662420)
+        await channel.send("NEW LOWEST: " + randomRoll)
     else:
         randomRoll = format_num(randomRoll)
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
