@@ -279,7 +279,10 @@ async def epinephrine(ctx):
         await ctx.respond("OH MY SLOP YOU GOT EPINEPHRINE!!!!! @everyone \n(rolled 999,999,999!!!!)\nhttps://discord.gift/Y8sm4MmADxGz7wNC")
     elif randomRoll > 999989443:
         randomRoll = format_num(randomRoll)
-        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\nOH SHIT WAIT THAT'S A NEW RAREST ACTUALLY HI <@797942648932794398> UPDATE THE THING")
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW HIGHEST ROLL!")
+    elif randomRoll < 5557:
+        randomRoll = format_num(randomRoll)
+        await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)\nonly {distance} away!\n# NEW LOWEST ROLL!")
     else:
         randomRoll = format_num(randomRoll)
         await ctx.respond(f"you didn't get epinephrine :( \n(got {randomRoll} but needed 999,999,999)")
