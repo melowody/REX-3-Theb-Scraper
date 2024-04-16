@@ -272,6 +272,7 @@ async def index(ctx, ore: str):
         print(e)
 
 @tracker_bot.command()
+@commands.cooldown(1, 2, commands.BucketType.user)
 async def epinephrine(ctx):
     rfile = open(os.path.join('/root/', 'records.json'), 'r')
     records = json.load(rfile)
