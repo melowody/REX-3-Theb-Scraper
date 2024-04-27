@@ -102,7 +102,7 @@ async def manual(ctx,
                                                        "Nostalgic Axe", "NilAxe", "Christmas Crusher",
                                                        "Permafrost Pick", "Poison Pick", "Electraver",
                                                        "Dimensional Scythe", "Celestial Smasher", "Moon Scepter",
-                                                       "Soul Scythe", "Prism of Chaos"]),
+                                                       "Soul Scythe", "Prism of Chaos", "Superunobtainium Multitool"]),
                  world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2"]),
                  event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
                  ):
