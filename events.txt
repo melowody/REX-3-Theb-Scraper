@@ -118,9 +118,9 @@ Spectral Catastormite 13,518,000,000
 Plasmonium 17,725,000
 Ionized Plasmonium 709,000,000
 Spectral Plasmonium 10,635,000,000
-Frostranium 66,288,400
-Ionized Frostranium 1,988,652,000
-Spectral Frostranium 29,829,780,000
+Frostrainium 66,288,400
+Ionized Frostrainium 1,988,652,000
+Spectral Frostrainium 29,829,780,000
 Obliveracy Endmost 75,000,750
 Ionized Obliveracy Endmost 2,250,022,500
 Spectral Obliveracy Endmost 33,750,337,500
