@@ -405,7 +405,7 @@
 "Neomandelite": {"rarity": 68100490, "tier": "Enigmatic", "multiplier": 30, "location": "Shatterstone", "event": 0},
 "Gravitaticor": {"rarity": 71120000, "tier": "Enigmatic", "multiplier": 30, "location": "Darkmatter", "event": 0},
 "Placongela": {"rarity": 79408000, "tier": "Enigmatic", "multiplier": 30, "location": "Permafrost", "event": 0},
-"Frostranium": {"rarity": 87290000, "tier": "Enigmatic", "multiplier": 30, "location": "Permafrost", "event": 66288400},
+"Frostrainium": {"rarity": 87290000, "tier": "Enigmatic", "multiplier": 30, "location": "Permafrost", "event": 66288400},
 "Obliveracy Endmost": {"rarity": 88620900, "tier": "Enigmatic", "multiplier": 30, "location": "Void", "event": 75000750},
 "Vitriol": {"rarity": 94000280, "tier": "Enigmatic", "multiplier": 30, "location": "Shatterstone", "event": 71749500},
 "Laniakea Supercluster": {"rarity": 50000000, "tier": "Unfathomable", "multiplier": 20, "location": "Interstellar Caves [Exclusive]", "event": 0},
