@@ -269,7 +269,7 @@ class OreEvent:
                     rarity += " in Gilded Caves"
                 rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
                 if not is_clover:
-                    gilded_adjust = str('{:,}'.format(int(gilded_adjust.replace(",", "")foo[:-2])))
+                    gilded_adjust = str('{:,}'.format(int(gilded_adjust.replace(",", "")[:-2])))
                     rarity += "\nAdjusted Rarity (with Ambrosia Salad): 1 in " + gilded_adjust
             else:
                 print("No adjustment for ore")
