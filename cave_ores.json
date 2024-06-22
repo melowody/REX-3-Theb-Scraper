@@ -125,48 +125,48 @@
 "Magmatic": {
 "rarity": 11,
 "ores": {
-"Legacy Dyronsinite": [450000, 27000000, 405000000],
-"Legacy Flaeon": [833333, 41666650, 624999750],
+"Lunar Dyronsinite": [450000, 27000000, 405000000],
+"Lunar Flaeon": [833333, 41666650, 624999750],
 "Ascended Flare [Exclusive]": [6000000, 240000000, 3600000000],
-"Legacy Gargantium [Exclusive]": [6500000, 260000000, 3900000000],
-"Legacy Coronal Flare [Exclusive]": [13150000, 394500000, 5917500000],
-"Legacy Ω": [35000000, 1050000000, 15750000000],
-"*Legacy Omega": [35000000, 1050000000, 15750000000],
+"Lunar Gargantium [Exclusive]": [6500000, 260000000, 3900000000],
+"Lunar Coronal Flare [Exclusive]": [13150000, 394500000, 5917500000],
+"Lunar Ω": [35000000, 1050000000, 15750000000],
+"*Lunar Omega": [35000000, 1050000000, 15750000000],
 "Armageddium": [175000000, 3500000000, 52500000000]
 }},
 
 "Radioactive": {
 "rarity": 11,
 "ores": {
-"Legacy Newtonium": [200000, 14000000, 210000000],
-"Legacy Promethium": [210000, 14700000, 220500000],
+"Lunar Newtonium": [200000, 14000000, 210000000],
+"Lunar Promethium": [210000, 14700000, 220500000],
 "Actinium [Exclusive]": [120000, 7200000, 108000000],
-"Legacy Coronium [Exclusive]": [600000, 30000000, 450000000],
-"Legacy Neptunium [Exclusive]": [800000, 40000000, 600000000],
-"Legacy Poiseon": [833333, 41666650, 624999750],
+"Lunar Coronium [Exclusive]": [600000, 30000000, 450000000],
+"Lunar Neptunium [Exclusive]": [800000, 40000000, 600000000],
+"Lunar Poiseon": [833333, 41666650, 624999750],
 "Surgium [Exclusive]": [975000, 39000000, 585000000],
 "Lutetium": [1750000, 87500000, 1312500000],
-"Legacy Astatine": [8500000, 340000000, 5100000000],
-"Legacy Lawrencium [Exclusive]": [6000000, 240000000, 3600000000],
+"Lunar Astatine": [8500000, 340000000, 5100000000],
+"Lunar Lawrencium [Exclusive]": [6000000, 240000000, 3600000000],
 "Oganesson [Exclusive]": [12400000, 372000000, 5580000000]
 }},
 
 "Interstellar": {
 "rarity": 11,
 "ores": {
-"Legacy Galaxite [Exclusive]": [8900, 712000, 10680000],
+"Lunar Galaxite [Exclusive]": [8900, 712000, 10680000],
 "Tektite [Exclusive]": [10000, 800000, 12000000],
-"Legacy Pulsar Crystal [Exclusive]": [850000, 42500000, 637500000],
+"Lunar Pulsar Crystal [Exclusive]": [850000, 42500000, 637500000],
 "Sagittarius Quasar": [5600000, 224000000, 3360000000],
-"Legacy Andromidium [Exclusive]": [3000000, 120000000, 1800000000],
+"Lunar Andromidium [Exclusive]": [3000000, 120000000, 1800000000],
 "R136a1 [Exclusive]": [5300000, 212000000, 3180000000],
 "Protoflare": [12000000, 480000000, 7200000000],
-"Legacy Aurora": [15000000, 600000000, 9000000000],
+"Lunar Aurora": [15000000, 600000000, 9000000000],
 "Vaporwave Pulsar": [15900000, 636000000, 9540000000],
-"Legacy HR 5171 A [Exclusive]": [9000000, 270000000, 4050000000],
+"Lunar HR 5171 A [Exclusive]": [9000000, 270000000, 4050000000],
 "HD 160529 [Exclusive]": [16000000, 480000000, 7200000000],
 "Laniakea Supercluster [Exclusive]": [50000000, 1000000000, 15000000000],
-"Legacy Quasar 618": [514300000, 10286000000, 154290000000],
+"Lunar Quasar 618": [514300000, 10286000000, 154290000000],
 "Blood Lunarian [Exclusive]": [1606636, 64265440, 963981600]
 }},
 
