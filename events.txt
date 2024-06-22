@@ -136,3 +136,6 @@ Spectral Yuletide Star 33,625,800,000
 Divinis 49,641,680
 Ionized Divinis 1,489,250,400
 Spectral Divinis 22,338,756,000
+NOO P α 565,656,000
+Ionized NOO P α 11,313,120,000
+Spectral NOO P α 169,696,800,000
