@@ -108,14 +108,18 @@
 "rarity": 5700,
 "ores": {
 "Gold": [20, 2200, 33000],
-"Hyperheated Quasar [Exclusive]": [810000, 24300000, 364500000]
+"Hyperheated Quasar [Exclusive]": [810000, 24300000, 364500000],
+"Ambrosia [Exclusive]": [111112, 4444480, 66667200],
+"Ophanim [Exclusive]": [377777, 15111080, 226666200]
 }},
 
 "[57 Leaf Clover] Gilded": {
 "rarity": 57,
 "ores": {
 "Gold": [20, 2200, 33000],
-"Hyperheated Quasar [Exclusive]": [810000, 24300000, 364500000]
+"Hyperheated Quasar [Exclusive]": [810000, 24300000, 364500000],
+"Ambrosia [Exclusive]": [111112, 4444480, 66667200],
+"Ophanim [Exclusive]": [377777, 15111080, 226666200]
 }},
 
 "Magmatic": {
