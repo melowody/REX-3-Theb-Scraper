@@ -255,11 +255,11 @@ class OreEvent:
                 adjusted_found = True
                 gilded_adjust = rarity.replace("1 in ", "")
                 gilded_adjust = re.sub("[^0-9]", "", gilded_adjust)
-                warning_string = ""
+                is_clover = True
                 if not "57 Leaf Clover" in pickaxe:
                     gilded_adjust += "00"
                     print("Gilded Cave, 1 in 5,700")
-                    warning_string = " (if not using Ambrosia Salad)"
+                    is_clover = False
                 else:
                     print("Gilded Cave, 1 in 57")
                 gilded_adjust = int(gilded_adjust) * 1.88 * 57
@@ -267,10 +267,10 @@ class OreEvent:
                 print("Adjusted rarity calculated: " + gilded_adjust)
                 if not "Caves" in rarity:
                     rarity += " in Gilded Caves"
-                rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust + warning_string
-                if warning_string != "":
+                rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust
+                if not is_clover:
                     gilded_adjust = str('{:,}'.format(int(gilded_adjust.replace(",", "")foo[:-2])))
-                    rarity += "\nAdjusted Rarity: 1 in " + gilded_adjust + " (if using Ambrosia Salad)"
+                    rarity += "\nAdjusted Rarity (with Ambrosia Salad): 1 in " + gilded_adjust
             else:
                 print("No adjustment for ore")
 
