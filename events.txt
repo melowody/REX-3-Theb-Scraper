@@ -55,33 +55,33 @@ Spectral Illusory Bubblegram 102,600,012,000
 Pastelorium 26,580,000
 Ionized Pastelorium 1,063,200,000
 Spectral Pastelorium 15,948,000,000
-Legacy Freon 1,330,000
-Ionized Legacy Freon 66,500,000
-Spectral Legacy Freon 997,500,000
-Legacy Flaeon 1,330,000
-Ionized Legacy Flaeon 66,500,000
-Spectral Legacy Flaeon 997,500,000
-Legacy Poiseon 1,330,000
-Ionized Legacy Poiseon 66,500,000
-Spectral Legacy Poiseon 997,500,000
+Lunar Freon 1,330,000
+Ionized Lunar Freon 66,500,000
+Spectral Lunar Freon 997,500,000
+Lunar Flaeon 1,330,000
+Ionized Lunar Flaeon 66,500,000
+Spectral Lunar Flaeon 997,500,000
+Lunar Poiseon 1,330,000
+Ionized Lunar Poiseon 66,500,000
+Spectral Lunar Poiseon 997,500,000
 Sagittarius Quasar 2,500,000
 Ionized Sagittarius Quasar 125,000,000
 Spectral Sagittarius Quasar 1,875,000,000
 Protoflare 2,000,000
 Ionized Protoflare 80,000,000
 Spectral Protoflare 1,200,000,000
-Legacy Astatine 2,000,000
-Ionized Legacy Astatine 100,000,000
-Spectral Legacy Astatine 1,500,000,000
+Lunar Astatine 2,000,000
+Ionized Lunar Astatine 100,000,000
+Spectral Lunar Astatine 1,500,000,000
 Vaporwave Pulsar 3,500,000
 Ionized Vaporwave Pulsar 140,000,000
 Spectral Vaporwave Pulsar 2,100,000,000
 RGB Pulsar 25,500,000
 Ionized RGB Pulsar 765,000,000
 Spectral RGB Pulsar 11,475,000,000
-Legacy Codex 213,337
-Ionized Legacy Codex 10,666,850
-Spectral Legacy Codex 160,002,750
+Lunar Codex 213,337
+Ionized Lunar Codex 10,666,850
+Spectral Lunar Codex 160,002,750
 Galactic Rupture 16,250,000
 Ionized Galactic Rupture 650,000,000
 Spectral Galactic Rupture 9,750,000,000
