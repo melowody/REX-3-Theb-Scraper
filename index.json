@@ -510,5 +510,5 @@
 "Pitcoal": {"rarity": 25, "tier": "Common", "multiplier": 110, "location": "Jollystone [Unobtainable]", "event": 0},
 "Ambrosia": {"rarity": 111112, "tier": "Exquisite", "multiplier": 40, "location": "Gilded Caves [Subworld 1] [Exclusive]", "event": 0},
 "Dust": {"rarity": 1, "tier": "Common", "multiplier": 0, "location": "Vaporwave Vaporizer Byproduct", "event": 0},
-"Ophanim": {"rarity": 377777, "tier": "Transcendent", "multiplier": 40, "location": "Gilded Caves [World 1] [Exclusive]", "event": 0},
+"Ophanim": {"rarity": 377777, "tier": "Transcendent", "multiplier": 40, "location": "Gilded Caves [World 1] [Exclusive]", "event": 0}
 }
