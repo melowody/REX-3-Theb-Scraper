@@ -191,7 +191,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 message_contents += "\n## Gilded Cave (1 in 5,700)"
                 message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(newRarity * 1.88 * 5700)
-                message_contents += "\n## [57 Leaf Clover] Gilded Cave (1 in 57)"
+                message_contents += "\n## [Clover/Ambrosia] Gilded Cave (1 in 57)"
                 message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
         except:
