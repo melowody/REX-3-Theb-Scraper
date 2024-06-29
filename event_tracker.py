@@ -300,9 +300,7 @@ class OreEvent:
                     tracker_name = "THEB"
                 case EventType.GLOBAL:
                     tracker_name = "GLOBAL"
-                    if 'Spectral' in tier and 'Unfathomable' in tier:
-                        print("OH SHIT")
-                    elif 'Spectral' in tier and 'Otherworldly' in tier:
+                    if 'Spectral' in tier and 'Otherworldly' in tier:
                         print("OH REALLY SHIT")
                     elif 'Spectral' in tier and 'Zenith' in tier:
                         print("OH EXTREMELY SHIT")
