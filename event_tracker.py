@@ -226,7 +226,6 @@ class OreEvent:
             blocks = self.get_blocks()
             pickaxe = self.get_pickaxe()
             event = self.get_event()
-
             if "Ionized" in tier and not "Ionized" in ore:
                 ore = "Ionized " + ore
             elif "Spectral" in tier and not "Spectral" in ore:
@@ -235,7 +234,9 @@ class OreEvent:
             adjusted_found = False
             event_found = False
             is_exclusive = False
-            if "(" in ore and not "Gilded Cave" in ore:
+            if "Aurora Polaris" in ore:
+                rarity += "\nAdjusted Rarity: uhhhh... erm... IDK :3"
+            elif "(" in ore and not "Gilded Cave" in ore:
                 with open('adjusted.txt', 'r') as adjustedRarities:
                     cave_name = ore[ore.index("("):]
                     cave_name = cave_name.replace("(","").replace(" Cave)", "")
