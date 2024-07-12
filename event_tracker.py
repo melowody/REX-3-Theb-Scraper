@@ -235,7 +235,7 @@ class OreEvent:
             event_found = False
             is_exclusive = False
             if "Aurora Polaris" in ore:
-                rarity += "\nAdjusted Rarity: uhhhh... erm... IDK :3"
+                rarity += "\nAdjusted Rarity: erm... IDK :3"
             elif "(" in ore and not "Gilded Cave" in ore:
                 with open('adjusted.txt', 'r') as adjustedRarities:
                     cave_name = ore[ore.index("("):]
