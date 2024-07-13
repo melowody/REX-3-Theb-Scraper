@@ -139,3 +139,21 @@ Spectral Divinis 22,338,756,000
 NOO P α 565,656,000
 Ionized NOO P α 11,313,120,000
 Spectral NOO P α 169,696,800,000
+The All-Seeing 18,222,222
+Ionized The All-Seeing 728,888,880
+Spectral The All-Seeing 10,933,333,200
+Aurora Polaris 10,000,000
+Ionized Aurora Polaris 300,000,000
+Spectral Aurora Polaris 4,500,000,000
+Ephemryst 190,520,000
+Ionized Ephemryst 3,810,400,000
+Spectral Ephemryst 57,156,000,000
+Mythical Hive 6,666,666
+Ionized Mythical Hive 333,333,300
+Spectral Mythical Hive 4,999,999,500
+Panselinos 17,100,000
+Ionized Panselinos 684,000,000
+Spectral Panselinos 10,260,000,000
+Ectoplasmado 71,130,000
+Ionized Ectoplasmado 2,133,900,000
+Spectral Ectoplasmado 32,008,500,000
