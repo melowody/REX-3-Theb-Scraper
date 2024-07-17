@@ -180,7 +180,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         indexFile = open("index.json")
         data = json.load(indexFile)
         for entry in data:
-            if entry.lower() == ore.lower():
+            if entry.lower().replace(" [Seasonal]", "") == ore.lower():
                 ore = entry
         try:
             match variant:
