@@ -180,8 +180,6 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         indexFile = open("index.json")
         data = json.load(indexFile)
         for entry in data:
-            print(entry)
-            print(ore)
             if entry.lower() == ore.lower():
                 ore = entry
         try:
