@@ -181,7 +181,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         data = json.load(indexFile)
         for entry in data:
             if entry.lower().replace(" [Seasonal]", "") == ore.lower():
-                ore = entry
+                ore = entry.replace(" [Seasonal]", "")
         try:
             match variant:
                 case "Normal":   newRarity = data[ore]['rarity'] * 2.5
