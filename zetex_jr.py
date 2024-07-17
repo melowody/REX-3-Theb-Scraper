@@ -182,7 +182,7 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
         for entry in data:
             print(entry)
             print(ore)
-            if entry.lower().replace(" [seasonal]", "") == ore.lower():
+            if entry.lower() == ore.lower():
                 ore = entry
         try:
             match variant:
