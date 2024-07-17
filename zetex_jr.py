@@ -196,8 +196,9 @@ async def adjusted(ctx, ore: str, variant: discord.Option(str, choices=["Normal"
                 message_contents += "\n## [Clover/Ambrosia] Gilded Cave (1 in 57)"
                 message_contents += "\n**Base Rarity**: 1 in " + format_num(newRarity)
                 message_contents += "\n**Adjusted Rarity**: 1 in " + format_num(int(newRarity * 1.88 * 57))
-        except:
+        except Exception as e:
             message_contents += "\n Invalid ore :( Did you spell it right?"
+            print(e)
     
     if "Aurora Polaris" in message_contents:
         message_contents = "no"
