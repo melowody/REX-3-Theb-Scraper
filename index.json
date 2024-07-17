@@ -70,7 +70,7 @@
 "Lumbonium": {"rarity": 5760, "tier": "Uncommon", "multiplier": 100, "location": "Moon Mantle", "event": 0},
 "Crystal Snow": {"rarity": 7200, "tier": "Uncommon", "multiplier": 100, "location": "Frost [Seasonal]", "event": 0},
 "Turquoise": {"rarity": 7300, "tier": "Uncommon", "multiplier": 100, "location": "Moon Stone", "event": 0},
-"Chocolatine": {"rarity": 7500, "tier": "Uncommon", "multiplier": 100, "location": "Outer Core, Inner Core [Seasonal]", "event": 0},
+"Chocolatine": {"rarity": 7500, "tier": "Uncommon", "multiplier": 100, "location": "Outer Core, Inner Core, Spookstone [Seasonal]", "event": 0},
 "Box of Chocolatine": {"rarity": 8000, "tier": "Uncommon", "multiplier": 100, "location": "Everywhere [Seasonal]", "event": 0},
 "Radium": {"rarity": 9000, "tier": "Uncommon", "multiplier": 100, "location": "Moon Core", "event": 0},
 "Javanite": {"rarity": 9999, "tier": "Uncommon", "multiplier": 100, "location": "Moon Core", "event": 0},
@@ -513,5 +513,13 @@
 "Ophanim": {"rarity": 377777, "tier": "Transcendent", "multiplier": 40, "location": "Gilded Caves [World 1] [Exclusive]", "event": 0},
 "Mythical Hive": {"rarity": 12121212, "tier": "Exquisite", "multiplier": 40, "location": "Affement [Seasonal]", "event": 6666666},
 "Amare": {"rarity": 52300000, "tier": "Enigmatic", "multiplier": 30, "location": "Affement [Seasonal]", "event": 0},
-"Albuca Spiralis": {"rarity": 70100100, "tier": "Enigmatic", "multiplier": 30, "location": "Affement [Seasonal]", "event": 0}
+"Albuca Spiralis": {"rarity": 70100100, "tier": "Enigmatic", "multiplier": 30, "location": "Affement [Seasonal]", "event": 0},
+"Deepslate": {"rarity": 100, "tier": "Common", "multiplier": 110, "location": "Spookstone", "event": 0},
+"Tar": {"rarity": 120, "tier": "Common", "multiplier": 110, "location": "Spookstone", "event": 0},
+"Ash": {"rarity": 6700, "tier": "Uncommon", "multiplier": 100, "location": "Spookstone", "event": 0},
+"Vantaglass": {"rarity": 19000, "tier": "Rare", "multiplier": 90, "location": "Spookstone", "event": 0},
+"Ghostly Wood": {"rarity": 26666, "tier": "Rare", "multiplier": 90, "location": "Spookstone", "event": 0},
+"Bramble": {"rarity": 46400, "tier": "Master", "multiplier": 80, "location": "Spookstone", "event": 0},
+"Vermillion": {"rarity": 230000, "tier": "Surreal", "multiplier": 70, "location": "Spookstone", "event": 0},
+"Vermedictum": {"rarity": 720000, "tier": "Mythic", "multiplier": 60, "location": "Spookstone", "event": 0}
 }
