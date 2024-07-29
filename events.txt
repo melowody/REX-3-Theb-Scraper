@@ -157,3 +157,12 @@ Spectral Panselinos 10,260,000,000
 Ectoplasmado 71,130,000
 Ionized Ectoplasmado 2,133,900,000
 Spectral Ectoplasmado 32,008,500,000
+Dunestride 8,404,000
+Ionized Dunestride 336,160,000
+Spectral Dunestride 5,042,400,000
+Sunflower 42,400,000
+Ionized Sunflower 1,272,000,000
+Spectral Sunflower 19,080,000,000
+Frutiflux 76,543,210
+Ionized Frutiflux 2,296,296,300
+Spectral Frutiflux 34,444,444,500
