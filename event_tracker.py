@@ -293,7 +293,7 @@ class OreEvent:
                 print("No event for ore")
 
             tracker_name = ""
-            isPirate = True
+            isPirate = False
             match event_type:
                 case EventType.MOMSONGAMING:
                     tracker_name = "MOMSONGAMING"
