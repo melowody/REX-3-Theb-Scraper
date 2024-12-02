@@ -353,6 +353,7 @@ class OreEvent:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
                 case EventType.CHEX:
+                    isJolly = True
                     tracker_name = "CHEX"
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
