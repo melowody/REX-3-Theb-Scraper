@@ -294,6 +294,7 @@ class OreEvent:
 
             tracker_name = ""
             isPirate = False
+            isJolly = False
             match event_type:
                 case EventType.MOMSONGAMING:
                     tracker_name = "MOMSONGAMING"
@@ -339,6 +340,7 @@ class OreEvent:
                     ore = ore.replace("Ionized Acceleratium", "Sea Urchin Crystal")
                 case EventType.TEST:
                     tracker_name = "TEST"
+                    isJolly = True
                     tier = tier.replace("@everyone", "Nuh Uh")
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
@@ -361,6 +363,11 @@ class OreEvent:
                 rarity = rarity.replace("1 in ", "")
                 rarity = rarity + " DOUBLOONS"
                 return f"---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{username}** HAS STOLEN **{ore}**. YARRRR!!!\nTREASURE QUALITY: {tier}\nPRICE: {rarity}\nNAUTICAL MILES: {blocks}\nCUTLASS: {pickaxe}\nWEATHER: {event}\n---------------------------------------------"
+            if isJolly:
+                rarity = rarity.replace("Adjusted Rarity", ":tada: CHRISTMAS CHEER").replace("Event Rarity", ":cloud_snow: 'TIS THE SEASON")
+                rarity = rarity.replace("1 in ", "")
+                rarity = rarity + " COOKIES"
+                return f":snow::christmas_tree::snow:---------------------------------------------:snow::christmas_tree::snow:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snow: **{username}** HAS UNWRAPPED **{ore}**. HO HO HO! :snow:\n:gift: WRAPPING PAPER: {tier}\n:gift_heart: JOLLINESS RATING: {rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENT: {pickaxe}\n:bell: CAROL: {event}\n---------------------------------------------"
             else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
