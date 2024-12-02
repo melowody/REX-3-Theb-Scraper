@@ -310,6 +310,7 @@ class OreEvent:
                         tier = tier.replace("@everyone", "")
                 case EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
+                    isJolly = True
                     if 'Spectral' in tier and 'Unfathomable' in tier:
                         print("OH SHIT")
                     elif 'Spectral' in tier and 'Otherworldly' in tier:
@@ -329,10 +330,12 @@ class OreEvent:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
                 case EventType.BEGINNER2:
+                    isJolly = True
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
+                    isJolly = True
                     if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
                     else:
