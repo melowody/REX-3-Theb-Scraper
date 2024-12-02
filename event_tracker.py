@@ -353,9 +353,11 @@ class OreEvent:
                     tracker_name = "CHEX"
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
+                    isJolly = True
                     tier = tier.replace("@everyone", "")
                 case EventType.REFUGEGLOBAL:
                     tracker_name = "REFUGE GLOBAL"
+                    isJolly = True
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
             print("Returning tracker message")
             if isPirate:
