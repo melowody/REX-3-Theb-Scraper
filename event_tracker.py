@@ -368,8 +368,7 @@ class OreEvent:
             if isJolly:
                 rarity = rarity.replace("Adjusted Rarity", ":tada: CHRISTMAS CHEER").replace("Event Rarity", ":cloud_snow: 'TIS THE SEASON")
                 rarity = rarity.replace("1 in ", "")
-                rarity = rarity + " COOKIES"
-                return f":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snowflake: **{username}** HAS UNWRAPPED **{ore}**. HO HO HO! :snowflake:\n:gift: WRAPPING PAPER: {tier}\n:gift_heart: JOLLINESS RATING: {rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENT: {pickaxe}\n:bell: CAROL: {event}\n:snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
+                return f":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snowflake: **{username}** HAS UNWRAPPED **{ore}**. HO HO HO! :snowflake:\n:gift: WRAPPING PAPER: {tier}\n:gift_heart: JOLLINESS: {rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENT: {pickaxe}\n:bell: CAROL: {event}\n:snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
             else:
                 return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
