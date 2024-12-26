@@ -310,7 +310,6 @@ class OreEvent:
                         tier = tier.replace("@everyone", "")
                 case EventType.GLOBAL2:
                     tracker_name = "GLOBAL"
-                    isJolly = True
                     if 'Spectral' in tier and 'Unfathomable' in tier:
                         print("OH SHIT")
                     elif 'Spectral' in tier and 'Otherworldly' in tier:
@@ -330,12 +329,10 @@ class OreEvent:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1090797544939999343>")
                 case EventType.BEGINNER2:
-                    isJolly = True
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
                 case EventType.GOOBERVILLE:
                     tracker_name = "GOOBERVILLE"
-                    isJolly = True
                     if random.randrange(1, 11) == 1:
                         ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
                     else:
@@ -343,7 +340,6 @@ class OreEvent:
                     ore = ore.replace("Ionized Acceleratium", "Sea Urchin Crystal")
                 case EventType.TEST:
                     tracker_name = "TEST"
-                    isJolly = True
                     tier = tier.replace("@everyone", "Nuh Uh")
                 case EventType.SCOVILLE:
                     tracker_name = "SCOVILLE"
@@ -353,15 +349,12 @@ class OreEvent:
                     tracker_name = "ENDLESS"
                     tier = tier.replace("@everyone", "<@&1149541153465696320>")
                 case EventType.CHEX:
-                    isJolly = True
                     tracker_name = "CHEX"
                 case EventType.REFUGE:
                     tracker_name = "REFUGE"
-                    isJolly = True
                     tier = tier.replace("@everyone", "")
                 case EventType.REFUGEGLOBAL:
                     tracker_name = "REFUGE GLOBAL"
-                    isJolly = True
                     tier = tier.replace("@everyone", "<@&1165729194995626054>")
             print("Returning tracker message")
             if isPirate:
