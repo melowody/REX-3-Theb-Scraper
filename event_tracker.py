@@ -79,6 +79,7 @@ class OreEvent:
             self.get_bases()
     
     def get_bases(self):
+        print(self.__embed['title'])
         title_groups = re.search(r"^\*\*(.+)\*\* has found(?: an? )?((?:spectral|ionized)?)\*\* (.+)\*\*", self.__embed['title'])
         print(title_groups)
         
