@@ -125,7 +125,7 @@ class OreEvent:
         
         self.event = self.__embed["fields"][2]["value"]
 
-        self.pickaxe = self.__embed["fields"][2]["value"]
+        self.pickaxe = self.__embed["fields"][3]["value"]
     
     def get_username(self):
         return self.username
@@ -369,7 +369,7 @@ class OreEvent:
                 rarity = rarity.replace("1 in ", "")
                 return f":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snowflake: **{username}** HAS UNWRAPPED **{ore}**. HO HO HO! :snowflake:\n:gift: WRAPPING PAPER: {tier}\n:gift_heart: JOLLINESS: {rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENT: {pickaxe}\n:bell: CAROL: {event}\n:snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
             else:
-                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nPickaxe: {pickaxe}\nEvent: {event}\n---------------------------------------------"
+                return f"---------------------------------------------\n**[{tracker_name} TRACKER]**\n**{username}** has found **{ore}**\nTier: {tier}\nBase Rarity: {rarity}\nBlocks: {blocks}\nLoadout: {pickaxe}\nEvent: {event}\n---------------------------------------------"
         except Exception as err:
             zetex_jr.send_error("Error in event_tracker.py with formatting!\n" + traceback.format_exc())
             return ("error occurred with formatting lmfao, if you're reading this someone probably fucked up doing /manual. if someone didn't, go scream at zetex to read this traceback: ```" + traceback.format_exc() + "```")
