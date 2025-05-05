@@ -121,9 +121,9 @@ class OreEvent:
         
         self.blocks = int(self.__embed["fields"][1]["value"].replace(',',''))
         
+        self.event = self.__embed["fields"][2]["value"]
+
         self.pickaxe = self.__embed["fields"][2]["value"]
-        
-        self.event = self.__embed["fields"][3]["value"]
     
     def get_username(self):
         return self.username
