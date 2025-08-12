@@ -249,7 +249,7 @@ class OreEvent:
                                 rarity += " in " + cave_name + " Caves"
                             cave_rarity = int(line.split()[-1])
                             print(cave_name + " Cave, 1 in " + str(cave_rarity))
-                            rarity_num = rarity.replace("1 in ", "")
+                            rarity_num = rarity.replace("1 in ", "", 1)
                             rarity_num = int(re.sub("[^0-9]", "", rarity_num))
                             adjusted_rarity = str('{:,}'.format(int(rarity_num * cave_rarity * 1.88)))
                             print("Adjusted rarity calculated: " + adjusted_rarity)
