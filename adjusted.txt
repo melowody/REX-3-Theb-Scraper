@@ -23,7 +23,7 @@ Snowveil 20
 Freezeflower 22
 Fractured 35
 Starry 9
-Matrix 12
+Matrix 15
 Voltaic 17
 Bichromatic 21
 Monoprismatic 29
