@@ -147,7 +147,6 @@ class RExTrackerScraper(JsonRunner):
             event (dict): The event object sent by Discord
         """
         track = parse_event(event)
-        print(vars(track))
         if track:
             try:
                 save_track(track)

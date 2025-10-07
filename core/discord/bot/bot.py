@@ -54,6 +54,5 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
                 track = queue.get_nowait()
             except asyncio.QueueEmpty:
                 break
-            print(vars(track))
             await RExDiscordTrackMessage(self, track).send_messages()
             queue.task_done()

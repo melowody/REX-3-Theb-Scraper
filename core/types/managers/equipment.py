@@ -23,6 +23,8 @@ class RExEquipment:
     """The internal ID of the Equipment"""
     equip_name: str
     """The in-game name of the Equipment"""
+    equip_desc: str
+    """The description of the Equipment"""
     equip_tier: int
     """The tier of the Equipment out of 10"""
     equip_type: RExEquipmentType
@@ -55,19 +57,20 @@ class RExEquipmentManager(RExManager[RExEquipment]):
 
     @property
     def key_order(self) -> tuple[str, ...]:
-        return "EQUIP_ID", "EQUIP_NAME", "EQUIP_TIER", "EQUIP_TYPE", "WORLD_ID"
+        return "EQUIP_ID", "EQUIP_NAME", "EQUIP_DESC", "EQUIP_TIER", "EQUIP_TYPE", "WORLD_ID"
 
     @property
     def primary_key(self) -> str:
         return "EQUIP_ID"
 
     def parse_db_result(self, result: tuple[Any, ...]) -> RExEquipment:
-        return RExEquipment(result[0], result[1], result[2], RExEquipmentType(result[3]), result[4])
+        return RExEquipment(result[0], result[1], result[2], result[3], RExEquipmentType(result[4]), result[5])
 
     def prepare_db_entry(self, item: RExEquipment) -> dict[str, Any]:
         return {
             "EQUIP_ID": item.equip_id,
             "EQUIP_NAME": item.equip_name,
+            "EQUIP_DESC": item.equip_desc,
             "EQUIP_TIER": item.equip_tier,
             "EQUIP_TYPE": item.equip_type.value,
             "WORLD_ID": item.world_id

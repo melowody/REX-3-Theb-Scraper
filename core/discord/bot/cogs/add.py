@@ -53,7 +53,6 @@ class RExDiscordAddCommand(commands.Cog):
         cave_rarity = "The Cave's rarity constant"
     )
     async def add_cave(self, ctx: commands.Context, cave_id: str, ore_id: str, cave_name: str, world_id: str, cave_rarity: int):
-        print(ore_id)
         manager = RExCaveManager()
         manager.add(RExCave(cave_id, ore_id, cave_name, world_id, cave_rarity))
         manager.write_to_db()
@@ -72,7 +71,6 @@ class RExDiscordAddCommand(commands.Cog):
         max_depth = "The depth the Layer ends at"
     )
     async def add_layer(self, ctx: commands.Context, layer_id: str, ore_id: str, layer_name: str, world_id: str, min_depth: int, max_depth: int):
-        print(ore_id)
         manager = RExLayerManager()
         manager.add(RExLayer(layer_id, ore_id, layer_name, world_id, min_depth, max_depth))
         manager.write_to_db()
@@ -133,9 +131,9 @@ class RExDiscordAddCommand(commands.Cog):
         equip_type="The type of equipment",
         world_id="The world the equipment is found in"
     )
-    async def add_equipment(self, ctx: commands.Context, equip_id: str, equip_name: str, equip_tier: int, equip_type: RExEquipmentType, world_id: str):
+    async def add_equipment(self, ctx: commands.Context, equip_id: str, equip_name: str, equip_desc, equip_tier: int, equip_type: RExEquipmentType, world_id: str):
         manager = RExEquipmentManager()
-        manager.add(RExEquipment(equip_id, equip_name, equip_tier, equip_type, world_id))
+        manager.add(RExEquipment(equip_id, equip_name, equip_desc, equip_tier, equip_type, world_id))
         manager.write_to_db()
         await ctx.reply(f"Equipment added to index!", ephemeral=True)
 

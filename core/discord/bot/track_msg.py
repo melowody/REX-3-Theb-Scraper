@@ -135,7 +135,7 @@ class RExDiscordTrackMessage:
                 base_rarity=get_string(self.base_rarity, lambda x: f"{x:,}"),
                 adjusted_rarity=get_string(self.adjusted_rarity,
                                            lambda x: "" if x == self.base_rarity else f"\nAdjusted Rarity: 1 in {x:,}"),
-                blocks=self.blocks_mined,
+                blocks=f"{self.blocks_mined:,}",
                 loadout=", ".join([get_string(i, lambda x: x.equip_name) for i in self.loadout]),
                 event=get_string(self.event_ore, lambda x: "" if x is None else x.ore_name)
             ))
