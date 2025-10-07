@@ -1,0 +1,19 @@
+{
+  "default": "---------------------------------------------\n**[{guild} TRACKER]**\n**{player}{player_ping}** has found **{variant}{ore}**\nTier: **{tier}**{tier_variant}{ping}\nBase Rarity: 1 in {base_rarity}{adjusted_rarity}\nBlocks: {blocks}\nLoadout: {loadout}\nEvent: {event}\n---------------------------------------------",
+  "holidays": [
+    {
+      "day": 25,
+      "month": 12,
+      "messages": [
+        ":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snowflake: **{player}{player_ping}** HAS UNWRAPPED **{variant}{ore}**. HO HO HO! :snowflake:\n:gift: WRAPPING PAPER: **{tier}**{tier_variant}{ping}\n:gift_heart: JOLLINESS: 1 in {base_rarity}{adjusted_rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENTS: {loadout}\n:bell: CAROL: {event}\n:snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
+      ]
+    },
+    {
+      "day": 19,
+      "month": 9,
+      "messages": [
+        "---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{player}{player_ping}** HAS STOLEN **{variant}{ore}**. YARRRR!!!\nTREASURE QUALITY: **{tier}**{tier_variant}{ping}\nPRICE: 1 in {base_rarity}{adjusted_rarity}\nNAUTICAL MILES: {blocks}\nTOOLBELT: {loadout}\nWEATHER: {event}\n---------------------------------------------"
+      ]
+    }
+  ]
+}

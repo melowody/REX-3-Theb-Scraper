@@ -1,0 +1,12 @@
+[project]
+name = "rex-discord-bot"
+version = "0.1.0"
+description = "A Discord bot for REx tracking and indexing"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "discord-py>=2.6.3",
+    "psycopg2>=2.9.10",
+    "python-dotenv>=1.1.1",
+    "websocket-client>=1.8.0",
+]
