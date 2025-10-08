@@ -36,7 +36,10 @@ class RExPlayer:
     def get_discord_guilds(self) -> list[Guild]:
         """Returns the Discord Guilds this Player is in"""
         from core.types.managers.guild import RExGuildManager
-        return [i for i in self.get_discord_user().mutual_guilds if RExGuildManager().exists(lambda x: x.guild_id == i.id)]
+        user = self.get_discord_user()
+        if user is None:
+            return []
+        return [i for i in user.mutual_guilds if RExGuildManager().exists(lambda x: x.guild_id == i.id)]
 
     def get_guilds(self) -> "list[RExGuild]":
         """Returns the RExGuilds this Player is in"""

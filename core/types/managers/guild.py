@@ -34,15 +34,18 @@ class RExGuild:
     def get_discord_channels(self) -> list[TextChannel]:
         """Get the Discord Channels in this Guild"""
         from core.discord.bot.bot import RExDiscordBot
-        out = []
+        out: list[TextChannel] = []
         for i in self.get_discord_channels():
-            if channel := RExDiscordBot().get_channel(i.id):
+            channel = RExDiscordBot().get_channel(i.id)
+            if isinstance(channel, TextChannel):
                 out.append(channel)
         return out
 
     def get_players(self) -> "list[RExPlayer]":
         """Get the Players in this Guild"""
-        members = [i.id for i in self.get_discord_guild().members]
+        if (guild := self.get_discord_guild()) is None:
+            return []
+        members = [i.id for i in guild.members]
         return RExPlayerManager().get(lambda x: x.user_id in members)
 
     def __eq__(self, other):

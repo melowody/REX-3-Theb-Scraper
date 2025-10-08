@@ -32,7 +32,8 @@ class RExWorld:
     def get_spawns(self) -> "list[RExSpawn]":
         """Get all Spawns in this World"""
         from core.types.managers.spawn import RExSpawnManager
-        return RExSpawnManager().get(lambda x: x.world_id == self.world_id)
+        layers = [i.layer_id for i in self.get_layers()]
+        return RExSpawnManager().get(lambda x: x.layer_id in layers)
 
     def __eq__(self, other):
         return isinstance(other, RExWorld) and self.world_id == other.world_id

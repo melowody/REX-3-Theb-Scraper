@@ -8,6 +8,8 @@ from core.types.managers.player import RExPlayerManager
 
 
 async def dm_owners(bot: commands.Bot, msg: str) -> None:
+    if bot.owner_ids is None:
+        return
     for i in bot.owner_ids:
         owner = bot.get_user(i)
         if owner is None:
@@ -20,7 +22,7 @@ class RExDiscordEpinephrineCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="epinephrine", description="Simulate the hunt for the elusive Epinephrine! (1 in 999,999,999)")
+    @commands.hybrid_command(name="epinephrine", description="Simulate the hunt for the elusive Epinephrine! (1 in 999,999,999)")  # type: ignore[arg-type]
     async def epinephrine(self, ctx: Context):
 
         player = RExPlayerManager().get_one(lambda x: x.user_id == ctx.author.id, ctx.author.id)
@@ -35,11 +37,11 @@ class RExDiscordEpinephrineCommand(commands.Cog):
         min_epi, max_epi = None, None
         players = RExPlayerManager().get(lambda x: x.max_epi is not None)
         if len(players) > 0:
-            min_epi = sorted(players, key=lambda p: p.min_epi)[0].min_epi
-            max_epi = sorted(players, key=lambda p: p.max_epi)[-1].max_epi
+            min_epi = sorted(players, key=lambda p: p.min_epi)[0].min_epi # type: ignore[arg-type, return-value]
+            max_epi = sorted(players, key=lambda p: p.max_epi)[-1].max_epi # type: ignore[arg-type, return-value]
 
-        player.max_epi = max(player.max_epi, roll)
-        player.min_epi = min(player.min_epi, roll)
+        player.max_epi = max(player.max_epi, roll) # type: ignore[type-var]
+        player.min_epi = min(player.min_epi, roll) # type: ignore[type-var]
 
         # Handle all the custom messages
         # TODO: Add highest/lowest roll messages!

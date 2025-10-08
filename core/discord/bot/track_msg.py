@@ -2,7 +2,7 @@ import json
 import os
 import random
 from datetime import datetime
-from typing import Any, Callable, TypeVar
+from typing import Callable, TypeVar
 
 from core.discord.bot.util import get_string
 from core.types.manager import NotInIndex
@@ -81,6 +81,9 @@ class RExDiscordTrackMessage:
 
     async def _send_player_messages(self) -> None:
 
+        if not isinstance(self.player, RExPlayer):
+            return
+
         channels = []
         for guild in self.player.get_guilds():
             channels += [i for i in guild.get_channels() if i.type == RExTrackerType.PLAYER]
@@ -88,7 +91,7 @@ class RExDiscordTrackMessage:
         await self._send_track_messages(
             channels,
             11,
-            lambda g: "" if g.guild_id != self.player.guild_id else f" <@{self.player.user_id}>"
+            lambda g: "" if g.guild_id != self.player.guild_id else f" <@{self.player.user_id}>" # type: ignore[union-attr]
         )
 
     async def _send_beginner_messages(self) -> None:
@@ -123,7 +126,10 @@ class RExDiscordTrackMessage:
             if role := channel.get_ping_role():
                 ping_msg = f"<@{role.id}>"
 
-            await channel.get_discord_channel().send(get_track_message().format(
+            text_channel = channel.get_discord_channel()
+            if text_channel is None:
+                continue
+            await text_channel.send(get_track_message().format(
                 guild=guild.guild_name.upper(),
                 player=self.player,
                 player_ping=player_ping(guild),
@@ -137,7 +143,7 @@ class RExDiscordTrackMessage:
                                            lambda x: "" if x == self.base_rarity else f"\nAdjusted Rarity: 1 in {x:,}"),
                 blocks=f"{self.blocks_mined:,}",
                 loadout=", ".join([get_string(i, lambda x: x.equip_name) for i in self.loadout]),
-                event=get_string(self.event_ore, lambda x: "" if x is None else x.ore_name)
+                event=get_string(self.event_ore, lambda x: "None" if x is None else x.ore_name)
             ))
 
         self.pinged = to_ping or self.pinged

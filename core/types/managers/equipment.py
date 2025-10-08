@@ -29,7 +29,7 @@ class RExEquipment:
     """The tier of the Equipment out of 10"""
     equip_type: RExEquipmentType
     """The type of the Equipment"""
-    world_id: str
+    world_id: str | None
     """The internal ID of the world this Equipment is found int"""
 
     def get_world(self) -> "RExWorld | NotInIndex":

@@ -21,12 +21,12 @@ class RExDiscordIndexCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_group(name="index", description="Get information about items in the game")
+    @commands.hybrid_group(name="index", description="Get information about items in the game") # type: ignore[arg-type]
     async def index(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.reply("You must specify what you want information about!", ephemeral=True)
 
-    @index.command(name="world", description="Get information about a world in REx")
+    @index.command(name="world", description="Get information about a world in REx") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
     )
@@ -37,7 +37,7 @@ class RExDiscordIndexCommand(commands.Cog):
             return
         await ctx.reply(f"## {world.world_name}\n{world.world_desc}", ephemeral=True)
 
-    @index.command(name="ore", description="Get information about an ore in REx")
+    @index.command(name="ore", description="Get information about an ore in REx") # type: ignore[arg-type]
     @app_commands.autocomplete(
         ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
     )
@@ -80,7 +80,7 @@ class RExDiscordIndexCommand(commands.Cog):
 
         await ctx.reply(f"## {ore.ore_name}{tier_str}\n{rarity_msg}\n\nLocation{'' if len(spawns) == 1 else 's'}: **{'NOT IN INDEX' if len(locations) == 0 else ', '.join(locations)}**\n{event_msg}")
 
-    @index.command(name="cave", description="Get information about a cave")
+    @index.command(name="cave", description="Get information about a cave") # type: ignore[arg-type]
     @app_commands.autocomplete(
         cave_id=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name)
     )
@@ -95,7 +95,7 @@ class RExDiscordIndexCommand(commands.Cog):
 
         await ctx.reply(f"## {cave.cave_name}\n**Cave Wall:** {ore_msg}\n**Rarity:** {cave.cave_rarity}\n**World:** {world_msg}")
 
-    @index.command(name="layer", description="Get information about a layer")
+    @index.command(name="layer", description="Get information about a layer") # type: ignore[arg-type]
     @app_commands.autocomplete(
         layer_id=get_items(RExLayerManager().get_all(), lambda x: x.layer_id, lambda x: x.layer_name)
     )

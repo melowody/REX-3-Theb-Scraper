@@ -27,7 +27,7 @@ class RExDiscordLeaderboardCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_group(name="leaderboard", aliases=["lb"], description="Get various leaderboards! (Defaults to server rarest)")
+    @commands.hybrid_group(name="leaderboard", aliases=["lb"], description="Get various leaderboards! (Defaults to server rarest)") # type: ignore[arg-type]
     @app_commands.describe(
         adjusted=""
     )
@@ -51,7 +51,7 @@ class RExDiscordLeaderboardCommand(commands.Cog):
 
         await ctx.reply(f"## {rex_guild.guild_name} Top {len(rarests)}\n{'\n'.join(f"**{i}.** {j[0]} - {j[1]} (1 in {j[2]:,})" for i, j in enumerate(rarest_msgs))}")
 
-    @leaderboard.command(name="player", description="Get a single player's rarest finds")
+    @leaderboard.command(name="player", description="Get a single player's rarest finds") # type: ignore[arg-type]
     @app_commands.autocomplete(
         player_id=get_items(RExPlayerManager().get_all(), lambda x: str(x.user_id), lambda x: x.get_discord_user(), lambda interaction, player: (guild := interaction.guild) is not None and player.user_id in [i.id for i in guild.members])
     )

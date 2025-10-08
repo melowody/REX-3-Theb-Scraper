@@ -18,7 +18,7 @@ from core.types.meta import SingletonMeta
 
 
 class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
-    cogs: list[Type[commands.Cog]] = [
+    my_cogs: list[Type[commands.Cog]] = [
         RExDiscordAddCommand,
         RExDiscordEpinephrineCommand,
         RExDiscordIndexCommand,
@@ -43,7 +43,7 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
         self.send_events.start()
 
     async def setup_hook(self) -> None:
-        for cog in self.cogs:
+        for cog in self.my_cogs:
             await self.add_cog(cog(self))
 
     @tasks.loop(seconds=.01)

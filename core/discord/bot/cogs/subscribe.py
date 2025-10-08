@@ -12,7 +12,7 @@ class RExDiscordSubscribeCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="subscribe", description="Sign up a command for tracking!")
+    @commands.hybrid_command(name="subscribe", description="Sign up a command for tracking!") # type: ignore[arg-type]
     @commands.has_permissions(manage_channels=True)
     async def subscribe(self, ctx: commands.Context, channel_type: RExTrackerType, ping_role: typing.Optional[discord.Role]):
 

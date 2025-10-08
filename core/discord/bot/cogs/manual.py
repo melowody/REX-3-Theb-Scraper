@@ -22,7 +22,7 @@ class RExDiscordManualCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_group(name="manual", description="Manually track an ore in case the official tracker missed it")
+    @commands.hybrid_group(name="manual", description="Manually track an ore in case the official tracker missed it") # type: ignore[arg-type]
     @commands.is_owner()
     @app_commands.autocomplete(
         ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),

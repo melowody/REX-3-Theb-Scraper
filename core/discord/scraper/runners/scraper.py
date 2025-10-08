@@ -61,7 +61,7 @@ def parse_event(event: dict) -> RExTrack | None:
                 curr_event = RExEventManager().get_one(lambda x: x.ore_id.lower() == curr_event_ore.ore_id.lower(), curr_event_ore.ore_id)
         elif field.get("name") == "Loadout" and field.get("value"):
             for i in field.get("value").split(", "):
-                if equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i):
+                if isinstance(equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i), RExEquipment):
                     equipment.append(equip)
 
     return RExTrack(
@@ -151,5 +151,5 @@ class RExTrackerScraper(JsonRunner):
             try:
                 save_track(track)
             except Exception:
-                pass
+                print(vars(track))
             await self.queue.put(track)

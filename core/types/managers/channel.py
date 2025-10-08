@@ -48,9 +48,9 @@ class RExChannel:
 
     def get_ping_role(self) -> Role | None:
         """Get the Discord Role to ping for the rarest finds"""
-        if guild := self.get_discord_guild():
-            return guild.get_role(self.ping_role)
-        return None
+        if self.ping_role is None or (guild := self.get_discord_guild()) is None:
+            return None
+        return guild.get_role(self.ping_role)
 
     def __eq__(self, other):
         return self.channel_id == other.channel_id

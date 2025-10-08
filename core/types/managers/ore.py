@@ -16,7 +16,7 @@ class RExOre:
     """The in-game name of the Ore"""
     tier_id: str
     """The internal ID of the Tier of the Ore"""
-    alt_name: str
+    alt_name: str | None
     """The alternate, keyboard-friendly name of the Ore"""
 
     def get_tier(self) -> "RExTier | NotInIndex":

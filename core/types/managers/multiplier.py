@@ -43,6 +43,7 @@ class RExMultiplierManager(RExManager[RExMultiplier]):
     def primary_key(self) -> str:
         return "MULTIPLIER"
 
+    @property
     def is_unique_index(self) -> bool:
         return True
 

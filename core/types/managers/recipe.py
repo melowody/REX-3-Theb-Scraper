@@ -43,6 +43,7 @@ class RExRecipeManager(RExManager[RExRecipeStep]):
     def primary_key(self) -> str:
         return "RECIPE_STEP"
 
+    @property
     def is_unique_index(self) -> bool:
         return True
 

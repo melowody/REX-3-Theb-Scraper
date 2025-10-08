@@ -23,13 +23,13 @@ class RExDiscordAddCommand(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
 
-    @commands.hybrid_group(name="add", description="Add items to the game index")
+    @commands.hybrid_group(name="add", description="Add items to the game index") # type: ignore[arg-type]
     @commands.is_owner()
     async def add(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.reply("You must specify what to add!", ephemeral=True)
 
-    @add.command(name="world", description="Add a new world to the index")
+    @add.command(name="world", description="Add a new world to the index") # type: ignore[arg-type]
     @app_commands.describe(
         world_id = "The internal ID of the World",
         world_name = "The in-game name of the World",
@@ -41,7 +41,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"World \"{world_name}\" added to index!", ephemeral=True)
 
-    @add.command(name="cave", description="Add a new cave to the index")
+    @add.command(name="cave", description="Add a new cave to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
         ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
@@ -58,7 +58,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Cave \"{cave_name}\" added to index!", ephemeral=True)
 
-    @add.command(name="layer", description="Add a new layer to the index")
+    @add.command(name="layer", description="Add a new layer to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
         ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
@@ -76,7 +76,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Layer \"{layer_name}\" added to index!", ephemeral=True)
 
-    @add.command(name="tier", description="Add a new tier to the index")
+    @add.command(name="tier", description="Add a new tier to the index") # type: ignore[arg-type]
     @app_commands.describe(
         tier_id = "The internal ID of the Tier",
         tier_name = "The in-game name of the Tier",
@@ -90,20 +90,20 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Tier \"{tier_name}\" added to index!", ephemeral=True)
 
-    @add.command(name="ore", description="Add a new ore to the index")
+    @add.command(name="ore", description="Add a new ore to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(tier_id=get_items(RExTierManager().get_all(), lambda x: x.tier_id, lambda x: x.tier_name))
     @app_commands.describe(
         ore_id = "The internal ID of the Ore",
         ore_name = "The in-game name of the Ore",
         tier_id = "The Tier the Ore is in"
     )
-    async def add_ore(self, ctx: commands.Context, ore_id: str, ore_name: str, tier_id: str):
+    async def add_ore(self, ctx: commands.Context, ore_id: str, ore_name: str, tier_id: str, alt_name: typing.Optional[str]):
         manager = RExOreManager()
-        manager.add(RExOre(ore_id, ore_name, tier_id))
+        manager.add(RExOre(ore_id, ore_name, tier_id, alt_name))
         manager.write_to_db()
         await ctx.reply(f"Ore \"{ore_name}\" added to index!", ephemeral=True)
 
-    @add.command(name="spawn", description="Add a new spawn to the index")
+    @add.command(name="spawn", description="Add a new spawn to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         ore_id = get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),
         layer_id = get_items(RExLayerManager().get_all(), lambda x: x.layer_id, lambda x: x.layer_name),
@@ -121,7 +121,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Spawn added to index!", ephemeral=True)
 
-    @add.command(name="equipment", description="Add a new equipment to the index")
+    @add.command(name="equipment", description="Add a new equipment to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
     )
@@ -131,13 +131,13 @@ class RExDiscordAddCommand(commands.Cog):
         equip_type="The type of equipment",
         world_id="The world the equipment is found in"
     )
-    async def add_equipment(self, ctx: commands.Context, equip_id: str, equip_name: str, equip_desc, equip_tier: int, equip_type: RExEquipmentType, world_id: str):
+    async def add_equipment(self, ctx: commands.Context, equip_id: str, equip_name: str, equip_desc, equip_tier: int, equip_type: RExEquipmentType, world_id: typing.Optional[str]):
         manager = RExEquipmentManager()
         manager.add(RExEquipment(equip_id, equip_name, equip_desc, equip_tier, equip_type, world_id))
         manager.write_to_db()
         await ctx.reply(f"Equipment added to index!", ephemeral=True)
 
-    @add.command(name="recipe", description="Add a recipe step to the index")
+    @add.command(name="recipe", description="Add a recipe step to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         equip_id=get_items(RExEquipmentManager().get_all(), lambda x: x.equip_id, lambda x: x.equip_name),
         ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
@@ -153,7 +153,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Recipe Step added to index!", ephemeral=True)
 
-    @add.command(name="ability", description="Add an equipment ability to the index")
+    @add.command(name="ability", description="Add an equipment ability to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         equip_id=get_items(RExEquipmentManager().get_all(), lambda x: x.equip_id, lambda x: x.equip_name)
     )
@@ -184,7 +184,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Ability {ability_name} added to index!", ephemeral=True)
 
-    @add.command(name="event", description="Add an event to the index")
+    @add.command(name="event", description="Add an event to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
@@ -212,7 +212,7 @@ class RExDiscordAddCommand(commands.Cog):
         manager.write_to_db()
         await ctx.reply(f"Event added to index!", ephemeral=True)
 
-    @add.command(name="tracker", description="Add a tracker for the bot to scrape")
+    @add.command(name="tracker", description="Add a tracker for the bot to scrape") # type: ignore[arg-type]
     @app_commands.describe(
         tracker_id="The ID of the tracker in the REx server"
     )
@@ -220,13 +220,13 @@ class RExDiscordAddCommand(commands.Cog):
         if not tracker_id.isdigit():
             await ctx.reply(f"Invalid tracker ID!", ephemeral=True)
             return
-        tracker_id = int(tracker_id)
+        tracker_num = int(tracker_id)
         manager = RExTrackerManager()
-        manager.add(RExTracker(tracker_id))
+        manager.add(RExTracker(tracker_num))
         manager.write_to_db()
         await ctx.reply(f"Tracker added to index!", ephemeral=True)
 
-    @add.command(name="variant", description="Add a variant to the bot's index")
+    @add.command(name="variant", description="Add a variant to the bot's index") # type: ignore[arg-type]
     async def add_variant(self, ctx: commands.Context, variant_id: str, variant_name: str, variant_num: int):
         manager = RExVariantManager()
         manager.add(RExVariant(variant_id, variant_name, variant_num))

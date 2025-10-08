@@ -9,7 +9,7 @@ class RExDiscordSetupCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="setup", description="Set up the server for tracking")
+    @commands.hybrid_command(name="setup", description="Set up the server for tracking") # type: ignore[arg-type]
     async def setup(self, ctx: Context, server_name: str):
         if (guild := ctx.guild) is None:
             await ctx.reply("You must set this up in a server!", ephemeral=True)

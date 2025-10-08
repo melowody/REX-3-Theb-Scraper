@@ -90,12 +90,12 @@ class RExTrack:
         """Get the Equipment this Track was found with"""
         from core.types.managers.equipment import RExEquipmentManager
         manager = RExEquipmentManager()
-        out = []
+        out: list[RExEquipment | NotInIndex] = []
         for i in self.equip_ids:
             if isinstance(i, NotInIndex):
                 out.append(i)
-            elif equip := manager.get_one(lambda x: x.equip_id == i, i):
-                out.append(equip)
+            else:
+                out.append(manager.get_one(lambda x: x.equip_id == i, i))
         return out
 
     def get_tier(self) -> "RExTier | NotInIndex":
@@ -121,6 +121,10 @@ class RExTrack:
 
         cave_spawns = [i for i in spawns if i.cave_id == self.cave_id]
         if self.cave_id == "gilded" and len(cave_spawns) == 0:
+            if isinstance(self.ore_id, NotInIndex):
+                return self.ore_id
+            if isinstance(self.cave_id, NotInIndex):
+                return self.cave_id
             if len(layer_spawns) == 0:
                 return NotInIndex(f"{self.ore_id} (Layer)", RExSpawn)
             else:
@@ -141,14 +145,16 @@ class RExTrack:
             return spawn
         return spawn.rarity
 
-    def get_multiplier(self) -> "RExMultiplier | NotInIndex":
+    def get_multiplier(self) -> "RExMultiplier | NotInIndex | None":
         """Get the multiplier for this Track"""
-        tier = self.get_tier()
-        if isinstance(tier, NotInIndex):
-            return tier
         variant = self.get_variant()
         if isinstance(variant, NotInIndex):
             return variant
+        elif variant is None:
+            return None
+        tier = self.get_tier()
+        if isinstance(tier, NotInIndex):
+            return tier
         return variant.get_multiplier(tier)
 
     def get_adjusted_rarity(self) -> "int | NotInIndex":
@@ -159,6 +165,8 @@ class RExTrack:
         multiplier = self.get_multiplier()
         if isinstance(multiplier, NotInIndex):
             return multiplier
+        elif multiplier is None:
+            return base_rarity
         return base_rarity * multiplier.multiplier
 
     def get_event_ore(self) -> "RExOre | NotInIndex | None":
@@ -197,8 +205,11 @@ def save_track(track: RExTrack) -> None:
         print("Could not save Track!")
         traceback.print_exc()
 
-def query(table_name: str, limit: int, *selectors: Selector) -> list[RExTrack]:
-    return list(map(parse_result, core.types.manager.query(table_name, TRACK_ORDER, list(selectors), limit=limit)))
+def track_query(table_name: str, limit: int, *selectors: Selector) -> list[RExTrack]:
+    out: list[RExTrack] = []
+    for track in query(table_name, TRACK_ORDER, list(selectors), limit=limit):
+        out.append(parse_result(track))
+    return out
 
 def get_player_rarest(player: "RExPlayer", limit: int = 10) -> list[RExTrack]:
-    return query("TRACKS", limit, Selector("PLAYER_NAME", player.player_name, Comparator.EQUAL))
+    return track_query("TRACKS", limit, Selector("PLAYER_NAME", player.player_name, Comparator.EQUAL))

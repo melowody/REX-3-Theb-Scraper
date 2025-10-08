@@ -32,7 +32,7 @@ class RExAbility:
     def get_equipment(self) -> "RExEquipment | NotInIndex":
         """Get the associated Equipment"""
         from core.types.managers.equipment import RExEquipmentManager
-        return RExEquipmentManager().get_one(lambda x: x.equipment_id == self.equip_id, self.equip_id)
+        return RExEquipmentManager().get_one(lambda x: x.equip_id == self.equip_id, self.equip_id)
 
     def __eq__(self, other):
         return isinstance(other, RExAbility) and self.ability_name == other.ability_name

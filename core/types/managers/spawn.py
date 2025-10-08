@@ -49,6 +49,7 @@ class RExSpawnManager(RExManager[RExSpawn]):
     def primary_key(self) -> str:
         return "ORE_SPAWN"
 
+    @property
     def is_unique_index(self) -> bool:
         return True
 
