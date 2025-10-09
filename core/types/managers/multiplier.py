@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from core.types.manager import NotInIndex
 from core.types.manager import RExManager
 
 if TYPE_CHECKING:

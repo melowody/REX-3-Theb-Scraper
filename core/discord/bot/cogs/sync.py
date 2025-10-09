@@ -8,6 +8,6 @@ class RExDiscordSyncCommand(commands.Cog):
 
     @commands.hybrid_command(name="sync", description="Sync slash commands with Discord") # type: ignore[arg-type]
     @commands.is_owner()
-    async def sync(self, ctx: commands.Context[commands.Bot], *_, **__) -> None:
-        await ctx.bot.tree.sync()
+    async def sync(self, ctx: commands.Context[commands.Bot]) -> None:
+        await self.bot.tree.sync()
         await ctx.reply("Synced!", ephemeral=True)

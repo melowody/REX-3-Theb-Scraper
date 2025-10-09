@@ -9,6 +9,7 @@ from core.discord.bot.cogs.epinephrine import RExDiscordEpinephrineCommand
 from core.discord.bot.cogs.index import RExDiscordIndexCommand
 from core.discord.bot.cogs.leaderboard import RExDiscordLeaderboardCommand
 from core.discord.bot.cogs.manual import RExDiscordManualCommand
+from core.discord.bot.cogs.register import RExDiscordRegisterCommand
 from core.discord.bot.cogs.setup import RExDiscordSetupCommand
 from core.discord.bot.cogs.subscribe import RExDiscordSubscribeCommand
 from core.discord.bot.cogs.sync import RExDiscordSyncCommand
@@ -26,7 +27,8 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
         RExDiscordManualCommand,
         RExDiscordSetupCommand,
         RExDiscordSubscribeCommand,
-        RExDiscordSyncCommand
+        RExDiscordSyncCommand,
+        RExDiscordRegisterCommand
     ]
 
     def __init__(self):

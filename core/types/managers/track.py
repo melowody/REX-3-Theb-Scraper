@@ -202,6 +202,7 @@ def save_track(track: RExTrack) -> None:
     try:
         upsert([track], "TRACKS", "TRACK_KEY", prepare_track, is_unique_index=True)
     except Exception:
+        print(vars(track))
         print("Could not save Track!")
         traceback.print_exc()
 

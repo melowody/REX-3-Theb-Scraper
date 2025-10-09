@@ -16,7 +16,7 @@ class RExPlayer:
     """The Discord ID of the Player"""
     player_name: str
     """The in-game username of the Player"""
-    guild_id: int
+    guild_id: int | None
     """The ID of the Guild the Player wants to be pinged in for rare finds"""
     max_epi: int | None
     """The maximum epinephrine role this Player has gotten"""

@@ -30,8 +30,6 @@ class RExDiscordEpinephrineCommand(commands.Cog):
             await ctx.reply("You need to register for the bot! Use /register", ephemeral=True)
             return
 
-        bot: commands.Bot = ctx.bot
-
         roll = random.randrange(1, 1_000_000_000)
 
         min_epi, max_epi = None, None
@@ -44,19 +42,18 @@ class RExDiscordEpinephrineCommand(commands.Cog):
         player.min_epi = min(player.min_epi, roll) # type: ignore[type-var]
 
         # Handle all the custom messages
-        # TODO: Add highest/lowest roll messages!
         match roll:
             case 999_999_999:
-                await dm_owners(bot, f"EPINEPHRINE!!!\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
+                await dm_owners(self.bot, f"EPINEPHRINE!!!\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
                 await ctx.reply(f"YOU GOT EPINEPHRINE! @everyone\n(rolled 999,999,999)")
             case 1:
-                await dm_owners(bot, f"1 ON EPINEPHRINE!!!\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
+                await dm_owners(self.bot, f"1 ON EPINEPHRINE!!!\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
                 await ctx.reply(f"YOU GOT...as far away from Epinephrine as possible! @everyone\n(rolled 1)")
             case s if min_epi and s < min_epi:
-                await dm_owners(bot, f"NEW LOWEST!!! ({s:,})\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
+                await dm_owners(self.bot, f"NEW LOWEST!!! ({s:,})\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
                 await ctx.reply(f"You didn't get Epinephrine :c\n(got {roll:,} but needed 999,999,999)\n# NEW LOWEST ROLL!")
             case s if max_epi and s > max_epi:
-                await dm_owners(bot, f"NEW HIGHEST!!! ({s:,})\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
+                await dm_owners(self.bot, f"NEW HIGHEST!!! ({s:,})\nFound by <@{ctx.message.author.id}> ({ctx.message.author.name})")
                 await ctx.reply(f"You didn't get Epinephrine :c\n(got {roll:,} but needed 999,999,999)\n# NEW HIGHEST ROLL!")
             case _:
                 await ctx.reply(f"You didn't get Epinephrine :c\n(got {roll:,} but needed 999,999,999)")
