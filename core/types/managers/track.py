@@ -3,7 +3,8 @@ import traceback
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
-import core.types.manager
+from psycopg2 import sql
+
 from core.types.manager import NotInIndex
 from core.types.manager import upsert, query, Selector, Comparator
 from core.types.managers.spawn import RExSpawn
@@ -216,11 +217,11 @@ def save_track(track: RExTrack) -> None:
         print("Could not save Track!")
         traceback.print_exc()
 
-def track_query(table_name: str, limit: int | None, *selectors: Selector) -> list[RExTrack]:
+def track_query(limit: int | None, *selectors: Selector | sql.SQL) -> list[RExTrack]:
     out: list[RExTrack] = []
-    for track in query(table_name, TRACK_ORDER, list(selectors), limit=limit):
+    for track in query("TRACKS", TRACK_ORDER, list(selectors), limit=limit):
         out.append(parse_result(track))
     return out
 
 def get_player_rarest(player: "RExPlayer", limit: int = 10) -> list[RExTrack]:
-    return track_query("TRACKS", limit, Selector("PLAYER_NAME", player.player_name, Comparator.EQUAL))
+    return track_query(limit, Selector("PLAYER_NAME", player.player_name, Comparator.EQUAL))

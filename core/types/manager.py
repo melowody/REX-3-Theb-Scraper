@@ -62,14 +62,14 @@ class Selector:
     """The comparator in the query"""
 
 
-def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector], limit: int | None = None) -> list[tuple[Any, ...]]:
+def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector | sql.SQL], limit: int | None = None) -> list[tuple[Any, ...]]:
     """
     Sends a query to the database and returns the result.
 
     Args:
         table_name (str): The name of the table to query.
         key_order (tuple[str, ...]): The list of keys to get back from the database.
-        selectors (list[Selector]): The list of restraints for the query.
+        selectors (list[Selector | sql.SQL]): The list of restraints for the query.
         limit (int, optional): The maximum amount of results to get back. Defaults to 0 (infinite).
 
     Returns:
@@ -80,12 +80,15 @@ def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector]
         values = []
 
         for selector in selectors:
-            where_clauses.append(
-                sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()), sql.SQL(selector.comparator.value)))
-            values.append(selector.value)
+            if isinstance(selector, Selector):
+                clause = sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()), sql.SQL(selector.comparator.value))
+                values.append(selector.value)
+            else:
+                clause = selector
+            where_clauses.append(clause)
 
-        query_sql = sql.SQL("SELECT {keys} FROM {tbl}").format(
-            keys=sql.SQL(", ").join(map(sql.Identifier, [i.lower() for i in key_order])),
+        query_sql = sql.SQL("SELECT {keys} FROM {tbl} tbl").format(
+            keys=sql.SQL(", ").join(map(sql.SQL, [f"tbl.{i.lower()}" for i in key_order])),
             tbl=sql.Identifier(table_name.lower())
         )
         if where_clauses:

@@ -129,9 +129,14 @@ class RExDiscordTrackMessage:
             text_channel = channel.get_discord_channel()
             if text_channel is None:
                 continue
+
+            player = self.player
+            if isinstance(player, RExPlayer):
+                player = player.player_name
+
             await text_channel.send(get_track_message().format(
                 guild=guild.guild_name.upper(),
-                player=self.player,
+                player=player,
                 player_ping=player_ping(guild),
                 variant=get_string(self.variant, lambda x: "" if x is None else f"{x.variant_name} "),
                 ore=get_string(self.ore, lambda x: x.ore_name),

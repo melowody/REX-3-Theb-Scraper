@@ -98,7 +98,7 @@ class RExDiscordLeaderboardCommand(commands.Cog):
 
     @leaderboard.command(name="global", description="Get the rarest finds from all players registered to the bot")
     async def global_lb(self, ctx: commands.Context, adjusted: typing.Optional[bool] = False, limit: typing.Optional[int] = 10, start: typing.Optional[int] = 0):
-        rarests = track_query("TRACKS", None)
+        rarests = track_query(None)
         await send_lb_message(
             ctx,
             f"Global Top {min(limit, len(rarests))}",
