@@ -170,6 +170,8 @@ class RExTrack:
     def get_adjusted_rarity(self) -> "int | NotInIndex":
         """Get the adjusted rarity of this Track"""
         base_rarity = self.get_base_rarity()
+        if isinstance(base_rarity, NotInIndex):
+            return base_rarity
         cave = self.get_cave()
         if isinstance(cave, NotInIndex):
             return cave

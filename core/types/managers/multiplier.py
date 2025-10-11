@@ -6,6 +6,7 @@ from core.types.manager import RExManager
 if TYPE_CHECKING:
     from core.types.managers.variant import RExVariant
     from core.types.managers.tier import RExTier
+    from core.types.manager import NotInIndex
 
 @dataclass
 class RExMultiplier:

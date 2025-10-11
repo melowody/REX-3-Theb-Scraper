@@ -140,16 +140,17 @@ class RExDiscordAddCommand(commands.Cog):
     @add.command(name="recipe", description="Add a recipe step to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         equip_id=get_items(RExEquipmentManager().get_all(), lambda x: x.equip_id, lambda x: x.equip_name),
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt),
+        variant_id=get_items(RExVariantManager().get_all(), lambda x: x.variant_id, lambda x: x.variant_name)
     )
     @app_commands.describe(
         equip_id="The equipment this recipe concerns",
         ore_id="The ore in this recipe step",
         count="The amount of the ore needed"
     )
-    async def add_recipe(self, ctx: commands.Context, equip_id: str, ore_id: str, count: int):
+    async def add_recipe(self, ctx: commands.Context, equip_id: str, ore_id: str, count: int, variant_id: typing.Optional[str]):
         manager = RExRecipeManager()
-        manager.add(RExRecipeStep(equip_id, ore_id, count))
+        manager.add(RExRecipeStep(equip_id, ore_id, count, variant_id))
         manager.write_to_db()
         await ctx.reply(f"Recipe Step added to index!", ephemeral=True)
 
@@ -166,9 +167,10 @@ class RExDiscordAddCommand(commands.Cog):
         ability_luck="The luck boost of the ability",
         ability_lifespan="The lifespan of the ability",
         ability_area="The area of the ability",
-        ability_amount="The amount of the ability's effects"
+        ability_amount="The amount of the ability's effects",
+        ability_pinned_luck="The luck boost for pinned ores"
     )
-    async def add_ability(self, ctx: commands.Context, ability_id: str, equip_id: str, ability_name: str, ability_desc: str, ability_rate: int, ability_luck: typing.Optional[str], ability_lifespan: typing.Optional[str], ability_area: typing.Optional[str], ability_amount: typing.Optional[str]):
+    async def add_ability(self, ctx: commands.Context, ability_id: str, equip_id: str, ability_name: str, ability_desc: str, ability_rate: int, ability_luck: typing.Optional[str], ability_lifespan: typing.Optional[str], ability_area: typing.Optional[str], ability_amount: typing.Optional[str], ability_pinned_luck: typing.Optional[str]):
         manager = RExAbilityManager()
         manager.add(RExAbility(
             ability_id,
@@ -179,7 +181,8 @@ class RExDiscordAddCommand(commands.Cog):
             ability_luck,
             ability_lifespan,
             ability_area,
-            ability_amount
+            ability_amount,
+            ability_pinned_luck
         ))
         manager.write_to_db()
         await ctx.reply(f"Ability {ability_name} added to index!", ephemeral=True)

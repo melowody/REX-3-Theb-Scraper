@@ -31,6 +31,8 @@ class RExPlayer:
     def get_ping_guild(self) -> Guild | None:
         """Returns the Guild this Player wishes to be pinged in for rare finds"""
         from core.discord.bot.bot import RExDiscordBot
+        if not self.guild_id:
+            return None
         return RExDiscordBot().get_guild(self.guild_id)
 
     def get_discord_guilds(self) -> list[Guild]:

@@ -28,6 +28,8 @@ class RExAbility:
     """The area the Ability affects"""
     ability_amount: str | None
     """The amount of Ability effects"""
+    ability_pinned_luck: str | None
+    """The luck boost on pinned Ores"""
 
     def get_equipment(self) -> "RExEquipment | NotInIndex":
         """Get the associated Equipment"""
@@ -44,7 +46,7 @@ class RExAbilityManager(RExManager[RExAbility]):
 
     @property
     def key_order(self) -> tuple[str, ...]:
-        return "ABILITY_ID", "EQUIP_ID", "ABILITY_NAME", "ABILITY_DESC", "ABILITY_RATE", "ABILITY_LUCK", "ABILITY_LIFESPAN", "ABILITY_AREA", "ABILITY_AMOUNT"
+        return "ABILITY_ID", "EQUIP_ID", "ABILITY_NAME", "ABILITY_DESC", "ABILITY_RATE", "ABILITY_LUCK", "ABILITY_LIFESPAN", "ABILITY_AREA", "ABILITY_AMOUNT", "ABILITY_PINNED_LUCK"
 
     @property
     def primary_key(self) -> str:
@@ -63,5 +65,6 @@ class RExAbilityManager(RExManager[RExAbility]):
             "ABILITY_LUCK": item.ability_luck,
             "ABILITY_LIFESPAN": item.ability_lifespan,
             "ABILITY_AREA": item.ability_area,
-            "ABILITY_AMOUNT": item.ability_amount
+            "ABILITY_AMOUNT": item.ability_amount,
+            "ABILITY_PINNED_LUCK": item.ability_pinned_luck
         }

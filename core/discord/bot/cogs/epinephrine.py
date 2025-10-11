@@ -38,8 +38,9 @@ class RExDiscordEpinephrineCommand(commands.Cog):
             min_epi = sorted(players, key=lambda p: p.min_epi)[0].min_epi # type: ignore[arg-type, return-value]
             max_epi = sorted(players, key=lambda p: p.max_epi)[-1].max_epi # type: ignore[arg-type, return-value]
 
-        player.max_epi = max(player.max_epi, roll) # type: ignore[type-var]
-        player.min_epi = min(player.min_epi, roll) # type: ignore[type-var]
+        player.max_epi = max(0 if (mx := player.max_epi) is None else mx, roll) # type: ignore[type-var]
+        player.min_epi = min(1_000_000_000 if (mn := player.min_epi) is None else mn, roll) # type: ignore[type-var]
+        RExPlayerManager().write_to_db()
 
         # Handle all the custom messages
         match roll:

@@ -43,6 +43,7 @@ class RExGuild:
 
     def get_players(self) -> "list[RExPlayer]":
         """Get the Players in this Guild"""
+        from core.types.managers.player import RExPlayerManager
         if (guild := self.get_discord_guild()) is None:
             return []
         members = [i.id for i in guild.members]

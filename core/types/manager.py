@@ -40,11 +40,11 @@ def lower(value: str | ToLower) -> str:
 
 
 class Comparator(Enum):
-    EQUAL = '=',
-    LESS_THAN = '<',
-    GREATER_THAN = '>',
-    LESS_THAN_OR_EQ = '<=',
-    GREATER_THAN_OR_EQ = '>=',
+    EQUAL = '='
+    LESS_THAN = '<'
+    GREATER_THAN = '>'
+    LESS_THAN_OR_EQ = '<='
+    GREATER_THAN_OR_EQ = '>='
     NOT_EQUAL = '!='
 
     def __str__(self) -> str:
@@ -81,7 +81,7 @@ def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector]
 
         for selector in selectors:
             where_clauses.append(
-                sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()), sql.SQL(str(selector.comparator))))
+                sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()), sql.SQL(selector.comparator.value)))
             values.append(selector.value)
 
         query_sql = sql.SQL("SELECT {keys} FROM {tbl}").format(
