@@ -6,6 +6,7 @@ from core.types.manager import RExManager, NotInIndex
 if TYPE_CHECKING:
     from core.types.managers.equipment import RExEquipment
     from core.types.managers.ore import RExOre
+    from core.types.managers.variant import RExVariant
 
 @dataclass
 class RExRecipeStep:
@@ -16,6 +17,7 @@ class RExRecipeStep:
     """The internal ID of the Ore"""
     count: int
     """The number of the Ore required"""
+    variant_id: str | None
 
     def get_equipment(self) -> "RExEquipment | NotInIndex":
         """Get the Equipment this Recipe is for"""
@@ -27,6 +29,13 @@ class RExRecipeStep:
         from core.types.managers.ore import RExOreManager
         return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
 
+    def get_variant(self) -> "RExVariant | NotInIndex | None":
+        """Get the Variant of this Ore"""
+        if self.variant_id is None:
+            return None
+        from core.types.managers.variant import RExVariantManager
+        return RExVariantManager().get_one(lambda x: x.variant_id == self.variant_id, self.variant_id)
+
     def __eq__(self, other):
         return isinstance(other, RExRecipeStep) and self.equip_id == other.equip_id and self.ore_id == other.ore_id
 
@@ -37,7 +46,7 @@ class RExRecipeManager(RExManager[RExRecipeStep]):
 
     @property
     def key_order(self) -> tuple[str, ...]:
-        return "EQUIP_ID", "ORE_ID", "COUNT"
+        return "EQUIP_ID", "ORE_ID", "COUNT", "VARIANT_ID"
 
     @property
     def primary_key(self) -> str:
@@ -54,5 +63,6 @@ class RExRecipeManager(RExManager[RExRecipeStep]):
         return {
             "equip_id": item.equip_id,
             "ore_id": item.ore_id,
-            "count": item.count
+            "count": item.count,
+            "variant_id": item.variant_id
         }

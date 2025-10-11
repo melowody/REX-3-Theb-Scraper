@@ -1,18 +1,98 @@
 {
-  "default": "---------------------------------------------\n**[{guild} TRACKER]**\n**{player}{player_ping}** has found **{variant}{ore}**\nTier: **{tier}**{tier_variant}{ping}\nBase Rarity: 1 in {base_rarity}{adjusted_rarity}\nBlocks: {blocks}\nLoadout: {loadout}\nEvent: {event}\n---------------------------------------------",
+  "default": [
+    "---------------------------------------------",
+    "**[{guild} TRACKER]**",
+    "**{player}{player_ping}** has found **{variant}{ore}{cave}**",
+    "Tier: **{tier}**{tier_variant}{ping}",
+    "Base Rarity: 1 in {base_rarity}{adjusted_rarity}",
+    "Blocks: {blocks}",
+    "Loadout: {loadout}",
+    "Event: {event}",
+    "---------------------------------------------"
+  ],
   "holidays": [
     {
       "day": 25,
       "month": 12,
       "messages": [
-        ":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:\n**[:santa: NORAD SANTA TRACKER :santa:]**\n:snowflake: **{player}{player_ping}** HAS UNWRAPPED **{variant}{ore}**. HO HO HO! :snowflake:\n:gift: WRAPPING PAPER: **{tier}**{tier_variant}{ping}\n:gift_heart: JOLLINESS: 1 in {base_rarity}{adjusted_rarity}\n:cookie: COOKIES GIVEN: {blocks}\n:christmas_tree: ORNAMENTS: {loadout}\n:bell: CAROL: {event}\n:snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
+        [
+          ":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:",
+          "**[:santa: NORAD SANTA TRACKER :santa:]**",
+          ":snowflake: **{player}{player_ping}** HAS UNWRAPPED **{variant}{ore}{cave}**. HO HO HO! :snowflake:",
+          ":gift: WRAPPING PAPER: **{tier}**{tier_variant}{ping}",
+          ":gift_heart: JOLLINESS: 1 in {base_rarity}{adjusted_rarity}",
+          ":cookie: COOKIES GIVEN: {blocks}",
+          ":christmas_tree: ORNAMENTS: {loadout}",
+          ":bell: CAROL: {event}",
+          ":snowflake::christmas_tree::snowflake:---------------------------------------------:snowflake::christmas_tree::snowflake:"
+        ]
       ]
     },
     {
       "day": 19,
       "month": 9,
       "messages": [
-        "---------------------------------------------\n**[THE SEVEN SEAS TRACKER]**\n**{player}{player_ping}** HAS STOLEN **{variant}{ore}**. YARRRR!!!\nTREASURE QUALITY: **{tier}**{tier_variant}{ping}\nPRICE: 1 in {base_rarity}{adjusted_rarity}\nNAUTICAL MILES: {blocks}\nTOOLBELT: {loadout}\nWEATHER: {event}\n---------------------------------------------"
+        [
+          "---------------------------------------------",
+          "**[THE SEVEN SEAS TRACKER]**",
+          "**{player}{player_ping}** HAS STOLEN **{variant}{ore}{cave}**. YARRRR!!!",
+          "TREASURE QUALITY: **{tier}**{tier_variant}{ping}",
+          "PRICE: 1 in {base_rarity}{adjusted_rarity}",
+          "NAUTICAL MILES: {blocks}",
+          "TOOLBELT: {loadout}",
+          "WEATHER: {event}",
+          "---------------------------------------------"
+        ]
+      ]
+    },
+    {
+      "day": 1,
+      "month": 4,
+      "messages": [
+        [
+          "---------------------------------------------",
+          "**[{guild} TRACKER]**",
+          "**{player}{player_ping}** has found **{variant}{ore}{cave}**",
+          "Tier: **{tier}**{tier_variant}{ping}",
+          "Base Rarity: 1 in {base_rarity}{adjusted_rarity}",
+          "Blocks: {blocks}",
+          "Loadout: {loadout}",
+          "Event: {event}",
+          "---------------------------------------------"
+        ],
+        [
+          "---------------------------------------------",
+          "**[{guild}のトラッカー]**",
+          "**{player}{player_ping}**は**{variant}{ore}{cave}**を見つけました",
+          "ティア: **{tier}**{tier_variant}{ping}",
+          "基本的なレアリティ: {base_rarity}{adjusted_rarity}分の１",
+          "採掘したブロックの数: {blocks}",
+          "装備: {loadout}",
+          "イベント: {event}",
+          "---------------------------------------------"
+        ],
+        [
+          "---------------------------------------------",
+          "**[{guild} nya mwrrp]**",
+          "**{player}{player_ping}** mrowwr nyaa **{variant}{ore}{cave}**",
+          "Meow: **{tier}**{tier_variant}{ping}",
+          "Prrr Mrowr: 1 mew {base_rarity}{adjusted_rarity}",
+          "Myawrr: {blocks}",
+          "Mwrrprrr: {loadout}",
+          "Nyaa: {event}",
+          "---------------------------------------------"
+        ],
+        [
+          "---------------------------------------------",
+          "**[{guild}-TRACKER]**",
+          "**{player}{player_ping}** hat **{variant}{ore}{cave}** aufgefinden",
+          "Rang: **{tier}**{tier_variant}{ping}",
+          "Basisrarität: 1 von {base_rarity}{adjusted_rarity}",
+          "Blocken: {blocks}",
+          "Ausrüstungen: {loadout}",
+          "Ereignis: {event}",
+          "---------------------------------------------"
+        ]
       ]
     }
   ]

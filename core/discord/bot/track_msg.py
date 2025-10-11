@@ -23,12 +23,12 @@ T = TypeVar("T")
 
 def get_track_message() -> str:
     date = datetime.today()
-    with open(os.path.join(ROOT_DIR, "misc", "holiday.json"), "r") as f:
+    with open(os.path.join(ROOT_DIR, "data", "holiday.json"), "r", encoding="utf8") as f:
         data = json.load(f)
         for i in data["holidays"]:
             if date.day == i["day"] and date.month == i["month"]:
-                return random.choice(i["messages"])
-        return data["default"]
+                return '\n'.join(random.choice(i["messages"]))
+        return '\n'.join(data["default"])
 
 
 class RExDiscordTrackMessage:
@@ -135,6 +135,7 @@ class RExDiscordTrackMessage:
                 player_ping=player_ping(guild),
                 variant=get_string(self.variant, lambda x: "" if x is None else f"{x.variant_name} "),
                 ore=get_string(self.ore, lambda x: x.ore_name),
+                cave=get_string(self.cave, lambda x: "" if x is None else f" ({x.cave_name})"),
                 tier=get_string(self.tier, lambda x: x.tier_name),
                 tier_variant=get_string(self.variant, lambda x: "" if x is None else f" ({x.variant_name})"),
                 ping="" if not to_ping or self.pinged else f" <@{ping_msg}>",

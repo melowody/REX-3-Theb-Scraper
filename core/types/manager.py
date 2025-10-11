@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Any, Callable, Generic, TypeVar, Type
 
 from core.types.meta import SingletonABCMeta
-from database.database import RExDBPool
+from core.database import RExDBPool
 
 from psycopg2 import sql
 

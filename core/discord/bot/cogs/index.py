@@ -39,7 +39,7 @@ class RExDiscordIndexCommand(commands.Cog):
 
     @index.command(name="ore", description="Get information about an ore in REx") # type: ignore[arg-type]
     @app_commands.autocomplete(
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
     )
     async def ore(self, ctx: commands.Context, ore_id: str):
         ore = RExOreManager().get_one(lambda x: x.ore_id == ore_id, ore_id)

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from core.discord.scraper.runners.heartbeat import Heartbeat
 from core.discord.scraper.runners.scraper import RExTrackerScraper
-from database.database import RExDBPool
+from core.database import RExDBPool
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     with RExDBPool().get_cursor() as cursor:
-        cursor.execute(open(os.path.join(ROOT_DIR, "misc", "create.sql"), "r").read())
+        cursor.execute(open(os.path.join(ROOT_DIR, "data", "create.sql"), "r").read())
 
     from core.discord.bot.bot import RExDiscordBot
 

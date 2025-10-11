@@ -44,7 +44,7 @@ class RExDiscordAddCommand(commands.Cog):
     @add.command(name="cave", description="Add a new cave to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
     )
     @app_commands.describe(
         cave_id = "The internal ID of the Cave",
@@ -61,7 +61,7 @@ class RExDiscordAddCommand(commands.Cog):
     @add.command(name="layer", description="Add a new layer to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
     )
     @app_commands.describe(
         layer_id = "The internal ID of the Layer",
@@ -140,7 +140,7 @@ class RExDiscordAddCommand(commands.Cog):
     @add.command(name="recipe", description="Add a recipe step to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
         equip_id=get_items(RExEquipmentManager().get_all(), lambda x: x.equip_id, lambda x: x.equip_name),
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
     )
     @app_commands.describe(
         equip_id="The equipment this recipe concerns",
@@ -186,7 +186,7 @@ class RExDiscordAddCommand(commands.Cog):
 
     @add.command(name="event", description="Add an event to the index") # type: ignore[arg-type]
     @app_commands.autocomplete(
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt),
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
     )
     @app_commands.describe(

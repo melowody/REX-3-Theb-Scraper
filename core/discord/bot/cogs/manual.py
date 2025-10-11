@@ -25,7 +25,7 @@ class RExDiscordManualCommand(commands.Cog):
     @commands.hybrid_group(name="manual", description="Manually track an ore in case the official tracker missed it") # type: ignore[arg-type]
     @commands.is_owner()
     @app_commands.autocomplete(
-        ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),
+        ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt),
         world=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
         pickaxe=get_items(RExEquipmentManager().get(lambda x: x.equip_type == RExEquipmentType.PICKAXE),
                           lambda x: x.equip_id, lambda x: x.equip_name),

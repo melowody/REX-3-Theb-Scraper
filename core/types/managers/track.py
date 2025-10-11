@@ -1,3 +1,4 @@
+import math
 import traceback
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
@@ -143,7 +144,16 @@ class RExTrack:
         spawn = self.get_spawn()
         if isinstance(spawn, NotInIndex):
             return spawn
-        return spawn.rarity
+
+        rarity = spawn.rarity
+
+        multiplier = self.get_multiplier()
+        if isinstance(multiplier, NotInIndex):
+            return multiplier
+        elif multiplier is None:
+            return rarity
+
+        return spawn.rarity * multiplier.multiplier
 
     def get_multiplier(self) -> "RExMultiplier | NotInIndex | None":
         """Get the multiplier for this Track"""
@@ -160,14 +170,12 @@ class RExTrack:
     def get_adjusted_rarity(self) -> "int | NotInIndex":
         """Get the adjusted rarity of this Track"""
         base_rarity = self.get_base_rarity()
-        if isinstance(base_rarity, NotInIndex):
+        cave = self.get_cave()
+        if isinstance(cave, NotInIndex):
+            return cave
+        elif cave is None:
             return base_rarity
-        multiplier = self.get_multiplier()
-        if isinstance(multiplier, NotInIndex):
-            return multiplier
-        elif multiplier is None:
-            return base_rarity
-        return base_rarity * multiplier.multiplier
+        return math.ceil(base_rarity * 1.88 * cave.cave_rarity)
 
     def get_event_ore(self) -> "RExOre | NotInIndex | None":
         """Get the Ore associated with this Track's Event"""
