@@ -4,7 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from core.discord.bot.util import get_items, get_string
-from core.types.manager import NotInIndex
+from core.types.manager import NotInIndex, RExManager, MANAGERS
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.event import RExEventManager
 from core.types.managers.layer import RExLayerManager, RExLayer
@@ -109,3 +109,16 @@ class RExDiscordIndexCommand(commands.Cog):
         world_msg = get_string(layer.get_world(), lambda x: x.world_name)
 
         await ctx.reply(f"## {layer.layer_name}\n**Layer Ore:** {ore_msg}\n**Depth:** {layer.min_depth} - {layer.max_depth}\n**World:** {world_msg}")
+
+    @index.command(name="overwrite", description="Pull from the DB and overwrite all local data")
+    @commands.is_owner()
+    async def overwrite(self, ctx: commands.Context, are_you_sure: bool):
+
+        if not are_you_sure:
+            return 
+
+        for manager in MANAGERS:
+            manager._objects = []
+            manager.read_from_db()
+
+        await ctx.reply("Overwritten!")

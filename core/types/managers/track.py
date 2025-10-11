@@ -216,7 +216,7 @@ def save_track(track: RExTrack) -> None:
         print("Could not save Track!")
         traceback.print_exc()
 
-def track_query(table_name: str, limit: int, *selectors: Selector) -> list[RExTrack]:
+def track_query(table_name: str, limit: int | None, *selectors: Selector) -> list[RExTrack]:
     out: list[RExTrack] = []
     for track in query(table_name, TRACK_ORDER, list(selectors), limit=limit):
         out.append(parse_result(track))

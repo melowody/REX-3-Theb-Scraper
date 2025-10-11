@@ -1,3 +1,4 @@
+import sys
 import typing
 from typing import Callable
 
@@ -5,11 +6,11 @@ from discord import app_commands
 from discord.ext import commands
 
 from core.discord.bot.util import get_items
-from core.types.manager import NotInIndex
+from core.types.manager import NotInIndex, Selector
 from core.types.managers.guild import RExGuildManager
 from core.types.managers.ore import RExOre
 from core.types.managers.player import RExPlayer, RExPlayerManager
-from core.types.managers.track import RExTrack, get_player_rarest
+from core.types.managers.track import RExTrack, get_player_rarest, track_query
 from core.types.managers.variant import RExVariant
 
 
@@ -93,4 +94,14 @@ class RExDiscordLeaderboardCommand(commands.Cog):
             f"{rex_player.player_name} Top {min(limit, len(rarests))}",
             rarests,
             lambda x: f"{"" if not isinstance(var := x.get_variant(), RExVariant) else (var.variant_name + " ")}{"NotInIndex" if not isinstance(ore := x.get_ore(), RExOre) else ore.ore_name} (1 in {get_rarity(x, adjusted):,})"
+        )
+
+    @leaderboard.command(name="global", description="Get the rarest finds from all players registered to the bot")
+    async def global_lb(self, ctx: commands.Context, adjusted: typing.Optional[bool] = False, limit: typing.Optional[int] = 10, start: typing.Optional[int] = 0):
+        rarests = track_query("TRACKS", None)
+        await send_lb_message(
+            ctx,
+            f"Global Top {min(limit, len(rarests))}",
+            list(filter(lambda x: isinstance(RExPlayerManager().get_one(lambda j: j.player_name == x.player_name, None), RExPlayer), rarests)),
+            lambda x: f"{x.player_name} - {"" if not isinstance(var := x.get_variant(), RExVariant) else (var.variant_name + " ")}{"NotInIndex" if not isinstance(ore := x.get_ore(), RExOre) else ore.ore_name} (1 in {get_rarity(x, adjusted):,})"
         )

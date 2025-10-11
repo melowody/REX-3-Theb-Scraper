@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Generic, TypeVar, Type
+from typing import Any, Callable, Generic, TypeVar, Type, Self
 
 from core.types.meta import SingletonABCMeta
 from core.database import RExDBPool
@@ -62,7 +62,7 @@ class Selector:
     """The comparator in the query"""
 
 
-def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector], limit: int = 0) -> list[tuple[Any, ...]]:
+def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector], limit: int | None = None) -> list[tuple[Any, ...]]:
     """
     Sends a query to the database and returns the result.
 
@@ -91,7 +91,7 @@ def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector]
         if where_clauses:
             query_sql += sql.SQL(" WHERE ") + sql.SQL(" AND ").join(where_clauses)
 
-        if limit > 0:
+        if limit:
             query_sql += sql.SQL(" LIMIT %s")
             values.append(limit)
 
@@ -280,6 +280,12 @@ class RExBaseManager(Generic[T], ABC, metaclass=SingletonABCMeta):
 
 class RExManager(RExBaseManager[T], ABC, metaclass=SingletonABCMeta):
 
+    def __init__(self):
+        super().__init__()
+        global MANAGERS
+        if self not in MANAGERS:
+            MANAGERS.append(self)
+
     @property
     @abstractmethod
     def table_name(self) -> str:
@@ -322,3 +328,5 @@ class RExManager(RExBaseManager[T], ABC, metaclass=SingletonABCMeta):
             ignore_conflict (bool, optional): Whether to ignore conflict in the DB
         """
         upsert(self.get_all(), self.table_name, self.primary_key, self.prepare_db_entry, ignore_conflict)
+
+MANAGERS: list[RExManager] = []
