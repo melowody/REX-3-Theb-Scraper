@@ -35,7 +35,7 @@ class RExDiscordIndexCommand(commands.Cog):
         if isinstance(world, NotInIndex):
             await ctx.reply(f"World {world_id} not found", ephemeral=True)
             return
-        await ctx.reply(f"## {world.world_name}\n{world.world_desc}", ephemeral=True)
+        await ctx.reply(f"## {world.world_name}\n{world.world_desc}")
 
     @index.command(name="ore", description="Get information about an ore in REx") # type: ignore[arg-type]
     @app_commands.autocomplete(
