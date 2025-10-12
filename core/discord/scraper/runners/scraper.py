@@ -41,11 +41,25 @@ def parse_event(event: dict) -> RExTrack | None:
     ore_text = title_groups.group(3)
     ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == ore_text.lower(), ore_text)
 
-    cave_text = title_groups.group(4)
-    cave = None if cave_text is None else RExCaveManager().get_one(lambda x: x.cave_name.lower() == cave_text.lower(), cave_text)
-
     world_text = event.get("description", "None")
     world = RExWorldManager().get_one(lambda x: x.world_name.lower() == world_text.lower(), world_text)
+
+    cave_text = title_groups.group(4)
+    if cave_text == "Gilded Cave":
+        match world_text:
+            case "Natura":
+                cave_text = "Gilded Cave (W1)"
+            case "Caverna":
+                cave_text = "Gilded Cave (W2)"
+            case "Digita":
+                cave_text = "Gilded Cave (W0)"
+            case "Luna Refuge":
+                cave_text = "Gilded Cave (SW1)"
+            case "Aesteria":
+                cave_text = "Gilded Cave (SW2)"
+            case "Lucernia":
+                cave_text = "Gilded Cave (SW3)"
+    cave = None if cave_text is None else RExCaveManager().get_one(lambda x: x.cave_name.lower() == cave_text.lower(), cave_text)
 
     blocks_mined: int = -1
     curr_event: RExEvent | NotInIndex | None = None
@@ -152,4 +166,5 @@ class RExTrackerScraper(JsonRunner):
                 save_track(track)
             except Exception:
                 print(vars(track))
+                traceback.print_exc()
             await self.queue.put(track)

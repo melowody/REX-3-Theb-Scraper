@@ -1,5 +1,6 @@
 import typing
 
+import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -8,7 +9,7 @@ from core.discord.bot.track_msg import RExDiscordTrackMessage
 from core.discord.bot.util import get_items
 from core.discord.scraper.runners.scraper import RExTrack
 from core.types.manager import NotInIndex
-from core.types.managers.cave import RExCaveManager
+from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.equipment import RExEquipmentManager, RExEquipmentType
 from core.types.managers.event import RExEventManager
 from core.types.managers.ore import RExOreManager, RExOre
@@ -30,7 +31,7 @@ class RExDiscordManualCommand(commands.Cog):
         pickaxe=get_items(RExEquipmentManager().get(lambda x: x.equip_type == RExEquipmentType.PICKAXE),
                           lambda x: x.equip_id, lambda x: x.equip_name),
         variant=get_items(RExVariantManager().get_all(), lambda x: x.variant_id, lambda x: x.variant_name),
-        cave=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name),
+        cave=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name, predicate=lambda interaction, cave: cave.world_id == interaction.namespace.world),
         event=get_items(RExEventManager().get_all(), lambda x: x.ore_id,
                         lambda x: x.event_text if isinstance(ore := RExOreManager().get_one(lambda i: i.ore_id == x.ore_id, x.ore_id), NotInIndex) else ore.ore_name)
     )

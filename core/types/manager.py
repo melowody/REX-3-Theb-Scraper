@@ -1,3 +1,4 @@
+import traceback
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
 from enum import Enum
@@ -151,7 +152,10 @@ def upsert(items: list[T], table_name: str, primary_key: str, get_data: Callable
 
             query_stmt = sql.SQL(" ").join([insert, conflict])
 
-            cursor.execute(query_stmt, vals)
+            try:
+                cursor.execute(query_stmt, vals)
+            except:
+                traceback.print_exc()
 
 
 class RExBaseManager(Generic[T], ABC, metaclass=SingletonABCMeta):

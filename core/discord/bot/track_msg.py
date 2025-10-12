@@ -15,7 +15,7 @@ from core.types.managers.ore import RExOre
 from core.types.managers.player import RExPlayer
 from core.types.managers.spawn import RExSpawn
 from core.types.managers.tier import RExTier
-from core.types.managers.track import RExTrack
+from core.types.managers.track import RExTrack, save_track
 from core.types.managers.variant import RExVariant
 from main import ROOT_DIR
 
@@ -32,6 +32,9 @@ def get_track_message() -> str:
 
 
 class RExDiscordTrackMessage:
+
+    orig_track: RExTrack
+
     player: RExPlayer | str
     variant: RExVariant | NotInIndex | None
     ore: RExOre | NotInIndex
@@ -50,7 +53,12 @@ class RExDiscordTrackMessage:
 
     def __init__(self, bot, track: RExTrack):
         self.bot = bot
+        self.track = track
         self.parse_info(track)
+
+    def get_ping_num(self) -> int:
+        return (0 if isinstance(self.variant, NotInIndex) or self.variant is None else self.variant.variant_num) \
+            + (0 if isinstance(self.tier, NotInIndex) else self.tier.tier_num)
 
     def parse_info(self, track: RExTrack) -> None:
 
@@ -77,7 +85,8 @@ class RExDiscordTrackMessage:
             await self._send_player_messages()
         if self.blocks_mined < 10_000:
             await self._send_beginner_messages()
-        await self._send_global_messages()
+        if self.get_ping_num() >= 11:
+            await self._send_global_messages()
 
     async def _send_player_messages(self) -> None:
 
@@ -113,8 +122,9 @@ class RExDiscordTrackMessage:
     async def _send_track_messages(self, channels: list[RExChannel], ping_threshold: int,
                                    player_ping: Callable[[RExGuild], str]) -> None:
 
-        to_ping = (0 if isinstance(self.variant, NotInIndex) or self.variant is None else self.variant.variant_num) \
-                  + (0 if isinstance(self.tier, NotInIndex) else self.tier.tier_num) >= ping_threshold
+        save_track(self.track)
+
+        to_ping = self.get_ping_num() >= ping_threshold
 
         for channel in channels:
 

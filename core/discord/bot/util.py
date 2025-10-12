@@ -11,7 +11,7 @@ def get_items(items: list[T], get_id: Callable[[Any], str], get_name: Callable[[
     async def out(interaction: discord.Interaction, current: str):
         return [
             app_commands.Choice(name=get_name(i), value=get_id(i))
-            for i in items if predicate(interaction, i) and current.lower() in get_name(i).lower() or (secondary is not None and current.lower() in secondary(i).lower())
+            for i in items if predicate(interaction, i) and (current.lower() in get_name(i).lower() or (secondary is not None and current.lower() in secondary(i).lower()))
         ][:25]
     return out
 

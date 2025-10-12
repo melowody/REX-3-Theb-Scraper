@@ -122,7 +122,7 @@ class RExTrack:
                 return layer_spawns[0]
 
         cave_spawns = [i for i in spawns if i.cave_id == self.cave_id]
-        if self.cave_id == "gilded" and len(cave_spawns) == 0:
+        if self.cave_id.startswith("gilded") and len(cave_spawns) == 0:
             if isinstance(self.ore_id, NotInIndex):
                 return self.ore_id
             if isinstance(self.cave_id, NotInIndex):
@@ -178,7 +178,19 @@ class RExTrack:
             return cave
         elif cave is None:
             return base_rarity
-        return math.ceil(base_rarity * 1.88 * cave.cave_rarity)
+
+        if cave.cave_id.startswith("gilded_cave"):
+            cave_rarity = 57 if "57_leaf_clover" in self.equip_ids or "ambrosia_salad" in self.equip_ids else 5700
+            ore = self.get_ore()
+            if isinstance(ore, NotInIndex):
+                return ore
+
+            spawns = ore.get_spawns()
+            if all([i.cave_id is not None and i.cave_id.startswith("gilded_cave") for i in spawns]):
+                return int(round(base_rarity * cave_rarity * 1.88))
+            return int(round(base_rarity * 1.88 * cave_rarity))
+
+        return int(round(base_rarity * 1.88 * cave.cave_rarity))
 
     def get_event_ore(self) -> "RExOre | NotInIndex | None":
         """Get the Ore associated with this Track's Event"""
