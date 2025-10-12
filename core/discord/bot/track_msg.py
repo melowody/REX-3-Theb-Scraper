@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import traceback
 from datetime import datetime
 from typing import Callable, TypeVar
 
@@ -122,7 +123,12 @@ class RExDiscordTrackMessage:
     async def _send_track_messages(self, channels: list[RExChannel], ping_threshold: int,
                                    player_ping: Callable[[RExGuild], str]) -> None:
 
-        save_track(self.track)
+        try:
+            save_track(self.track)
+        except:
+            print(vars(self.track))
+            print("Could not save track!")
+            traceback.print_exc()
 
         to_ping = self.get_ping_num() >= ping_threshold
 
@@ -134,7 +140,7 @@ class RExDiscordTrackMessage:
 
             ping_msg = "@everyone"
             if role := channel.get_ping_role():
-                ping_msg = f"<@{role.id}>"
+                ping_msg = f"<@&{role.id}>"
 
             text_channel = channel.get_discord_channel()
             if text_channel is None:
@@ -153,7 +159,7 @@ class RExDiscordTrackMessage:
                 cave=get_string(self.cave, lambda x: "" if x is None else f" ({x.cave_name})"),
                 tier=get_string(self.tier, lambda x: x.tier_name),
                 tier_variant=get_string(self.variant, lambda x: "" if x is None else f" ({x.variant_name})"),
-                ping="" if not to_ping or self.pinged else f" <@{ping_msg}>",
+                ping="" if not to_ping or self.pinged else f" {ping_msg}",
                 base_rarity=get_string(self.base_rarity, lambda x: f"{x:,}"),
                 adjusted_rarity=get_string(self.adjusted_rarity,
                                            lambda x: "" if x == self.base_rarity else f"\nAdjusted Rarity: 1 in {x:,}"),

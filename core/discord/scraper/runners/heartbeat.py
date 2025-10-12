@@ -36,5 +36,4 @@ class Heartbeat(JsonRunner):
         except Exception as e:
             print("Could not keep heartbeat up!")
             print(type(e), e)
-            # TODO: Restart program instead and get better except catchers
-            quit()
+            self.pre_start()

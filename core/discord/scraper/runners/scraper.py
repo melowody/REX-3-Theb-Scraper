@@ -162,9 +162,4 @@ class RExTrackerScraper(JsonRunner):
         """
         track = parse_event(event)
         if track:
-            try:
-                save_track(track)
-            except Exception:
-                print(vars(track))
-                traceback.print_exc()
             await self.queue.put(track)
