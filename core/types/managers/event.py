@@ -39,6 +39,7 @@ class RExEvent:
     def __eq__(self, other):
         return isinstance(other, RExEvent) and self.ore_id == other.ore_id
 
+
 class RExEventManager(RExManager[RExEvent]):
     @property
     def table_name(self) -> str:

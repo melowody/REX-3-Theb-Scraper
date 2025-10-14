@@ -3,11 +3,11 @@ from typing import Any, TYPE_CHECKING
 
 from core.types.manager import RExManager
 
-
 if TYPE_CHECKING:
     from core.types.managers.cave import RExCave
     from core.types.managers.layer import RExLayer
     from core.types.managers.spawn import RExSpawn
+
 
 @dataclass
 class RExWorld:
@@ -37,6 +37,7 @@ class RExWorld:
 
     def __eq__(self, other):
         return isinstance(other, RExWorld) and self.world_id == other.world_id
+
 
 class RExWorldManager(RExManager[RExWorld]):
 

@@ -4,16 +4,16 @@ from discord import app_commands
 from discord.ext import commands
 
 from core.discord.bot.util import get_items, get_string
-from core.types.manager import NotInIndex, RExManager, MANAGERS
+from core.types.manager import NotInIndex, MANAGERS
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.event import RExEventManager
 from core.types.managers.layer import RExLayerManager, RExLayer
 from core.types.managers.multiplier import RExMultiplier
-from core.types.managers.ore import RExOreManager, RExOre
+from core.types.managers.ore import RExOreManager
 from core.types.managers.spawn import RExSpawnManager
 from core.types.managers.tier import RExTierManager
 from core.types.managers.variant import RExVariantManager
-from core.types.managers.world import RExWorldManager, RExWorld
+from core.types.managers.world import RExWorldManager
 
 
 class RExDiscordIndexCommand(commands.Cog):
@@ -21,12 +21,13 @@ class RExDiscordIndexCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_group(name="index", description="Get information about items in the game") # type: ignore[arg-type]
+    @commands.hybrid_group(name="index",
+                           description="Get information about items in the game")  # type: ignore[arg-type]
     async def index(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.reply("You must specify what you want information about!", ephemeral=True)
 
-    @index.command(name="world", description="Get information about a world in REx") # type: ignore[arg-type]
+    @index.command(name="world", description="Get information about a world in REx")  # type: ignore[arg-type]
     @app_commands.autocomplete(
         world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
     )
@@ -37,9 +38,10 @@ class RExDiscordIndexCommand(commands.Cog):
             return
         await ctx.reply(f"## {world.world_name}\n{world.world_desc}")
 
-    @index.command(name="ore", description="Get information about an ore in REx") # type: ignore[arg-type]
+    @index.command(name="ore", description="Get information about an ore in REx")  # type: ignore[arg-type]
     @app_commands.autocomplete(
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
+        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name,
+                         secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
     )
     async def ore(self, ctx: commands.Context, ore_id: str):
         ore = RExOreManager().get_one(lambda x: x.ore_id == ore_id, ore_id)
@@ -78,9 +80,10 @@ class RExDiscordIndexCommand(commands.Cog):
         else:
             event_msg = f'Event Rarity: 1 in {event.ore_rarity:,}'
 
-        await ctx.reply(f"## {ore.ore_name}{tier_str}\n{rarity_msg}\n\nLocation{'' if len(spawns) == 1 else 's'}: **{'NOT IN INDEX' if len(locations) == 0 else ', '.join(locations)}**\n{event_msg}")
+        await ctx.reply(
+            f"## {ore.ore_name}{tier_str}\n{rarity_msg}\n\nLocation{'' if len(spawns) == 1 else 's'}: **{'NOT IN INDEX' if len(locations) == 0 else ', '.join(locations)}**\n{event_msg}")
 
-    @index.command(name="cave", description="Get information about a cave") # type: ignore[arg-type]
+    @index.command(name="cave", description="Get information about a cave")  # type: ignore[arg-type]
     @app_commands.autocomplete(
         cave_id=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name)
     )
@@ -93,9 +96,10 @@ class RExDiscordIndexCommand(commands.Cog):
         ore_msg = get_string(cave.get_ore(), lambda x: x.ore_name)
         world_msg = get_string(cave.get_world(), lambda x: x.world_name)
 
-        await ctx.reply(f"## {cave.cave_name}\n**Cave Wall:** {ore_msg}\n**Rarity:** {cave.cave_rarity}\n**World:** {world_msg}")
+        await ctx.reply(
+            f"## {cave.cave_name}\n**Cave Wall:** {ore_msg}\n**Rarity:** {cave.cave_rarity}\n**World:** {world_msg}")
 
-    @index.command(name="layer", description="Get information about a layer") # type: ignore[arg-type]
+    @index.command(name="layer", description="Get information about a layer")  # type: ignore[arg-type]
     @app_commands.autocomplete(
         layer_id=get_items(RExLayerManager().get_all(), lambda x: x.layer_id, lambda x: x.layer_name)
     )
@@ -108,14 +112,16 @@ class RExDiscordIndexCommand(commands.Cog):
         ore_msg = get_string(layer.get_ore(), lambda x: x.ore_name)
         world_msg = get_string(layer.get_world(), lambda x: x.world_name)
 
-        await ctx.reply(f"## {layer.layer_name}\n**Layer Ore:** {ore_msg}\n**Depth:** {layer.min_depth} - {layer.max_depth}\n**World:** {world_msg}")
+        await ctx.reply(
+            f"## {layer.layer_name}\n**Layer Ore:** {ore_msg}\n**Depth:** {layer.min_depth} - {layer.max_depth}\n**World:** {world_msg}")
 
-    @index.command(name="overwrite", description="Pull from the DB and overwrite all local data")
+    @index.command(name="overwrite",
+                   description="Pull from the DB and overwrite all local data")  # type: ignore[arg-type]
     @commands.is_owner()
     async def overwrite(self, ctx: commands.Context, are_you_sure: bool):
 
         if not are_you_sure:
-            return 
+            return
 
         for manager in MANAGERS:
             manager._objects = []

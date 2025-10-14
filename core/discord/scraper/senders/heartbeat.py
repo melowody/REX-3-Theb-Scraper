@@ -5,9 +5,9 @@ from typing_extensions import TYPE_CHECKING
 
 from core.discord.scraper.client import JsonSender
 
-
 if TYPE_CHECKING:
     from core.discord.scraper.client import DiscordClient
+
 
 class Heartbeat(JsonSender):
 
@@ -32,4 +32,5 @@ class Heartbeat(JsonSender):
             })
 
     def should_handle(self, event: dict) -> bool:
-        return event and "d" in event.keys() and isinstance(event["d"], dict) and "heartbeat_interval" in event["d"].keys()
+        return event and "d" in event.keys() and isinstance(event["d"], dict) and "heartbeat_interval" in event[
+            "d"].keys()

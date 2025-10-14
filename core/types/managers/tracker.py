@@ -19,6 +19,7 @@ class RExTracker:
     def __eq__(self, other):
         return other is RExTracker and self.tracker_id == other.tracker_id
 
+
 class RExTrackerManager(RExManager[RExTracker]):
     @property
     def table_name(self) -> str:

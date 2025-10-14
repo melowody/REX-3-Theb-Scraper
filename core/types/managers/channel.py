@@ -55,6 +55,7 @@ class RExChannel:
     def __eq__(self, other):
         return self.channel_id == other.channel_id
 
+
 class RExChannelManager(RExManager[RExChannel]):
     @property
     def table_name(self) -> str:

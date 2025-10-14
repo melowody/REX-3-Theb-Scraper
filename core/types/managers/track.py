@@ -1,5 +1,3 @@
-import math
-import traceback
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -21,6 +19,7 @@ if TYPE_CHECKING:
     from core.types.managers.tier import RExTier
 
 TRACK_ORDER = ("PLAYER_NAME", "VARIANT_ID", "ORE_ID", "CAVE_ID", "WORLD_ID", "BLOCKS_MINED", "EVENT_ID", "EQUIP_IDS")
+
 
 @dataclass
 class RExTrack:
@@ -202,7 +201,9 @@ class RExTrack:
         return event.get_ore()
 
     def __eq__(self, other):
-        return isinstance(other, RExTrack) and self.player_name == other.player_name and self.blocks_mined == other.blocks_mined
+        return isinstance(other,
+                          RExTrack) and self.player_name == other.player_name and self.blocks_mined == other.blocks_mined
+
 
 def parse_result(result: tuple[Any, ...]) -> RExTrack:
     return RExTrack(*result)
@@ -224,16 +225,18 @@ def prepare_track(track: RExTrack) -> dict[str, Any]:
 def save_track(track: RExTrack) -> None:
     try:
         upsert([track], "TRACKS", "TRACK_KEY", prepare_track, is_unique_index=True)
-    except Exception:
+    except Exception as e:
         print(vars(track))
         print("Could not save Track!")
-        traceback.print_exc()
+        print(e)
+
 
 def track_query(limit: int | None, *selectors: Selector | sql.SQL) -> list[RExTrack]:
     out: list[RExTrack] = []
     for track in query("TRACKS", TRACK_ORDER, list(selectors), limit=limit):
         out.append(parse_result(track))
     return out
+
 
 def get_player_rarest(player: "RExPlayer", limit: int = 10) -> list[RExTrack]:
     return track_query(limit, Selector("PLAYER_NAME", player.player_name, Comparator.EQUAL))

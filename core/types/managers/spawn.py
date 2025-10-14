@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from core.types.managers.layer import RExLayer
     from core.types.managers.cave import RExCave
 
+
 @dataclass
 class RExSpawn:
     """A dataclass for information about REx's Spawns"""
@@ -34,7 +35,9 @@ class RExSpawn:
         return RExLayerManager().get_one(lambda x: x.layer_id == self.layer_id, self.layer_id)
 
     def __eq__(self, other):
-        return isinstance(other, RExSpawn) and self.ore_id == other.ore_id and self.layer_id == other.layer_id and self.cave_id == other.cave_id
+        return isinstance(other,
+                          RExSpawn) and self.ore_id == other.ore_id and self.layer_id == other.layer_id and self.cave_id == other.cave_id
+
 
 class RExSpawnManager(RExManager[RExSpawn]):
     @property

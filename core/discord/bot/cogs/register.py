@@ -13,9 +13,11 @@ class RExDiscordRegisterCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="register", description="Register for tracking!") # type: ignore[arg-type]
+    @commands.hybrid_command(name="register", description="Register for tracking!")  # type: ignore[arg-type]
     @app_commands.autocomplete(
-        ping_guild_id=get_items(RExGuildManager().get_all(), lambda x: str(x.guild_id), lambda x: x.guild_name, predicate=lambda interaction, guild: any([i.user_id == interaction.user.id for i in guild.get_players()]))
+        ping_guild_id=get_items(RExGuildManager().get_all(), lambda x: str(x.guild_id), lambda x: x.guild_name,
+                                predicate=lambda interaction, guild: any(
+                                    [i.user_id == interaction.user.id for i in guild.get_players()]))
     )
     async def register(self, ctx: commands.Context, username: str, ping_guild_id: typing.Optional[str]):
         if ping_guild_id:

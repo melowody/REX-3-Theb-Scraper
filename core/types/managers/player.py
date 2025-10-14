@@ -52,6 +52,7 @@ class RExPlayer:
     def __eq__(self, other):
         return isinstance(other, RExPlayer) and self.user_id == other.user_id
 
+
 class RExPlayerManager(RExManager[RExPlayer]):
 
     @property

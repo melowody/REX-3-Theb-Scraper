@@ -25,7 +25,8 @@ class RExDiscordPlayerCommand(commands.Cog):
         ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name),
         variant=get_items(RExVariantManager().get_all(), lambda x: x.variant_id, lambda x: x.variant_name)
     )
-    async def search(self, ctx: commands.Context, ore: str, variant: typing.Optional[str], limit: typing.Optional[int] = 10):
+    async def search(self, ctx: commands.Context, ore: str, variant: typing.Optional[str],
+                     limit: typing.Optional[int] = 10):
         selectors = [
             sql.SQL("tbl.player_name IN (SELECT PLAYER_NAME FROM players)"),
             Selector("ore_id", ore, Comparator.EQUAL)

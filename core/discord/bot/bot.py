@@ -73,8 +73,8 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
 
     @tasks.loop(minutes=30)
     async def change_avatar(self) -> None:
-        ID_ENDPOINT = "https://users.roblox.com/v1/usernames/users"
-        THUMBNAIL_FMT = "https://thumbnails.roblox.com/v1/users/avatar?userIds={}&size=250x250&format=Png&isCircular=true"
+        id_endpoint = "https://users.roblox.com/v1/usernames/users"
+        thumbnail_fmt = "https://thumbnails.roblox.com/v1/users/avatar?userIds={}&size=250x250&format=Png&isCircular=true"
 
         player: RExPlayer = random.choice(RExPlayerManager().get_all())
         username = player.player_name
@@ -84,10 +84,11 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
             "Content-Type": "application/json"
         }
 
-        player_id_req = requests.post(ID_ENDPOINT, headers=headers, json={"usernames": [username], "excludeBannedUsers": False})
+        player_id_req = requests.post(id_endpoint, headers=headers,
+                                      json={"usernames": [username], "excludeBannedUsers": False})
         player_id = player_id_req.json()['data'][0]['id']
 
-        thumbnail_req = requests.get(THUMBNAIL_FMT.format(player_id), headers=headers)
+        thumbnail_req = requests.get(thumbnail_fmt.format(player_id), headers=headers)
         image_url = thumbnail_req.json()['data'][0]['imageUrl']
 
         image_req = requests.get(image_url)

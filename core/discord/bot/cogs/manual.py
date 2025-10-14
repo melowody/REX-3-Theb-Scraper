@@ -1,6 +1,5 @@
 import typing
 
-import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -8,10 +7,10 @@ from discord.ext.commands import Context
 from core.discord.bot.track_msg import RExDiscordTrackMessage
 from core.discord.bot.util import get_items
 from core.types.manager import NotInIndex
-from core.types.managers.cave import RExCaveManager, RExCave
+from core.types.managers.cave import RExCaveManager
 from core.types.managers.equipment import RExEquipmentManager, RExEquipmentType
 from core.types.managers.event import RExEventManager
-from core.types.managers.ore import RExOreManager, RExOre
+from core.types.managers.ore import RExOreManager
 from core.types.managers.track import RExTrack
 from core.types.managers.variant import RExVariantManager
 from core.types.managers.world import RExWorldManager
@@ -23,17 +22,22 @@ class RExDiscordManualCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="manual", description="Manually track an ore in case the official tracker missed it") # type: ignore[arg-type]
+    @commands.hybrid_command(name="manual",
+                             description="Manually track an ore in case the official tracker missed it")  # type: ignore[arg-type]
     @commands.is_owner()
     @app_commands.autocomplete(
-        ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name, secondary=lambda x: "" if (alt := x.alt_name) is None else alt),
+        ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name,
+                      secondary=lambda x: "" if (alt := x.alt_name) is None else alt),
         world=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name),
         pickaxe=get_items(RExEquipmentManager().get(lambda x: x.equip_type == RExEquipmentType.PICKAXE),
                           lambda x: x.equip_id, lambda x: x.equip_name),
         variant=get_items(RExVariantManager().get_all(), lambda x: x.variant_id, lambda x: x.variant_name),
-        cave=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name, predicate=lambda interaction, cave: cave.world_id == interaction.namespace.world),
+        cave=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name,
+                       predicate=lambda interaction, cave: cave.world_id == interaction.namespace.world),
         event=get_items(RExEventManager().get_all(), lambda x: x.ore_id,
-                        lambda x: x.event_text if isinstance(ore := RExOreManager().get_one(lambda i: i.ore_id == x.ore_id, x.ore_id), NotInIndex) else ore.ore_name)
+                        lambda x: x.event_text if isinstance(
+                            ore := RExOreManager().get_one(lambda i: i.ore_id == x.ore_id, x.ore_id),
+                            NotInIndex) else ore.ore_name)
     )
     async def manual(self, ctx: Context,
                      player_name: str,

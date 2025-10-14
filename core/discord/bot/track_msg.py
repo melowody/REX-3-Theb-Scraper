@@ -1,7 +1,6 @@
 import json
 import os
 import random
-import traceback
 from datetime import datetime
 from typing import Callable, TypeVar
 
@@ -22,6 +21,7 @@ from main import ROOT_DIR
 
 T = TypeVar("T")
 
+
 def get_track_message() -> str:
     date = datetime.today()
     with open(os.path.join(ROOT_DIR, "data", "holiday.json"), "r", encoding="utf8") as f:
@@ -33,7 +33,6 @@ def get_track_message() -> str:
 
 
 class RExDiscordTrackMessage:
-
     orig_track: RExTrack
 
     player: RExPlayer | str
@@ -101,7 +100,8 @@ class RExDiscordTrackMessage:
         await self._send_track_messages(
             channels,
             11,
-            lambda g: "" if g.guild_id != self.player.guild_id else f" <@{self.player.user_id}>" # type: ignore[union-attr]
+            lambda g: "" if g.guild_id != self.player.guild_id else f" <@{self.player.user_id}>"
+            # type: ignore[union-attr]
         )
 
     async def _send_beginner_messages(self) -> None:
@@ -125,10 +125,10 @@ class RExDiscordTrackMessage:
 
         try:
             save_track(self.track)
-        except:
+        except Exception as e:
             print(vars(self.track))
             print("Could not save track!")
-            traceback.print_exc()
+            print(e)
 
         to_ping = self.get_ping_num() >= ping_threshold
 

@@ -1,16 +1,16 @@
 import asyncio
 import json
-import traceback
 from threading import Thread
 from typing import Any
 
 from mypy.checker_shared import abstractmethod
-from websockets import ClientProtocol
+from websockets import ClientConnection
 from websockets.asyncio.client import connect
 
 from abc import ABC
 
 from asyncio import LifoQueue
+
 
 class JsonSender(ABC):
 
@@ -22,15 +22,16 @@ class JsonSender(ABC):
     async def handle_event(self, event: dict, client: "DiscordClient"):
         pass
 
+
 async def log_exceptions(awaitable) -> Any | None:
     try:
         return await awaitable
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        print(e)
+
 
 class DiscordClient:
-
-    socket: ClientProtocol
+    socket: ClientConnection
     loop: asyncio.AbstractEventLoop
     thread = Thread
 

@@ -18,6 +18,7 @@ from core.types.managers.world import RExWorldManager, RExWorld
 if TYPE_CHECKING:
     from core.discord.scraper.client import DiscordClient
 
+
 def parse_event(event: dict) -> RExTrack | None:
     """
     Parse a find's message event into a RExTrack
@@ -39,7 +40,8 @@ def parse_event(event: dict) -> RExTrack | None:
     player_name = title_groups.group(1)
 
     variant_text = title_groups.group(2)
-    variant = None if variant_text is None else RExVariantManager().get_one(lambda x: x.variant_name.lower() == variant_text.lower(), variant_text)
+    variant = None if variant_text is None else RExVariantManager().get_one(
+        lambda x: x.variant_name.lower() == variant_text.lower(), variant_text)
 
     ore_text = title_groups.group(3)
     ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == ore_text.lower(), ore_text)
@@ -62,7 +64,8 @@ def parse_event(event: dict) -> RExTrack | None:
                 cave_text = "Gilded Cave (SW2)"
             case "Lucernia":
                 cave_text = "Gilded Cave (SW3)"
-    cave = None if cave_text is None else RExCaveManager().get_one(lambda x: x.cave_name.lower() == cave_text.lower(), cave_text)
+    cave = None if cave_text is None else RExCaveManager().get_one(lambda x: x.cave_name.lower() == cave_text.lower(),
+                                                                   cave_text)
 
     blocks_mined: int = -1
     curr_event: RExEvent | NotInIndex | None = None
@@ -75,10 +78,12 @@ def parse_event(event: dict) -> RExTrack | None:
             if isinstance(curr_event_ore, NotInIndex):
                 curr_event = curr_event_ore
             else:
-                curr_event = RExEventManager().get_one(lambda x: x.ore_id.lower() == curr_event_ore.ore_id.lower(), curr_event_ore.ore_id)
+                curr_event = RExEventManager().get_one(lambda x: x.ore_id.lower() == curr_event_ore.ore_id.lower(),
+                                                       curr_event_ore.ore_id)
         elif field.get("name") == "Loadout" and field.get("value"):
             for i in field.get("value").split(", "):
-                if isinstance(equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i), RExEquipment):
+                if isinstance(equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i),
+                              RExEquipment):
                     equipment.append(equip)
 
     out = RExTrack(
@@ -96,8 +101,8 @@ def parse_event(event: dict) -> RExTrack | None:
 
     return out
 
-class RExScraper(JsonSender):
 
+class RExScraper(JsonSender):
     track_queue: LifoQueue[RExTrack] = LifoQueue()
 
     def should_handle(self, event: dict) -> bool:

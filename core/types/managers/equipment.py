@@ -9,12 +9,14 @@ if TYPE_CHECKING:
     from core.types.managers.ability import RExAbility
     from core.types.managers.recipe import RExRecipeStep
 
+
 class RExEquipmentType(Enum):
     PICKAXE = "pickaxe"
     LEFT_HAND = "lhand"
     RIGHT_HAND = "rhand"
     MANUAL = "manual"
     ARTIFACT = "artifact"
+
 
 @dataclass
 class RExEquipment:
@@ -49,6 +51,7 @@ class RExEquipment:
 
     def __eq__(self, other):
         return isinstance(other, RExEquipment) and self.equip_id == other.equip_id
+
 
 class RExEquipmentManager(RExManager[RExEquipment]):
     @property

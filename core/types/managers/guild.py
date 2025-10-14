@@ -52,6 +52,7 @@ class RExGuild:
     def __eq__(self, other):
         return isinstance(other, RExGuild) and self.guild_id == other.guild_id
 
+
 class RExGuildManager(RExManager[RExGuild]):
     @property
     def table_name(self) -> str:

@@ -1,8 +1,7 @@
-import traceback
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Generic, TypeVar, Type, Self
+from typing import Any, Callable, Generic, TypeVar, Type
 
 from core.types.meta import SingletonABCMeta
 from core.database import RExDBPool
@@ -24,6 +23,7 @@ class NotInIndex:
 
     def __str__(self):
         return f"({self.value} NOT IN {self.type.__name__}'S INDEX)"
+
 
 def lower(value: str | ToLower) -> str:
     """
@@ -63,7 +63,8 @@ class Selector:
     """The comparator in the query"""
 
 
-def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector | sql.SQL], limit: int | None = None) -> list[tuple[Any, ...]]:
+def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector | sql.SQL], limit: int | None = None) -> \
+        list[tuple[Any, ...]]:
     """
     Sends a query to the database and returns the result.
 
@@ -82,7 +83,8 @@ def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector 
 
         for selector in selectors:
             if isinstance(selector, Selector):
-                clause = sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()), sql.SQL(selector.comparator.value))
+                clause: sql.SQL | sql.Composed = sql.SQL("{} {} %s").format(sql.Identifier(selector.key.lower()),
+                                                                            sql.SQL(selector.comparator.value))
                 values.append(selector.value)
             else:
                 clause = selector
@@ -103,7 +105,8 @@ def query(table_name: str, key_order: tuple[str, ...], selectors: list[Selector 
         return cursor.fetchall()
 
 
-def upsert(items: list[T], table_name: str, primary_key: str, get_data: Callable[[T], dict[str, Any]], ignore_conflict: bool = False, is_unique_index: bool = False) -> None:
+def upsert(items: list[T], table_name: str, primary_key: str, get_data: Callable[[T], dict[str, Any]],
+           ignore_conflict: bool = False, is_unique_index: bool = False) -> None:
     """
     Insert items into a table, overriding the other data, or ignoring on conflict.
 
@@ -154,8 +157,8 @@ def upsert(items: list[T], table_name: str, primary_key: str, get_data: Callable
 
             try:
                 cursor.execute(query_stmt, vals)
-            except:
-                traceback.print_exc()
+            except Exception as e:
+                print(e)
 
 
 class RExBaseManager(Generic[T], ABC, metaclass=SingletonABCMeta):
@@ -335,5 +338,6 @@ class RExManager(RExBaseManager[T], ABC, metaclass=SingletonABCMeta):
             ignore_conflict (bool, optional): Whether to ignore conflict in the DB
         """
         upsert(self.get_all(), self.table_name, self.primary_key, self.prepare_db_entry, ignore_conflict)
+
 
 MANAGERS: list[RExManager] = []

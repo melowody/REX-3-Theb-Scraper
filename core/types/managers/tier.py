@@ -26,7 +26,9 @@ class RExTier:
     def get_multiplier(self, variant: "RExVariant") -> "RExMultiplier | NotInIndex":
         """Gets the Multiplier based off a given Variant"""
         from core.types.managers.multiplier import RExMultiplierManager
-        return RExMultiplierManager().get_one(lambda x: x.variant_id == variant.variant_id and x.tier_id == self.tier_id, f"{variant.variant_id} + {self.tier_id}")
+        return RExMultiplierManager().get_one(
+            lambda x: x.variant_id == variant.variant_id and x.tier_id == self.tier_id,
+            f"{variant.variant_id} + {self.tier_id}")
 
     def get_ores(self) -> "list[RExOre]":
         """Get all Ores in this Tier"""

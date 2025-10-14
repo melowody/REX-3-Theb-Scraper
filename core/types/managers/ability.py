@@ -3,9 +3,9 @@ from typing import Any, TYPE_CHECKING
 
 from core.types.manager import RExManager, NotInIndex
 
-
 if TYPE_CHECKING:
     from core.types.managers.equipment import RExEquipment
+
 
 @dataclass
 class RExAbility:
@@ -38,6 +38,7 @@ class RExAbility:
 
     def __eq__(self, other):
         return isinstance(other, RExAbility) and self.ability_name == other.ability_name
+
 
 class RExAbilityManager(RExManager[RExAbility]):
     @property

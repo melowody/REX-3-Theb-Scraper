@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from core.types.managers.spawn import RExSpawn
     from core.types.managers.ore import RExOre
 
+
 @dataclass
 class RExCave:
     """A dataclass for information about REx's Caves"""
@@ -39,6 +40,7 @@ class RExCave:
 
     def __eq__(self, other):
         return isinstance(other, RExCave) and self.cave_id == other.cave_id
+
 
 class RExCaveManager(RExManager[RExCave]):
 

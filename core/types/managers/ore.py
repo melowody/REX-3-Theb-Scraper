@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from core.types.manager import RExManager, T, NotInIndex, ToLower
+from core.types.manager import RExManager, NotInIndex, ToLower
 
 if TYPE_CHECKING:
     from core.types.managers.tier import RExTier
     from core.types.managers.spawn import RExSpawn
+
 
 @dataclass
 class RExOre:
@@ -31,6 +32,7 @@ class RExOre:
 
     def __eq__(self, other):
         return isinstance(other, RExOre) and self.ore_id == other.ore_id
+
 
 class RExOreManager(RExManager[RExOre]):
     @property

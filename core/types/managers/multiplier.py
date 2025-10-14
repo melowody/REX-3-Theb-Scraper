@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from core.types.managers.tier import RExTier
     from core.types.manager import NotInIndex
 
+
 @dataclass
 class RExMultiplier:
     """A dataclass for information about REx's Variant Multipliers"""
@@ -28,7 +29,9 @@ class RExMultiplier:
         return RExTierManager().get_one(lambda x: x.tier_id == self.tier_id, self.tier_id)
 
     def __eq__(self, other):
-        return isinstance(other, RExMultiplier) and self.variant_id == other.variant_id and self.tier_id == other.tier_id
+        return isinstance(other,
+                          RExMultiplier) and self.variant_id == other.variant_id and self.tier_id == other.tier_id
+
 
 class RExMultiplierManager(RExManager[RExMultiplier]):
     @property

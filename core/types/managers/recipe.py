@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from core.types.managers.ore import RExOre
     from core.types.managers.variant import RExVariant
 
+
 @dataclass
 class RExRecipeStep:
     """Information about a specific step in an Equipment's Recipe"""
@@ -38,6 +39,7 @@ class RExRecipeStep:
 
     def __eq__(self, other):
         return isinstance(other, RExRecipeStep) and self.equip_id == other.equip_id and self.ore_id == other.ore_id
+
 
 class RExRecipeManager(RExManager[RExRecipeStep]):
     @property

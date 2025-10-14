@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from core.types.managers.spawn import RExSpawn
     from core.types.managers.ore import RExOre
 
+
 @dataclass
 class RExLayer:
     """A dataclass for information about REx's Layers"""
@@ -41,6 +42,7 @@ class RExLayer:
 
     def __eq__(self, other):
         return other is RExLayer and self.layer_id == other.layer_id
+
 
 class RExLayerManager(RExManager[RExLayer]):
 
