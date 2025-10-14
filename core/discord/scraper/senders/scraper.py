@@ -1,29 +1,32 @@
-import os
 import re
-import traceback
+
+from core.discord.scraper.client import JsonSender
 from asyncio import LifoQueue
 
-from core.discord.scraper.runner import JsonRunner
+from typing import TYPE_CHECKING
+
 from core.types.manager import NotInIndex
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.equipment import RExEquipment, RExEquipmentManager
-from core.types.managers.event import RExEventManager, RExEvent
+from core.types.managers.event import RExEvent, RExEventManager
 from core.types.managers.ore import RExOreManager, RExOre
-from core.types.managers.track import RExTrack, save_track
+from core.types.managers.track import RExTrack
 from core.types.managers.tracker import RExTrackerManager
 from core.types.managers.variant import RExVariantManager, RExVariant
 from core.types.managers.world import RExWorldManager, RExWorld
 
+if TYPE_CHECKING:
+    from core.discord.scraper.client import DiscordClient
 
 def parse_event(event: dict) -> RExTrack | None:
     """
     Parse a find's message event into a RExTrack
 
     Args:
-        event (dict): The event object sent by Discord
+    event (dict): The event object sent by Discord
 
     Returns:
-        RExTrack: The RExTrack parsed from the event
+    RExTrack: The RExTrack parsed from the event
     """
 
     # Regex group the title of the official embed
@@ -78,7 +81,7 @@ def parse_event(event: dict) -> RExTrack | None:
                 if isinstance(equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i), RExEquipment):
                     equipment.append(equip)
 
-    return RExTrack(
+    out = RExTrack(
         player_name,
         variant if not isinstance(variant, RExVariant) else variant.variant_id,
         ore if not isinstance(ore, RExOre) else ore.ore_id,
@@ -89,77 +92,30 @@ def parse_event(event: dict) -> RExTrack | None:
         [i if not isinstance(i, RExEquipment) else i.equip_id for i in equipment]
     )
 
+    print(vars(out))
 
-class RExTrackerScraper(JsonRunner):
+    return out
 
-    queue: LifoQueue[RExTrack]
+class RExScraper(JsonSender):
 
-    def __init__(self):
-        super().__init__()
-        self.queue = LifoQueue()
+    track_queue: LifoQueue[RExTrack] = LifoQueue()
 
-    def pre_start(self) -> None:
-
-        # Send the initial heartbeat to get the expected per-heartbeat time
-        token = os.environ.get("SCRAPER_TOKEN")
-        payload = {
-            "op": 2,
-            "d": {
-                "token": token,
-                "properties": {
-                    "$os": "windows",
-                    "$browser": "chrome",
-                    "$device": "pc"
-                }
-            }
-        }
-        self.send_json_request(payload)
-
-    async def loop(self) -> None:
-
-        event: dict | None = None
-        try:
-            event = self.receive_json_response()
-        except Exception as e:
-            # TODO: Get better exception list
-            print("Error in getting track list")
-            print(type(e), traceback.format_exc())
-
-        # Get the author ID of the message, and discard any non-message events
+    def should_handle(self, event: dict) -> bool:
         if event is None:
-            return
+            return False
         if event.get('t') != "MESSAGE_CREATE":
-            return
+            return False
         data: dict | None = event.get("d")
         if data is None:
-            return
+            return False
         author = data.get("author")
         if author is None:
-            return
+            return False
         author_id = author.get("id")
         if author_id is None:
-            return
+            return False
+        return RExTrackerManager().exists(lambda x: x.tracker_id == int(author_id))
 
-        # Check if the author is one of the official trackers
-        if not RExTrackerManager().exists(lambda x: x.tracker_id == int(author_id)):
-            return
-
-        # Parse and send the find in the respective channels
-        try:
-            for embed in data.get("embeds", []):
-                await self.handle_event(embed)
-                pass
-        except Exception as e:
-            # TODO: Get better Exception list
-            print("Could not handle track event!")
-            print(type(e), traceback.format_exc())
-
-    async def handle_event(self, event: dict) -> None:
-        """Handle a valid event, parsing and sending it to the correct channels
-
-        Args:
-            event (dict): The event object sent by Discord
-        """
-        track = parse_event(event)
-        if track:
-            await self.queue.put(track)
+    async def handle_event(self, event: dict, _: "DiscordClient"):
+        for embed in event["d"]["embeds"]:
+            await self.track_queue.put(parse_event(embed))

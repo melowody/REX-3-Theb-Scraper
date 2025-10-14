@@ -1,11 +1,9 @@
 import os
 
-import websocket
 from dotenv import load_dotenv
 
-from core.discord.scraper.runners.heartbeat import Heartbeat
-from core.discord.scraper.runners.scraper import RExTrackerScraper
 from core.database import RExDBPool
+from core.discord.scraper.client import DiscordClient
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,11 +15,7 @@ if __name__ == "__main__":
 
     from core.discord.bot.bot import RExDiscordBot
 
-    socket = websocket.WebSocket()
-    Heartbeat().ensure_socket(socket)
-    Heartbeat().start()
-    RExTrackerScraper().ensure_socket(socket)
-    RExTrackerScraper().start()
+    DiscordClient().start()
 
     token = os.environ.get("BOT_TOKEN")
     if token:

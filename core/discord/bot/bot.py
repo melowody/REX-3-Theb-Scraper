@@ -1,6 +1,8 @@
 import asyncio
 import random
 from typing import Type
+
+import discord
 from PIL import Image
 from io import BytesIO
 
@@ -20,7 +22,7 @@ from core.discord.bot.cogs.setup import RExDiscordSetupCommand
 from core.discord.bot.cogs.subscribe import RExDiscordSubscribeCommand
 from core.discord.bot.cogs.sync import RExDiscordSyncCommand
 from core.discord.bot.track_msg import RExDiscordTrackMessage
-from core.discord.scraper.runners.scraper import RExTrackerScraper
+from core.discord.scraper.senders.scraper import RExScraper
 from core.types.managers.player import RExPlayerManager, RExPlayer
 from core.types.meta import SingletonMeta
 
@@ -60,7 +62,7 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
 
     @tasks.loop(seconds=.01)
     async def send_events(self) -> None:
-        queue = RExTrackerScraper().queue
+        queue = RExScraper().track_queue
         while True:
             try:
                 track = queue.get_nowait()
@@ -77,9 +79,6 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
         player: RExPlayer = random.choice(RExPlayerManager().get_all())
         username = player.player_name
 
-        print(vars(player))
-        print(username)
-
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -91,12 +90,17 @@ class RExDiscordBot(commands.Bot, metaclass=SingletonMeta):
         thumbnail_req = requests.get(THUMBNAIL_FMT.format(player_id), headers=headers)
         image_url = thumbnail_req.json()['data'][0]['imageUrl']
 
-        image = Image.open(BytesIO(requests.get(image_url).content))
+        image_req = requests.get(image_url)
+        image = Image.open(BytesIO(image_req.content))
+
         width, height = image.size
         left, top, right, bottom = width / 4, 0, 3 * width / 4, height / 2
         cropped_image = image.crop((left, top, right, bottom))
         out_buf = BytesIO()
         cropped_image.save(out_buf, format='PNG')
-        cropped_image.save("test.png")
+        image_bytes = out_buf.getvalue()
 
-        await self.user.edit(avatar=out_buf.getvalue(), username=f"Goobervile Tracker ({username})")
+        try:
+            await self.user.edit(avatar=image_bytes, username=f"Gooberville Tracker")
+        except discord.errors.HTTPException:
+            return

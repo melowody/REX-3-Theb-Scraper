@@ -7,12 +7,12 @@ from discord.ext.commands import Context
 
 from core.discord.bot.track_msg import RExDiscordTrackMessage
 from core.discord.bot.util import get_items
-from core.discord.scraper.runners.scraper import RExTrack
 from core.types.manager import NotInIndex
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.equipment import RExEquipmentManager, RExEquipmentType
 from core.types.managers.event import RExEventManager
 from core.types.managers.ore import RExOreManager, RExOre
+from core.types.managers.track import RExTrack
 from core.types.managers.variant import RExVariantManager
 from core.types.managers.world import RExWorldManager
 
