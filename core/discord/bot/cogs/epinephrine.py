@@ -1,7 +1,7 @@
 import random
 
+from discord import app_commands
 from discord.ext import commands
-from discord.ext.commands import Context
 
 from core.types.manager import NotInIndex
 from core.types.managers.player import RExPlayerManager
@@ -18,17 +18,16 @@ async def dm_owners(bot: commands.Bot, msg: str) -> None:
 
 
 class RExDiscordEpinephrineCommand(commands.Cog):
-    """A command to simulate finding one of the rarest ores in the game: Epinephrine"""
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="epinephrine",
-                             description="Simulate the hunt for the elusive Epinephrine! (1 in 999,999,999)")  # type: ignore[arg-type]
-    async def epinephrine(self, ctx: Context):
+    @commands.hybrid_command(name="epinephrine", description="Roll for Epinephrine!")  # type: ignore
+    @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+    async def epinephrine(self, ctx: commands.Context):
 
-        player = RExPlayerManager().get_one(lambda x: x.user_id == ctx.author.id, ctx.author.id)
-        if isinstance(player, NotInIndex):
+        if isinstance(player := RExPlayerManager().get_by(ctx.author.id),
+                      NotInIndex):
             await ctx.reply("You need to register for the bot! Use /register", ephemeral=True)
             return
 

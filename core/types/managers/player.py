@@ -3,7 +3,7 @@ from typing import Any, TYPE_CHECKING
 
 from discord import User, Guild
 
-from core.types.manager import RExManager
+from core.types.manager import RExManager, NotInIndex
 
 if TYPE_CHECKING:
     from core.types.managers.guild import RExGuild
@@ -41,7 +41,8 @@ class RExPlayer:
         user = self.get_discord_user()
         if user is None:
             return []
-        return [i for i in user.mutual_guilds if RExGuildManager().exists(lambda x: x.guild_id == i.id)]
+        return [i for i in user.mutual_guilds if RExGuildManager().exists(
+            lambda x, g=i: x.guild_id == g.id)]
 
     def get_guilds(self) -> "list[RExGuild]":
         """Returns the RExGuilds this Player is in"""
@@ -53,7 +54,14 @@ class RExPlayer:
         return isinstance(other, RExPlayer) and self.user_id == other.user_id
 
 
-class RExPlayerManager(RExManager[RExPlayer]):
+class RExPlayerManager(RExManager[RExPlayer, int]):
+    def _get_by_impl(self, value: int) -> RExPlayer | NotInIndex:
+        return self.get_one(lambda x: x.user_id == value, value)
+
+    def get_delete_keys(self, item: RExPlayer) -> dict[str, Any]:
+        return {
+            "USER_ID": item.user_id
+        }
 
     @property
     def table_name(self) -> str:

@@ -1,3 +1,7 @@
+"""
+Definitions for REx Variants
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -22,14 +26,24 @@ class RExVariant:
     def get_multiplier(self, tier: "RExTier") -> "RExMultiplier | NotInIndex":
         """Gets the Multiplier based off a given Tier"""
         from core.types.managers.multiplier import RExMultiplierManager
-        return RExMultiplierManager().get_one(lambda x: x.variant_id == self.variant_id and x.tier_id == tier.tier_id,
-                                              f"{self.variant_num} + {tier.tier_id}")
+        return RExMultiplierManager().get_one(
+            lambda x: x.variant_id == self.variant_id \
+            and x.tier_id == tier.tier_id,
+            f"{self.variant_num} + {tier.tier_id}")
 
     def __eq__(self, other):
         return isinstance(other, RExVariant) and self.variant_id == other.variant_id
 
 
-class RExVariantManager(RExManager[RExVariant]):
+class RExVariantManager(RExManager[RExVariant, str]):
+    def _get_by_impl(self, value: str) -> RExVariant | NotInIndex:
+        return self.get_one(lambda x: x.variant_id == value, value)
+
+    def get_delete_keys(self, item: RExVariant) -> dict[str, Any]:
+        return {
+            "VARIANT_ID": item.variant_id
+        }
+
     @property
     def table_name(self) -> str:
         return "VARIANTS"

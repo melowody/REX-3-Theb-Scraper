@@ -1,147 +1,218 @@
-DO $$
-BEGIN
-    CREATE TYPE TRACKER_TYPE AS ENUM ('global', 'player', 'beginner');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END
+do
+$$
+    begin
+        create type tracker_type as enum ('global', 'player', 'beginner');
+    exception
+        when duplicate_object then null;
+    end
 $$;
 
-DO $$
-BEGIN
-    CREATE TYPE EQUIP_TYPE AS ENUM ('pickaxe', 'lhand', 'rhand', 'manual', 'artifact');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END
+do
+$$
+    begin
+        create type equip_type as enum ('pickaxe', 'lhand', 'rhand', 'manual', 'artifact');
+    exception
+        when duplicate_object then null;
+    end;
 $$;
 
-CREATE TABLE IF NOT EXISTS WORLDS (
-    WORLD_ID TEXT PRIMARY KEY NOT NULL,
-    WORLD_NAME TEXT NOT NULL UNIQUE,
-    WORLD_DESC TEXT NOT NULL
+create table if not exists worlds
+(
+    world_id   text not null
+        primary key,
+    world_name text not null
+        unique,
+    world_desc text not null
 );
 
-CREATE TABLE IF NOT EXISTS TIERS (
-    TIER_ID TEXT PRIMARY KEY NOT NULL,
-    TIER_NAME TEXT NOT NULL UNIQUE,
-    TIER_NUM INT NOT NULL UNIQUE,
-    MIN_RARITY BIGINT NOT NULL,
-    MAX_RARITY BIGINT NOT NULL
+create table if not exists tiers
+(
+    tier_id    text                  not null
+        primary key,
+    tier_name  text                  not null
+        unique,
+    tier_num   integer               not null
+        unique,
+    min_rarity bigint                not null,
+    max_rarity bigint                not null,
+    color      text default ''::text not null
 );
 
-CREATE TABLE IF NOT EXISTS ORES (
-    ORE_ID TEXT PRIMARY KEY NOT NULL,
-    ORE_NAME TEXT NOT NULL UNIQUE,
-    TIER_ID TEXT REFERENCES TIERS(TIER_ID) NOT NULL
+create table if not exists ores
+(
+    ore_id   text not null
+        primary key,
+    ore_name text not null
+        unique,
+    tier_id  text not null
+        references tiers,
+    alt_name text
 );
 
-CREATE TABLE IF NOT EXISTS CAVES (
-    CAVE_ID TEXT PRIMARY KEY NOT NULL,
-    ORE_ID TEXT REFERENCES ORES(ORE_ID) NOT NULL,
-    CAVE_NAME TEXT NOT NULL UNIQUE,
-    WORLD_ID TEXT REFERENCES WORLDS(WORLD_ID) NOT NULL,
-    CAVE_RARITY INT NOT NULL
+create table if not exists caves
+(
+    cave_id     text    not null
+        primary key,
+    ore_id      text    not null
+        references ores,
+    cave_name   text    not null
+        unique,
+    world_id    text    not null
+        references worlds,
+    cave_rarity integer not null
 );
 
-CREATE TABLE IF NOT EXISTS LAYERS (
-    LAYER_ID TEXT PRIMARY KEY NOT NULL,
-    ORE_ID TEXT REFERENCES ORES(ORE_ID) NOT NULL,
-    LAYER_NAME TEXT NOT NULL UNIQUE,
-    WORLD_ID TEXT REFERENCES WORLDS(WORLD_ID) NOT NULL,
-    MIN_DEPTH INT NOT NULL,
-    MAX_DEPTH INT NOT NULL
+create table if not exists layers
+(
+    layer_id   text    not null
+        primary key,
+    ore_id     text    not null
+        references ores,
+    layer_name text    not null
+        unique,
+    world_id   text    not null
+        references worlds,
+    min_depth  integer not null,
+    max_depth  integer not null
 );
 
-CREATE TABLE IF NOT EXISTS SPAWNS (
-    ORE_ID TEXT REFERENCES ORES(ORE_ID) NOT NULL,
-    LAYER_ID TEXT REFERENCES LAYERS(LAYER_ID),
-    CAVE_ID TEXT REFERENCES CAVES(CAVE_ID),
-    RARITY BIGINT NOT NULL,
-    CONSTRAINT ORE_SPAWN UNIQUE(ORE_ID, LAYER_ID, CAVE_ID)
+create table if not exists spawns
+(
+    ore_id   text   not null
+        references ores,
+    layer_id text
+        references layers,
+    cave_id  text
+        references caves,
+    rarity   bigint not null,
+    constraint ore_spawn
+        unique (ore_id, layer_id, cave_id)
 );
 
-CREATE TABLE IF NOT EXISTS GUILDS (
-    GUILD_ID BIGINT PRIMARY KEY NOT NULL,
-    GUILD_NAME TEXT NOT NULL
+create table if not exists guilds
+(
+    guild_id   bigint not null
+        primary key,
+    guild_name text   not null
 );
 
-CREATE TABLE IF NOT EXISTS CHANNELS (
-    CHANNEL_ID BIGINT PRIMARY KEY NOT NULL,
-    CHANNEL_TYPE TRACKER_TYPE NOT NULL,
-    PING_ROLE BIGINT
+create table if not exists channels
+(
+    channel_id   bigint       not null
+        primary key,
+    channel_type tracker_type not null,
+    ping_role    bigint
 );
 
-CREATE TABLE IF NOT EXISTS PLAYERS (
-    USER_ID BIGINT PRIMARY KEY NOT NULL,
-    PLAYER_NAME TEXT NOT NULL UNIQUE,
-    GUILD_ID BIGINT REFERENCES GUILDS(GUILD_ID),
-    MAX_EPI INT,
-    MIN_EPI INT
+create table if not exists players
+(
+    user_id     bigint not null
+        primary key,
+    player_name text   not null
+        unique,
+    guild_id    bigint
+        references guilds,
+    max_epi     integer,
+    min_epi     integer
 );
 
-CREATE TABLE IF NOT EXISTS TRACKERS (
-    TRACKER_ID BIGINT PRIMARY KEY NOT NULL
+create table if not exists trackers
+(
+    tracker_id bigint not null
+        primary key
 );
 
-CREATE TABLE IF NOT EXISTS EQUIPMENT (
-    EQUIP_ID TEXT PRIMARY KEY NOT NULL,
-    EQUIP_NAME TEXT NOT NULL,
-    EQUIP_DESC TEXT NOT NULL,
-    EQUIP_TIER INT NOT NULL,
-    EQUIP_TYPE EQUIP_TYPE NOT NULL,
-    WORLD_ID TEXT REFERENCES WORLDS(WORLD_ID)
+create table if not exists equipment
+(
+    equip_id   text       not null
+        primary key,
+    equip_name text       not null,
+    equip_desc text,
+    equip_tier integer    not null,
+    equip_type equip_type not null,
+    world_id   text
+        references worlds
 );
 
-CREATE TABLE IF NOT EXISTS RECIPES (
-    EQUIP_ID TEXT REFERENCES EQUIPMENT(EQUIP_ID) NOT NULL,
-    ORE_ID TEXT REFERENCES ORES(ORE_ID) NOT NULL,
-    COUNT DECIMAL NOT NULL,
-    VARIANT_ID TEXT REFERENCES VARIANTS(VARIANT_ID),
-    CONSTRAINT RECIPE_STEP UNIQUE(EQUIP_ID, ORE_ID)
+create table if not exists abilities
+(
+    ability_id          text    not null
+        primary key,
+    equip_id            text    not null
+        references equipment,
+    ability_name        text    not null,
+    ability_desc        text    not null,
+    ability_rate        integer not null,
+    ability_luck        text,
+    ability_lifespan    text,
+    ability_area        text,
+    ability_amount      text,
+    ability_pinned_luck text
 );
 
-CREATE TABLE IF NOT EXISTS ABILITIES (
-    ABILITY_ID TEXT PRIMARY KEY NOT NULL,
-    EQUIP_ID TEXT REFERENCES EQUIPMENT(EQUIP_ID) NOT NULL,
-    ABILITY_NAME TEXT NOT NULL,
-    ABILITY_DESC TEXT NOT NULL,
-    ABILITY_RATE INT NOT NULL,
-    ABILITY_LUCK TEXT,
-    ABILITY_LIFESPAN TEXT,
-    ABILITY_AREA TEXT,
-    ABILITY_AMOUNT TEXT
+create table if not exists events
+(
+    ore_id         text    not null
+        primary key
+        references ores,
+    world_id       text    not null
+        references worlds,
+    event_text     text    not null,
+    event_desc     text    not null,
+    ore_rarity     integer not null,
+    event_duration integer not null,
+    event_chance   integer not null
 );
 
-CREATE TABLE IF NOT EXISTS EVENTS (
-    ORE_ID TEXT PRIMARY KEY REFERENCES ORES(ORE_ID) NOT NULL,
-    WORLD_ID TEXT REFERENCES WORLDS(WORLD_ID) NOT NULL,
-    EVENT_TEXT TEXT NOT NULL,
-    EVENT_DESC TEXT NOT NULL,
-    ORE_RARITY INT NOT NULL,
-    EVENT_DURATION INT NOT NULL,
-    EVENT_CHANCE INT NOT NULL
+create table if not exists variants
+(
+    variant_id   text    not null
+        primary key,
+    variant_name text    not null,
+    variant_num  integer not null
+        unique
 );
 
-CREATE TABLE IF NOT EXISTS VARIANTS (
-    VARIANT_ID TEXT PRIMARY KEY NOT NULL,
-    VARIANT_NAME TEXT NOT NULL,
-    VARIANT_NUM INT UNIQUE NOT NULL
+create table if not exists recipes
+(
+    equip_id   text    not null
+        references equipment,
+    ore_id     text    not null
+        references ores,
+    count      numeric not null,
+    variant_id text
+        references variants,
+    constraint recipe_step
+        unique (equip_id, ore_id)
 );
 
-CREATE TABLE IF NOT EXISTS MULTIPLIERS (
-    VARIANT_ID TEXT REFERENCES VARIANTS(VARIANT_ID) NOT NULL,
-    TIER_ID TEXT REFERENCES TIERS(TIER_ID) NOT NULL,
-    MULTIPLIER_NUM INT NOT NULL,
-    CONSTRAINT MULTIPLIER UNIQUE(VARIANT_ID, TIER_ID)
+create table if not exists multipliers
+(
+    variant_id     text    not null
+        references variants,
+    tier_id        text    not null
+        references tiers,
+    multiplier_num integer not null,
+    constraint multiplier
+        unique (variant_id, tier_id)
 );
 
-CREATE TABLE IF NOT EXISTS TRACKS (
-    PLAYER_NAME TEXT NOT NULL,
-    ORE_ID TEXT REFERENCES ORES(ORE_ID) NOT NULL,
-    VARIANT_ID TEXT REFERENCES VARIANTS(VARIANT_ID),
-    CAVE_ID TEXT REFERENCES CAVES(CAVE_ID),
-    WORLD_ID TEXT REFERENCES WORLDS(WORLD_ID) NOT NULL,
-    BLOCKS_MINED BIGINT NOT NULL,
-    EVENT_ID TEXT REFERENCES EVENTS(ORE_ID),
-    EQUIP_IDS TEXT[],
-    CONSTRAINT TRACK_KEY UNIQUE(PLAYER_NAME, BLOCKS_MINED)
+create table if not exists tracks
+(
+    player_name  text   not null,
+    ore_id       text   not null
+        references ores,
+    variant_id   text
+        references variants,
+    cave_id      text
+        references caves,
+    world_id     text   not null
+        references worlds,
+    blocks_mined bigint not null,
+    event_id     text
+        references events,
+    equip_ids    text[],
+    constraint track_key
+        unique (player_name, blocks_mined)
 );
+

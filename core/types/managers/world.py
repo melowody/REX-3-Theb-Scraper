@@ -1,7 +1,11 @@
+"""
+Definitions for REx Worlds
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
-from core.types.manager import RExManager
+from core.types.manager import RExManager, NotInIndex
 
 if TYPE_CHECKING:
     from core.types.managers.cave import RExCave
@@ -39,7 +43,14 @@ class RExWorld:
         return isinstance(other, RExWorld) and self.world_id == other.world_id
 
 
-class RExWorldManager(RExManager[RExWorld]):
+class RExWorldManager(RExManager[RExWorld, str]):
+    def _get_by_impl(self, value: str) -> RExWorld | NotInIndex:
+        return self.get_one(lambda x: x.world_id == value, value)
+
+    def get_delete_keys(self, item: RExWorld) -> dict[str, Any]:
+        return {
+            "WORLD_ID": item.world_id
+        }
 
     @property
     def table_name(self) -> str:

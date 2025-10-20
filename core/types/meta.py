@@ -1,3 +1,7 @@
+"""
+Defines the Singleton metaclasses for use in classes that should only be instantiated once
+"""
+
 from abc import ABCMeta
 from typing import Any
 

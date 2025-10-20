@@ -1,3 +1,7 @@
+"""
+Implementation for REx's Equipments' Abilities.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -34,13 +38,22 @@ class RExAbility:
     def get_equipment(self) -> "RExEquipment | NotInIndex":
         """Get the associated Equipment"""
         from core.types.managers.equipment import RExEquipmentManager
-        return RExEquipmentManager().get_one(lambda x: x.equip_id == self.equip_id, self.equip_id)
+        return RExEquipmentManager().get_by(self.equip_id)
 
     def __eq__(self, other):
         return isinstance(other, RExAbility) and self.ability_name == other.ability_name
 
 
-class RExAbilityManager(RExManager[RExAbility]):
+class RExAbilityManager(RExManager[RExAbility, str]):
+
+    def _get_by_impl(self, value: str) -> RExAbility | NotInIndex:
+        return self.get_one(lambda x: x.ability_id == value, value)
+
+    def get_delete_keys(self, item: RExAbility) -> dict[str, Any]:
+        return {
+            "ABILITY_ID": item.ability_id
+        }
+
     @property
     def table_name(self) -> str:
         return "ABILITIES"

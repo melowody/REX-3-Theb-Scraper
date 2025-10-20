@@ -1,13 +1,17 @@
+"""
+Implementation for Discord Guilds that have the Bot set up.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
 from discord import Guild, TextChannel
 
-from core.types.manager import RExManager
+from core.types.manager import RExManager, NotInIndex
 
 if TYPE_CHECKING:
     from core.types.managers.channel import RExChannel
-    from core.types.managers.player import RExPlayer, RExPlayerManager
+    from core.types.managers.player import RExPlayer
 
 
 @dataclass
@@ -53,7 +57,15 @@ class RExGuild:
         return isinstance(other, RExGuild) and self.guild_id == other.guild_id
 
 
-class RExGuildManager(RExManager[RExGuild]):
+class RExGuildManager(RExManager[RExGuild, int]):
+    def _get_by_impl(self, value: int) -> RExGuild | NotInIndex:
+        return self.get_one(lambda x: x.guild_id == value, value)
+
+    def get_delete_keys(self, item: RExGuild) -> dict[str, Any]:
+        return {
+            "GUILD_ID": item.guild_id
+        }
+
     @property
     def table_name(self) -> str:
         return "GUILDS"

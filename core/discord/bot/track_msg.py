@@ -1,3 +1,7 @@
+"""
+Implementation for handling Heartbeats to Discord.
+"""
+
 import json
 import os
 import random
@@ -23,6 +27,12 @@ T = TypeVar("T")
 
 
 def get_track_message() -> str:
+    """
+    Gets the tracker's message's format string for today
+
+    Returns:
+        str: The message format
+    """
     date = datetime.today()
     with open(os.path.join(ROOT_DIR, "data", "holiday.json"), "r", encoding="utf8") as f:
         data = json.load(f)
@@ -33,6 +43,9 @@ def get_track_message() -> str:
 
 
 class RExDiscordTrackMessage:
+    """
+    A class outlining a tracker message
+    """
     orig_track: RExTrack
 
     player: RExPlayer | str
@@ -57,10 +70,22 @@ class RExDiscordTrackMessage:
         self.parse_info(track)
 
     def get_ping_num(self) -> int:
+        """
+        Gets the current "rarity value" to check if it should ping everyone
+
+        Returns:
+            int: The "rarity value"
+        """
         return (0 if isinstance(self.variant, NotInIndex) or self.variant is None else self.variant.variant_num) \
             + (0 if isinstance(self.tier, NotInIndex) else self.tier.tier_num)
 
     def parse_info(self, track: RExTrack) -> None:
+        """
+        Parses a track into the local variables to be used in the message function
+
+        Args:
+            track (RExTrack): The track to parse
+        """
 
         player = track.get_player()
         if isinstance(player, NotInIndex):
@@ -81,6 +106,9 @@ class RExDiscordTrackMessage:
         self.event_ore = track.get_event_ore()
 
     async def send_messages(self) -> None:
+        """
+        Sends this track to the respective channels
+        """
         if isinstance(self.player, RExPlayer):
             await self._send_player_messages()
         if self.blocks_mined < 10_000:
@@ -100,7 +128,7 @@ class RExDiscordTrackMessage:
         await self._send_track_messages(
             channels,
             11,
-            lambda g: "" if g.guild_id != self.player.guild_id else f" <@{self.player.user_id}>"
+            lambda g, p=self.player: "" if g.guild_id != p.guild_id else f" <@{p.user_id}>"
             # type: ignore[union-attr]
         )
 

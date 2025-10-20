@@ -1,3 +1,7 @@
+"""
+Implementation for tracking Channels.
+"""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, TYPE_CHECKING
@@ -44,7 +48,7 @@ class RExChannel:
         guild = self.get_discord_guild()
         if guild is None:
             return NotInIndex(self.channel_id, discord.Guild)
-        return RExGuildManager().get_one(lambda x: x.guild_id == guild.id, guild.id)
+        return RExGuildManager().get_by(guild.id)
 
     def get_ping_role(self) -> Role | None:
         """Get the Discord Role to ping for the rarest finds"""
@@ -56,7 +60,15 @@ class RExChannel:
         return self.channel_id == other.channel_id
 
 
-class RExChannelManager(RExManager[RExChannel]):
+class RExChannelManager(RExManager[RExChannel, int]):
+    def _get_by_impl(self, value: int) -> RExChannel | NotInIndex:
+        return self.get_one(lambda x: x.channel_id == value, value)
+
+    def get_delete_keys(self, item: RExChannel) -> dict[str, Any]:
+        return {
+            "CHANNEL_ID": item.channel_id
+        }
+
     @property
     def table_name(self) -> str:
         return "CHANNELS"

@@ -1,12 +1,17 @@
+"""
+Implementation for Tier-Variant Multipliers.
+"""
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from core.types.manager import RExManager
 
+from core.types.manager import NotInIndex
+
 if TYPE_CHECKING:
     from core.types.managers.variant import RExVariant
     from core.types.managers.tier import RExTier
-    from core.types.manager import NotInIndex
 
 
 @dataclass
@@ -21,19 +26,29 @@ class RExMultiplier:
     def get_variant(self) -> "RExVariant | NotInIndex":
         """Get the Variant associated with this Multiplier"""
         from core.types.managers.variant import RExVariantManager
-        return RExVariantManager().get_one(lambda x: x.variant_id == self.variant_id, self.variant_id)
+        return RExVariantManager().get_by(self.variant_id)
 
     def get_tier(self) -> "RExTier | NotInIndex":
         """Get the Tier associated with this Multiplier"""
         from core.types.managers.tier import RExTierManager
-        return RExTierManager().get_one(lambda x: x.tier_id == self.tier_id, self.tier_id)
+        return RExTierManager().get_by(self.tier_id)
 
     def __eq__(self, other):
-        return isinstance(other,
-                          RExMultiplier) and self.variant_id == other.variant_id and self.tier_id == other.tier_id
+        return isinstance(other,RExMultiplier) and \
+            self.variant_id == other.variant_id and \
+            self.tier_id == other.tier_id
 
 
-class RExMultiplierManager(RExManager[RExMultiplier]):
+class RExMultiplierManager(RExManager[RExMultiplier, tuple[str, str]]):
+    def _get_by_impl(self, value: tuple[str, str]) -> RExMultiplier | NotInIndex:
+        return self.get_one(lambda x: x.variant_id == value[0] and x.tier_id == value[1], value)
+
+    def get_delete_keys(self, item: RExMultiplier) -> dict[str, Any]:
+        return {
+            "VARIANT_ID": item.variant_id,
+            "TIER_ID": item.tier_id
+        }
+
     @property
     def table_name(self) -> str:
         return "MULTIPLIERS"

@@ -1,19 +1,109 @@
-from typing import Any
+import typing
 
+import discord
+from PIL.SpiderImagePlugin import isInt
 from discord import app_commands
 from discord.ext import commands
 
-from core.discord.bot.util import get_items, get_string
-from core.types.manager import NotInIndex, MANAGERS
+from core.discord.bot.util import get_items, Pagination
+from core.types.manager import NotInIndex
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.event import RExEventManager
-from core.types.managers.layer import RExLayerManager, RExLayer
+from core.types.managers.layer import RExLayer
 from core.types.managers.multiplier import RExMultiplier
-from core.types.managers.ore import RExOreManager
-from core.types.managers.spawn import RExSpawnManager
-from core.types.managers.tier import RExTierManager
-from core.types.managers.variant import RExVariantManager
-from core.types.managers.world import RExWorldManager
+from core.types.managers.ore import RExOreManager, RExOre
+from core.types.managers.spawn import RExSpawn
+from core.types.managers.variant import RExVariantManager, RExVariant
+
+
+class OreIndexPaginator(Pagination[RExSpawn]):
+
+    def __init__(self, ore: RExOre, spawns: list[RExSpawn], context: commands.Context | discord.Interaction):
+        super().__init__(spawns, context)
+        self.ore = ore
+        self.cave_spawns = [i for i in spawns if i.cave_id]
+        self.layer_spawns = [i for i in spawns if i.layer_id]
+        self.create_buttons()
+
+    def get_button_callback(self, index: int):
+        async def open_cave(interaction: discord.Interaction):
+            self.index = index
+            await self.update(interaction)
+        return open_cave
+
+    def create_buttons(self):
+        if len(self.items) <= 1:
+            return
+        if self.layer_spawns:
+            layer_button = discord.ui.Button(label="Layer")
+            layer_button.callback = self.get_button_callback(self.items.index(self.layer_spawns[0]))
+            self.add_item(layer_button)
+        for cave_spawn in self.cave_spawns:
+            cave = cave_spawn.get_location()
+            if isinstance(cave, NotInIndex):
+                continue
+            cave_button = discord.ui.Button(label=cave.cave_name)
+            cave_button.callback = self.get_button_callback(self.items.index(cave_spawn))
+            self.add_item(cave_button)
+
+
+    def get_embed(self) -> discord.Embed:
+        tier = self.ore.get_tier()
+        out = discord.Embed(
+            color=discord.Color.from_str("#1A1A1E") if isinstance(tier, NotInIndex) else tier.color,
+            title=f"{self.ore.ore_name} ({"Unknown" if isinstance(tier, NotInIndex) else tier.tier_name})",
+        )
+        return out
+
+    def get_page(self, spawn: RExSpawn, cave: bool = False) -> tuple[discord.Embed, typing.Optional[discord.File]]:
+        embed = self.get_embed()
+        location = spawn.get_location()
+        if isinstance(location, RExLayer):
+            embed.description = location.layer_name
+        elif isinstance(location, RExCave):
+            embed.description = location.cave_name
+        embed.add_field(name="Base Rarity", value=f"{spawn.rarity:,}")
+
+        tier = self.ore.get_tier()
+        variants = RExVariantManager().get_all()
+        mults: list[tuple[RExVariant, RExMultiplier]] = []
+        if not isinstance(tier, NotInIndex):
+            for variant in variants:
+                mult = variant.get_multiplier(tier)
+                mults.append((variant, mult))
+                embed.add_field(name=f"{variant.variant_name} Rarity", value=f"{mult.multiplier * spawn.rarity:,}", inline=True)
+
+        if not cave:
+            event = RExEventManager().get_one(lambda x: x.ore_id == self.ore.ore_id, None)
+            if not isinstance(event, NotInIndex):
+                embed.add_field(name="Event Rarity", value=f"{event.ore_rarity:,}")
+                for variant, mult in mults:
+                    embed.add_field(name=f"Event {variant.variant_name} Rarity", value=f"{event.ore_rarity * mult.multiplier:,}", inline=True)
+
+            layers = []
+            for layer_spawn in self.layer_spawns:
+                layer = layer_spawn.get_location()
+                if not isinstance(layer, RExLayer):
+                    continue
+                layers.append(layer.layer_name)
+            embed.add_field(name="Layers", value=", ".join(layers))
+        else:
+            rarity = spawn.adjusted_rarity
+            if not isinstance(rarity, NotInIndex):
+                embed.add_field(name="Adjusted Rarity", value=f"{rarity:,}")
+                for variant, mult in mults:
+                    embed.add_field(name=f"Adjusted {variant.variant_name} Rarity", value=f"{rarity * mult.multiplier:,}", inline=True)
+
+
+        return embed, None
+
+    def to_page(self, item: RExSpawn) -> tuple[discord.Embed, typing.Optional[discord.File]]:
+        if item in self.layer_spawns:
+            return self.get_page(item)
+        return self.get_page(item, cave=True)
+
+    def set_button_properties(self):
+        pass
 
 
 class RExDiscordIndexCommand(commands.Cog):
@@ -21,110 +111,40 @@ class RExDiscordIndexCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_group(name="index",
-                           description="Get information about items in the game")  # type: ignore[arg-type]
-    async def index(self, ctx: commands.Context):
-        if ctx.invoked_subcommand is None:
-            await ctx.reply("You must specify what you want information about!", ephemeral=True)
+    @commands.hybrid_group(name="index", description="Get information about an item in the Index")  # type: ignore
+    @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+    async def index(self, ctx):
+        return
 
-    @index.command(name="world", description="Get information about a world in REx")  # type: ignore[arg-type]
+    @index.command(name="ore", description="Get information about an Ore")  # type: ignore
     @app_commands.autocomplete(
-        world_id=get_items(RExWorldManager().get_all(), lambda x: x.world_id, lambda x: x.world_name)
+        ore=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name,
+                      secondary=lambda x: x.alt_name if x.alt_name else "")
     )
-    async def world(self, ctx: commands.Context, world_id: str):
-        world = RExWorldManager().get_one(lambda x: x.world_id == world_id, world_id)
-        if isinstance(world, NotInIndex):
-            await ctx.reply(f"World {world_id} not found", ephemeral=True)
-            return
-        await ctx.reply(f"## {world.world_name}\n{world.world_desc}")
-
-    @index.command(name="ore", description="Get information about an ore in REx")  # type: ignore[arg-type]
-    @app_commands.autocomplete(
-        ore_id=get_items(RExOreManager().get_all(), lambda x: x.ore_id, lambda x: x.ore_name,
-                         secondary=lambda x: "" if (alt := x.alt_name) is None else alt)
-    )
-    async def ore(self, ctx: commands.Context, ore_id: str):
-        ore = RExOreManager().get_one(lambda x: x.ore_id == ore_id, ore_id)
-        if isinstance(ore, NotInIndex):
-            await ctx.reply(f"Ore {ore_id} not found", ephemeral=True)
+    async def ore(self, ctx: commands.Context, ore: str):
+        if isinstance(rex_ore := RExOreManager().get_one(lambda x: x.ore_id == ore, None), NotInIndex):
+            await ctx.reply("You must enter a valid Ore!", ephemeral=True)
             return
 
-        tier = RExTierManager().get_one(lambda x: x.tier_id == ore.tier_id, ore.tier_id)
-        tier_str = f" ({get_string(tier, lambda x: x.tier_name)})"
-
-        spawns = RExSpawnManager().get(lambda x: x.ore_id == ore.ore_id)
+        spawns = rex_ore.get_spawns()
         layer_spawns = [i for i in spawns if i.layer_id]
-        rarity_msg = "**Normal:** NOT IN INDEX"
-        if len(layer_spawns) > 0 and not isinstance(tier, NotInIndex):
-            base_rarity = layer_spawns[0].rarity
-            variants: list[tuple[str, Any]] = [("Normal", base_rarity)]
-            for variant in RExVariantManager().get_all():
-                multiplier = variant.get_multiplier(tier)
-                if isinstance(multiplier, RExMultiplier):
-                    variants.append((variant.variant_name.title(), multiplier.multiplier * base_rarity))
-                else:
-                    variants.append((variant.variant_name.title(), "NOT IN INDEX"))
-            rarity_msg = "\n".join(f"**{i[0]}:** {i[1]}" for i in variants)
+        if layer_spawns:
+            worlds = []
+            for layer_spawn in layer_spawns:
+                loc = layer_spawn.get_location()
+                if isinstance(loc, NotInIndex):
+                    continue
+                world = loc.get_world()
+                if world in worlds or isinstance(world, NotInIndex):
+                    continue
+                worlds.append(world)
+                cave = RExCaveManager().get_one(lambda x: x.cave_id.startswith("gilded") and x.world_id == world.world_id, None)
+                if not isinstance(cave, NotInIndex):
+                    spawns.append(RExSpawn(
+                        rex_ore.ore_id,
+                        None,
+                        cave.cave_id,
+                        round(layer_spawn.rarity * 2.5)
+                    ))
 
-        locations = []
-        for spawn in spawns:
-            if loc := spawn.get_location():
-                if isinstance(loc, RExLayer):
-                    locations.append(loc.layer_name)
-                elif isinstance(loc, RExCave):
-                    locations.append(loc.cave_name)
-
-        event = RExEventManager().get_one(lambda x: x.ore_id == ore.ore_id, ore.ore_id)
-        if isinstance(event, NotInIndex):
-            event_msg = f"This ore does not have an event"
-        else:
-            event_msg = f'Event Rarity: 1 in {event.ore_rarity:,}'
-
-        await ctx.reply(
-            f"## {ore.ore_name}{tier_str}\n{rarity_msg}\n\nLocation{'' if len(spawns) == 1 else 's'}: **{'NOT IN INDEX' if len(locations) == 0 else ', '.join(locations)}**\n{event_msg}")
-
-    @index.command(name="cave", description="Get information about a cave")  # type: ignore[arg-type]
-    @app_commands.autocomplete(
-        cave_id=get_items(RExCaveManager().get_all(), lambda x: x.cave_id, lambda x: x.cave_name)
-    )
-    async def cave(self, ctx: commands.Context, cave_id: str):
-        cave = RExCaveManager().get_one(lambda x: x.cave_id == cave_id, cave_id)
-        if isinstance(cave, NotInIndex):
-            await ctx.reply(f"Cave {cave_id} not found", ephemeral=True)
-            return
-
-        ore_msg = get_string(cave.get_ore(), lambda x: x.ore_name)
-        world_msg = get_string(cave.get_world(), lambda x: x.world_name)
-
-        await ctx.reply(
-            f"## {cave.cave_name}\n**Cave Wall:** {ore_msg}\n**Rarity:** {cave.cave_rarity}\n**World:** {world_msg}")
-
-    @index.command(name="layer", description="Get information about a layer")  # type: ignore[arg-type]
-    @app_commands.autocomplete(
-        layer_id=get_items(RExLayerManager().get_all(), lambda x: x.layer_id, lambda x: x.layer_name)
-    )
-    async def layer(self, ctx: commands.Context, layer_id: str):
-        layer = RExLayerManager().get_one(lambda x: x.layer_id == layer_id, layer_id)
-        if isinstance(layer, NotInIndex):
-            await ctx.reply(f"Layer {layer_id} not found", ephemeral=True)
-            return
-
-        ore_msg = get_string(layer.get_ore(), lambda x: x.ore_name)
-        world_msg = get_string(layer.get_world(), lambda x: x.world_name)
-
-        await ctx.reply(
-            f"## {layer.layer_name}\n**Layer Ore:** {ore_msg}\n**Depth:** {layer.min_depth} - {layer.max_depth}\n**World:** {world_msg}")
-
-    @index.command(name="overwrite",
-                   description="Pull from the DB and overwrite all local data")  # type: ignore[arg-type]
-    @commands.is_owner()
-    async def overwrite(self, ctx: commands.Context, are_you_sure: bool):
-
-        if not are_you_sure:
-            return
-
-        for manager in MANAGERS:
-            manager._objects = []
-            manager.read_from_db()
-
-        await ctx.reply("Overwritten!")
+        await OreIndexPaginator(rex_ore, spawns, ctx).open()

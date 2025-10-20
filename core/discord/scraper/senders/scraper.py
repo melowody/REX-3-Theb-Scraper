@@ -1,10 +1,13 @@
+"""
+Implementation for the track parser.
+"""
+
 import re
 
-from core.discord.scraper.client import JsonSender
 from asyncio import LifoQueue
-
 from typing import TYPE_CHECKING
 
+from core.discord.scraper.client import JsonSender
 from core.types.manager import NotInIndex
 from core.types.managers.cave import RExCaveManager, RExCave
 from core.types.managers.equipment import RExEquipment, RExEquipmentManager
@@ -17,6 +20,30 @@ from core.types.managers.world import RExWorldManager, RExWorld
 
 if TYPE_CHECKING:
     from core.discord.scraper.client import DiscordClient
+
+
+def get_ore(ore_name: str) -> RExOre | NotInIndex:
+    """
+    
+
+    Args:
+        ore_name (str): _description_
+
+    Returns:
+        RExOre | NotInIndex: _description_
+    """
+    match ore_name:
+        case "Corrodine Pulsar":
+            ore_name = "Corroplat Pulsar"
+        case "Neutronium":
+            ore_name = "Arcaleus"
+        case "Auroral Singularity":
+            ore_name = "Voyanesia"
+    ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == ore_name.lower(), ore_name)
+    if isinstance(ore, NotInIndex) and ore_name.strip().lower().startswith("legacy "):
+        ore_name = "Lunar " + ore_name[7:]
+        ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == ore_name.lower(), ore_name)
+    return ore
 
 
 def parse_event(event: dict) -> RExTrack | None:
@@ -32,7 +59,7 @@ def parse_event(event: dict) -> RExTrack | None:
 
     # Regex group the title of the official embed
     title_groups = re.search(
-        r"^\*\*(.+?)\*\* has found (?:an? (spectral|ionized) )?\*\*(.+?)\*\*(?: \(\*(.+?)\*\))?$", event["title"])
+        r"^\*\*(.+?)\*\* has found\s?(?:an? (spectral|ionized)\s?)?\*\*\s?(.+?)\*\*(?: \(\*(.+?)\*\))?$", event["title"])
     if title_groups is None:
         return None
 
@@ -44,9 +71,18 @@ def parse_event(event: dict) -> RExTrack | None:
         lambda x: x.variant_name.lower() == variant_text.lower(), variant_text)
 
     ore_text = title_groups.group(3)
-    ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == ore_text.lower(), ore_text)
+    ore = get_ore(ore_text)
 
     world_text = event.get("description", "None")
+    match world_text:
+        case "W1" | "World 1":
+            world_text = "Natura"
+        case "W2" | "World 2":
+            world_text = "Caverna"
+        case "SW1" | "Subworld 1":
+            world_text = "Luna Refuge"
+        case "HE22" | "WE22" | "VE23" | "HE23" | "WE23" | "SE24":
+            world_text = "Aesteria"
     world = RExWorldManager().get_one(lambda x: x.world_name.lower() == world_text.lower(), world_text)
 
     cave_text = title_groups.group(4)
@@ -74,15 +110,15 @@ def parse_event(event: dict) -> RExTrack | None:
         if field.get("name") == "Blocks Mined":
             blocks_mined = int(field.get("value").replace(",", ""))
         elif field.get("name") == "Event" and (value := field.get("value")) != "None":
-            curr_event_ore = RExOreManager().get_one(lambda x: x.ore_name.lower() == value.lower(), value)
+            curr_event_ore = get_ore(value)
             if isinstance(curr_event_ore, NotInIndex):
                 curr_event = curr_event_ore
             else:
-                curr_event = RExEventManager().get_one(lambda x: x.ore_id.lower() == curr_event_ore.ore_id.lower(),
+                curr_event = RExEventManager().get_one(lambda x, ceo=curr_event_ore: x.ore_id.lower() == ceo.ore_id.lower(),
                                                        curr_event_ore.ore_id)
-        elif field.get("name") == "Loadout" and field.get("value"):
+        elif (field.get("name") == "Loadout" or field.get("name") == "Pickaxe") and field.get("value"):
             for i in field.get("value").split(", "):
-                if isinstance(equip := RExEquipmentManager().get_one(lambda x: x.equip_name.lower() == i.lower(), i),
+                if isinstance(equip := RExEquipmentManager().get_one(lambda x, value=i: x.equip_name.lower() == value.lower(), i),
                               RExEquipment):
                     equipment.append(equip)
 
@@ -97,12 +133,13 @@ def parse_event(event: dict) -> RExTrack | None:
         [i if not isinstance(i, RExEquipment) else i.equip_id for i in equipment]
     )
 
-    print(vars(out))
-
     return out
 
 
 class RExScraper(JsonSender):
+    """
+    An implementation of JsonSender for parsing incoming tracks.
+    """
     track_queue: LifoQueue[RExTrack] = LifoQueue()
 
     def should_handle(self, event: dict) -> bool:
@@ -121,6 +158,8 @@ class RExScraper(JsonSender):
             return False
         return RExTrackerManager().exists(lambda x: x.tracker_id == int(author_id))
 
-    async def handle_event(self, event: dict, _: "DiscordClient"):
+    async def handle_event(self, event: dict, client: "DiscordClient"):
         for embed in event["d"]["embeds"]:
-            await self.track_queue.put(parse_event(embed))
+            track = parse_event(embed)
+            if track:
+                await self.track_queue.put(track)

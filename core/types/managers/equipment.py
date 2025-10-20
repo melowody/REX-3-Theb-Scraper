@@ -1,3 +1,7 @@
+"""
+Implementation for REx's Equipment (Pickaxes AND Gears)
+"""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, TYPE_CHECKING
@@ -11,6 +15,9 @@ if TYPE_CHECKING:
 
 
 class RExEquipmentType(Enum):
+    """
+    An Enum describing the different Gear positions.
+    """
     PICKAXE = "pickaxe"
     LEFT_HAND = "lhand"
     RIGHT_HAND = "rhand"
@@ -37,7 +44,7 @@ class RExEquipment:
     def get_world(self) -> "RExWorld | NotInIndex":
         """Get the World this Equipment is found in"""
         from core.types.managers.world import RExWorldManager
-        return RExWorldManager().get_one(lambda x: x.world_id == self.world_id, self.world_id)
+        return RExWorldManager().get_by(self.world_id)
 
     def get_abilities(self) -> "list[RExAbility]":
         """Get the Abilities tied to this Equipment"""
@@ -53,7 +60,15 @@ class RExEquipment:
         return isinstance(other, RExEquipment) and self.equip_id == other.equip_id
 
 
-class RExEquipmentManager(RExManager[RExEquipment]):
+class RExEquipmentManager(RExManager[RExEquipment, str]):
+    def _get_by_impl(self, value: str) -> RExEquipment | NotInIndex:
+        return self.get_one(lambda x: x.equip_id == value, value)
+
+    def get_delete_keys(self, item: RExEquipment) -> dict[str, Any]:
+        return {
+            "EQUIP_ID": item.equip_id
+        }
+
     @property
     def table_name(self) -> str:
         return "EQUIPMENT"
@@ -67,7 +82,8 @@ class RExEquipmentManager(RExManager[RExEquipment]):
         return "EQUIP_ID"
 
     def parse_db_result(self, result: tuple[Any, ...]) -> RExEquipment:
-        return RExEquipment(result[0], result[1], result[2], result[3], RExEquipmentType(result[4]), result[5])
+        return RExEquipment(result[0], result[1], result[2], \
+            result[3], RExEquipmentType(result[4]), result[5])
 
     def prepare_db_entry(self, item: RExEquipment) -> dict[str, Any]:
         return {

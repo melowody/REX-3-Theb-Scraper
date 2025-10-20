@@ -1,3 +1,7 @@
+"""
+Implementation for Equipment Recipes.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -23,25 +27,35 @@ class RExRecipeStep:
     def get_equipment(self) -> "RExEquipment | NotInIndex":
         """Get the Equipment this Recipe is for"""
         from core.types.managers.equipment import RExEquipmentManager
-        return RExEquipmentManager().get_one(lambda x: x.equip_id == self.equip_id, self.equip_id)
+        return RExEquipmentManager().get_by(self.equip_id)
 
     def get_ore(self) -> "RExOre | NotInIndex":
         """Get the Ore this Recipe uses"""
         from core.types.managers.ore import RExOreManager
-        return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
+        return RExOreManager().get_by(self.ore_id)
 
     def get_variant(self) -> "RExVariant | NotInIndex | None":
         """Get the Variant of this Ore"""
         if self.variant_id is None:
             return None
         from core.types.managers.variant import RExVariantManager
-        return RExVariantManager().get_one(lambda x: x.variant_id == self.variant_id, self.variant_id)
+        return RExVariantManager().get_by(self.variant_id)
 
     def __eq__(self, other):
         return isinstance(other, RExRecipeStep) and self.equip_id == other.equip_id and self.ore_id == other.ore_id
 
 
-class RExRecipeManager(RExManager[RExRecipeStep]):
+class RExRecipeManager(RExManager[RExRecipeStep, tuple[str, str]]):
+    def _get_by_impl(self, value: tuple[str, str]) -> RExRecipeStep | NotInIndex:
+        return self.get_one(lambda x: x.equip_id == value[0] and x.ore_id == value[1], value)
+
+    def get_delete_keys(self, item: RExRecipeStep) -> dict[str, Any]:
+        return {
+            "EQUIP_ID": item.equip_id,
+            "ORE_ID": item.ore_id,
+            "VARIANT_ID": item.variant_id
+        }
+
     @property
     def table_name(self) -> str:
         return "RECIPES"

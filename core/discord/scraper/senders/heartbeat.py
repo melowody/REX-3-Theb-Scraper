@@ -1,5 +1,10 @@
+"""
+Implementation for handling Heartbeats to Discord.
+"""
+
 import asyncio
 import os
+from typing import Any
 
 from typing_extensions import TYPE_CHECKING
 
@@ -10,6 +15,9 @@ if TYPE_CHECKING:
 
 
 class Heartbeat(JsonSender):
+    """
+    An implementation of JsonSender for handling Discord's heartbeats
+    """
 
     async def handle_event(self, event: dict, client: "DiscordClient"):
         interval = event["d"]["heartbeat_interval"] / 1000.
@@ -31,6 +39,6 @@ class Heartbeat(JsonSender):
                 "d": "null"
             })
 
-    def should_handle(self, event: dict) -> bool:
-        return event and "d" in event.keys() and isinstance(event["d"], dict) and "heartbeat_interval" in event[
-            "d"].keys()
+    def should_handle(self, event: dict[str, Any]) -> bool:
+        return not not event and ("d" in event.keys()) and (isinstance(event["d"], dict)) \
+            and ("heartbeat_interval" in event["d"].keys())

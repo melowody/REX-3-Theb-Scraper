@@ -1,9 +1,12 @@
+"""
+Outlines the database connection class RExDBPool
+"""
+
 from contextlib import contextmanager
 import os
 from typing import Generator
-from core.types.meta import SingletonABCMeta
-
 from psycopg2 import pool, extensions
+from core.types.meta import SingletonABCMeta
 
 
 class RExDBPool(metaclass=SingletonABCMeta):
@@ -31,7 +34,8 @@ class RExDBPool(metaclass=SingletonABCMeta):
         Yields a connection from the pool, automatically returning it when done.
 
         Args:
-            autocommit (bool, optional): Whether to commit after every execute, or after all the executes. Defaults to False.
+            autocommit (bool, optional): Whether to commit after every execute,
+            or after all the executes. Defaults to False.
 
         Yields:
             psycopg2.extensions.connection: A connection from the pool.
@@ -58,7 +62,8 @@ class RExDBPool(metaclass=SingletonABCMeta):
         Yields the cursor for a connection from the pool, automatically returning it when done.
 
         Args:
-            autocommit (bool, optional): Whether to commit after every execute, or after all the executes. Defaults to False.
+            autocommit (bool, optional): Whether to commit after every execute,
+            or after all the executes. Defaults to False.
 
         Yields:
             psycopg2.extensions.cursor: The cursor for a connection from the pool.
@@ -68,6 +73,9 @@ class RExDBPool(metaclass=SingletonABCMeta):
                 yield cursor
 
     def close_all(self):
+        """
+        Closes all connections
+        """
         if self._pool is None:
             return
         self._pool.closeall()

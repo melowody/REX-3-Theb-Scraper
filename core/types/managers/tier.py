@@ -1,5 +1,11 @@
+"""
+Implementation for Ore tiers.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
+
+import discord
 
 from core.types.manager import RExManager, NotInIndex
 
@@ -22,6 +28,8 @@ class RExTier:
     """The minimum rarity of the Tier"""
     max_rarity: int
     """The maximum rarity of the Tier"""
+    color: discord.Color
+    """The color of the Tier"""
 
     def get_multiplier(self, variant: "RExVariant") -> "RExMultiplier | NotInIndex":
         """Gets the Multiplier based off a given Variant"""
@@ -39,21 +47,29 @@ class RExTier:
         return isinstance(other, RExTier) and other.tier_id == self.tier_id
 
 
-class RExTierManager(RExManager[RExTier]):
+class RExTierManager(RExManager[RExTier, str]):
+    def _get_by_impl(self, value: str) -> RExTier | NotInIndex:
+        return self.get_one(lambda x: x.tier_id == value, value)
+
+    def get_delete_keys(self, item: RExTier) -> dict[str, Any]:
+        return {
+            "TIER_ID": item.tier_id
+        }
+
     @property
     def table_name(self) -> str:
         return "TIERS"
 
     @property
     def key_order(self) -> tuple[str, ...]:
-        return "TIER_ID", "TIER_NAME", "TIER_NUM", "MIN_RARITY", "MAX_RARITY"
+        return "TIER_ID", "TIER_NAME", "TIER_NUM", "MIN_RARITY", "MAX_RARITY", "COLOR"
 
     @property
     def primary_key(self) -> str:
         return "TIER_ID"
 
     def parse_db_result(self, result: tuple[Any, ...]) -> RExTier:
-        return RExTier(*result)
+        return RExTier(*result[:-1], color=discord.Color.from_str(result[-1]))
 
     def prepare_db_entry(self, item: RExTier) -> dict[str, Any]:
         return {
@@ -61,5 +77,6 @@ class RExTierManager(RExManager[RExTier]):
             "tier_name": item.tier_name,
             "tier_num": item.tier_num,
             "min_rarity": item.min_rarity,
-            "max_rarity": item.max_rarity
+            "max_rarity": item.max_rarity,
+            "color": str(item.color)
         }

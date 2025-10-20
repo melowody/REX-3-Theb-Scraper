@@ -1,3 +1,7 @@
+"""
+Implementation for Layers in REx.
+"""
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -28,12 +32,12 @@ class RExLayer:
     def get_ore(self) -> "RExOre | NotInIndex":
         """Get the Ore this Layer's made of"""
         from core.types.managers.ore import RExOreManager
-        return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
+        return RExOreManager().get_by(self.ore_id)
 
     def get_world(self) -> "RExWorld | NotInIndex":
         """Get the World this Layer is in"""
         from core.types.managers.world import RExWorldManager
-        return RExWorldManager().get_one(lambda x: x.world_id == self.world_id, self.world_id)
+        return RExWorldManager().get_by(self.world_id)
 
     def get_spawns(self) -> "list[RExSpawn]":
         """Get all the Spawns in this Layer"""
@@ -44,7 +48,14 @@ class RExLayer:
         return other is RExLayer and self.layer_id == other.layer_id
 
 
-class RExLayerManager(RExManager[RExLayer]):
+class RExLayerManager(RExManager[RExLayer, str]):
+    def _get_by_impl(self, value: str) -> RExLayer | NotInIndex:
+        return self.get_one(lambda x: x.layer_id == value, value)
+
+    def get_delete_keys(self, item: RExLayer) -> dict[str, Any]:
+        return {
+            "LAYER_ID": item.layer_id
+        }
 
     @property
     def table_name(self) -> str:

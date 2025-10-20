@@ -1,3 +1,7 @@
+"""
+Implementation for REx's Events.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -29,18 +33,26 @@ class RExEvent:
     def get_ore(self) -> "RExOre | NotInIndex":
         """Get the primary Ore associated with this Event"""
         from core.types.managers.ore import RExOreManager
-        return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
+        return RExOreManager().get_by(self.ore_id)
 
     def get_world(self) -> "RExWorld | NotInIndex":
         """Get the world this Event is in"""
         from core.types.managers.world import RExWorldManager
-        return RExWorldManager().get_one(lambda x: x.world_id == self.world_id, self.world_id)
+        return RExWorldManager().get_by(self.world_id)
 
     def __eq__(self, other):
         return isinstance(other, RExEvent) and self.ore_id == other.ore_id
 
 
-class RExEventManager(RExManager[RExEvent]):
+class RExEventManager(RExManager[RExEvent, str]):
+    def _get_by_impl(self, value: str) -> RExEvent | NotInIndex:
+        return self.get_one(lambda x: x.ore_id == value, value)
+
+    def get_delete_keys(self, item: RExEvent) -> dict[str, Any]:
+        return {
+            "ORE_ID": item.ore_id
+        }
+
     @property
     def table_name(self) -> str:
         return "EVENTS"

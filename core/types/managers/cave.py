@@ -1,3 +1,7 @@
+"""
+Implementation for REx's Caves.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -26,7 +30,7 @@ class RExCave:
     def get_world(self) -> "RExWorld | NotInIndex":
         """Get the world this Cave is in"""
         from core.types.managers.world import RExWorldManager
-        return RExWorldManager().get_one(lambda x: x.world_id == self.world_id, self.world_id)
+        return RExWorldManager().get_by(self.world_id)
 
     def get_spawns(self) -> "list[RExSpawn]":
         """Get the Spawns in this Cave"""
@@ -36,13 +40,21 @@ class RExCave:
     def get_ore(self) -> "RExOre | NotInIndex":
         """Get the Ore this Cave is made of"""
         from core.types.managers.ore import RExOreManager
-        return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
+        return RExOreManager().get_by(self.ore_id)
 
     def __eq__(self, other):
         return isinstance(other, RExCave) and self.cave_id == other.cave_id
 
 
-class RExCaveManager(RExManager[RExCave]):
+class RExCaveManager(RExManager[RExCave, str]):
+
+    def _get_by_impl(self, value: str) -> RExCave | NotInIndex:
+        return self.get_one(lambda x: x.cave_id == value, value)
+
+    def get_delete_keys(self, item: RExCave) -> dict[str, Any]:
+        return {
+            "CAVE_ID": item.cave_id
+        }
 
     @property
     def table_name(self) -> str:

@@ -1,3 +1,7 @@
+"""
+Implementation for where Ores can spawn in REx.
+"""
+
 from dataclasses import dataclass
 from typing import Any, TYPE_CHECKING
 
@@ -24,22 +28,43 @@ class RExSpawn:
     def get_ore(self) -> "RExOre | NotInIndex":
         """Get the Ore this Spawn concerns"""
         from core.types.managers.ore import RExOreManager
-        return RExOreManager().get_one(lambda x: x.ore_id == self.ore_id, self.ore_id)
+        return RExOreManager().get_by(self.ore_id)
 
     def get_location(self) -> "RExLayer | RExCave | NotInIndex | None":
         """Get the location of this Spawn"""
         from core.types.managers.layer import RExLayerManager
         from core.types.managers.cave import RExCaveManager
         if self.layer_id is None:
-            return RExCaveManager().get_one(lambda x: x.cave_id == self.cave_id, self.cave_id)
-        return RExLayerManager().get_one(lambda x: x.layer_id == self.layer_id, self.layer_id)
+            return RExCaveManager().get_by(self.cave_id)
+        return RExLayerManager().get_by(self.layer_id)
+
+    @property
+    def adjusted_rarity(self) -> "int | NotInIndex":
+        """The adjusted rarity of this Spawn"""
+        from core.types.managers.cave import RExCaveManager
+        if not self.cave_id:
+            return self.rarity
+        cave = RExCaveManager().get_by(self.cave_id)
+        if isinstance(cave, NotInIndex):
+            return cave
+        return round(cave.cave_rarity * 1.88 * self.rarity)
 
     def __eq__(self, other):
         return isinstance(other,
                           RExSpawn) and self.ore_id == other.ore_id and self.layer_id == other.layer_id and self.cave_id == other.cave_id
 
 
-class RExSpawnManager(RExManager[RExSpawn]):
+class RExSpawnManager(RExManager[RExSpawn, tuple[str, str | None, str | None]]):
+    def _get_by_impl(self, value: tuple[str, str | None, str | None]) -> RExSpawn | NotInIndex:
+        return self.get_one(lambda x: x.ore_id == value[0] and (not value[1] or x.layer_id == value[1]) and (not value[2] or x.cave_id == value[2]), value)
+
+    def get_delete_keys(self, item: RExSpawn) -> dict[str, Any]:
+        return {
+            "ORE_ID": item.ore_id,
+            "LAYER_ID": item.layer_id,
+            "CAVE_ID": item.cave_id
+        }
+
     @property
     def table_name(self) -> str:
         return "SPAWNS"

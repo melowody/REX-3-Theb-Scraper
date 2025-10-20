@@ -1,3 +1,7 @@
+"""
+Implementation for Ores in REx.
+"""
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -23,7 +27,7 @@ class RExOre:
     def get_tier(self) -> "RExTier | NotInIndex":
         """Returns the Tier this Ore belongs to"""
         from core.types.managers.tier import RExTierManager
-        return RExTierManager().get_one(lambda x: x.tier_id == self.tier_id, self.tier_id)
+        return RExTierManager().get_by(self.tier_id)
 
     def get_spawns(self) -> "list[RExSpawn]":
         """Returns the Spawns related to this Ore"""
@@ -34,7 +38,15 @@ class RExOre:
         return isinstance(other, RExOre) and self.ore_id == other.ore_id
 
 
-class RExOreManager(RExManager[RExOre]):
+class RExOreManager(RExManager[RExOre, str]):
+    def _get_by_impl(self, value: str) -> RExOre | NotInIndex:
+        return self.get_one(lambda x: x.ore_id == value, value)
+
+    def get_delete_keys(self, item: RExOre) -> dict[str, Any]:
+        return {
+            "ORE_ID": item.ore_id
+        }
+
     @property
     def table_name(self) -> str:
         return "ORES"

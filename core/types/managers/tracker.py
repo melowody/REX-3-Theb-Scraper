@@ -1,9 +1,13 @@
+"""
+Definitions for REx Trackers
+"""
+
 from dataclasses import dataclass
 from typing import Any
 
 from discord import User
 
-from core.types.manager import RExManager
+from core.types.manager import RExManager, NotInIndex
 
 
 @dataclass
@@ -20,7 +24,15 @@ class RExTracker:
         return other is RExTracker and self.tracker_id == other.tracker_id
 
 
-class RExTrackerManager(RExManager[RExTracker]):
+class RExTrackerManager(RExManager[RExTracker, int]):
+    def _get_by_impl(self, value: int) -> RExTracker | NotInIndex:
+        return self.get_one(lambda x: x.tracker_id == value, value)
+
+    def get_delete_keys(self, item: RExTracker) -> dict[str, Any]:
+        return {
+            "TRACKER_ID": item.tracker_id
+        }
+
     @property
     def table_name(self) -> str:
         return "TRACKERS"
