@@ -54,7 +54,8 @@ class Rarity(Enum):
     ENIGMATIC = 8
     UNFATHOMABLE = 9
     OTHERWORLDLY = 10
-    ZENITH = 11
+    IMAGINARY = 11
+    ZENITH = 12
     
     def __lt__(self, other):
         if self.__class__ is other.__class__:
