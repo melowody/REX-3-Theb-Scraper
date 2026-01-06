@@ -28,3 +28,7 @@ Voltaic 17
 Bichromatic 21
 Monoprismatic 29
 Malware 36
+Solar 7
+Darkmatter 15
+Marble 25
+Anti-Cave 96
