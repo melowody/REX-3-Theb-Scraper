@@ -103,7 +103,7 @@ async def manual(ctx,
                                                        "Permafrost Pick", "Poison Pick", "Electraver",
                                                        "Dimensional Scythe", "Celestial Smasher", "Moon Scepter",
                                                        "Soul Scythe", "Prism of Chaos", "Superunobtainium Multitool"]),
-                 world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2"]),
+                 world: discord.Option(str, choices=["World 1", "Subworld 1", "World 2", "World 0", "Aesteria", "Lucernia", "Subworld 2"]),
                  event: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_event))
                  ):
     ore_event = event_tracker.OreEvent()
