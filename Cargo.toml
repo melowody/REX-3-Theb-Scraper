@@ -1,0 +1,22 @@
+[package]
+name = "goober_bot"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.50.0", features = ["full"] }
+sqlx = { version = "0.8", features = [ "runtime-tokio", "postgres" ] }
+dotenvy = { version = "0.15" }
+tracing-subscriber = "0.3"
+serenity = { version = "0.12", default-features = true }
+poise = "0.6.1"
+rand = "0.10.0"
+num-format = "0.4.4"
+cached = { version = "0.59", features = ["async", "proc_macro"] }
+serde_json = { version = "1.0", features = ["raw_value"] }
+serde = { version = "1.0.228", features = ["derive"] }
+struct_iterable = "0.1"
+tokio-tungstenite = { version = "0.29.0", features = ["native-tls"] }
+tokio-util = "0.7"
+chrono = "0.4"
+regex = "1.12"
