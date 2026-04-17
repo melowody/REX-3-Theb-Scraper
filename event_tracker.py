@@ -33,7 +33,6 @@ class EventType(Enum):
     TEST = item_manager.get_channel("TEST_CHANNEL")
     SCOVILLE = item_manager.get_channel("SCOVILLE_CHANNEL")
     MOMSONGAMING = item_manager.get_channel("MOMSONGAMING")
-    GOOBERVILLE = item_manager.get_channel("GOOBERVILLE")
     ENDLESS = item_manager.get_channel("ENDLESS")
     REFUGE = item_manager.get_channel("REFUGE")
     THEMAGICMEDAL = item_manager.get_channel("THEMAGICMEDAL")
@@ -183,11 +182,6 @@ class OreEvent:
             name = item_manager.get_username(self.username, 1)
             self.print_username[EventType.THEB] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
             out.append(EventType.THEB)
-        if self.username in item_manager.get_gooberville_dict().keys():
-            print("Player is a Goober: " + self.username)
-            name = item_manager.get_username(self.username, 2)
-            self.print_username[EventType.GOOBERVILLE] = f"{self.username}{' (' + name + ')' if name is not None else ''}"
-            out.append(EventType.GOOBERVILLE)
         if self.username in item_manager.get_refuge_dict().keys():
             print("Player is a Refugee: " + self.username)
             name = item_manager.get_username(self.username, 4)
@@ -334,13 +328,6 @@ class OreEvent:
                 case EventType.BEGINNER2:
                     tracker_name = ":beginner:"
                     tier = tier.replace("@everyone", "<@&1176823409364185139>")
-                case EventType.GOOBERVILLE:
-                    tracker_name = "GOOBERVILLE"
-                    if random.randrange(1, 11) == 1:
-                        ore = ore.replace("Inclemetite", "𝔞 𝔪𝔞𝔤𝔦𝔠 𝔴𝔞𝔫𝔡")
-                    else:
-                        ore = ore.replace("Inclemetite", "The Magic Medal")
-                    ore = ore.replace("Ionized Acceleratium", "Sea Urchin Crystal")
                 case EventType.TEST:
                     tracker_name = "TEST"
                     tier = tier.replace("@everyone", "Nuh Uh")
