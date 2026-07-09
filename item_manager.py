@@ -45,8 +45,6 @@ def get_username(old_name, channel_id):
         data = get_endless_dict()
     elif channel_id == 4:
         data = get_refuge_dict()
-    elif channel_id == 5:
-        data = get_chex_dict()
     else:
         data = get_scoville_dict()
     if old_name in data:
