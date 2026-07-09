@@ -35,10 +35,6 @@ def get_refuge_dict():
     with open("refuge.json", "r") as f:
         return json.load(f)
 
-def get_chex_dict():
-    with open("chexmix.json", "r") as f:
-        return json.load(f)
-
 
 def get_username(old_name, channel_id):
     if channel_id == 1:
