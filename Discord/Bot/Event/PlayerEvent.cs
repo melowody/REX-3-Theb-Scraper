@@ -5,6 +5,7 @@ using GooberTracker.Core.Types.Goober;
 using GooberTracker.Core.Types.Ping;
 using GooberTracker.Core.Types.Player;
 using GooberTracker.Core.Types.PlayerName;
+using GooberTracker.Core.Types.PlayerPing;
 using GooberTracker.Core.Types.Spawner;
 using GooberTracker.Core.Types.Track;
 using GooberTracker.Discord.Scraper;
@@ -54,10 +55,12 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         return playerName != null;
     }
 
-    private async Task<string> GetPlayerPing()
+    private async Task<string> GetPlayerPing(Channel channel)
     {
         var goober = await GetGoober();
-        return goober == null ? "" : $"<@{goober.DiscordId}>";
+        if (goober == null) return "";
+        var playerPing = await PlayerPingManager.Instance.Get(goober, channel);
+        return playerPing is not { Ping: true } ? "" : $" <@{goober.DiscordId}>";
     } 
     
     protected override async Task<string> GetMessage(Channel channel, string message)
@@ -91,7 +94,7 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         {
             guild = "GOOBER".Extend(),
             player = track.PlayerStr.Extend(),
-            player_ping = (await GetPlayerPing()).Extend(),
+            player_ping = (await GetPlayerPing(channel)).Extend(),
             variant = (variantName is { Length: > 0 } ? $"{variantName} " : "").Extend(),
             ore = oreName.Extend(),
             cave = cave.Extend(),

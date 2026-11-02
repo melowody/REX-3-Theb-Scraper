@@ -8,6 +8,7 @@ using GooberTracker.Core.Types.Goober;
 using GooberTracker.Core.Types.Ping;
 using GooberTracker.Core.Types.Player;
 using GooberTracker.Core.Types.PlayerName;
+using GooberTracker.Core.Types.PlayerPing;
 using GooberTracker.Core.Types.Tier;
 using GooberTracker.Core.Types.Variant;
 using GooberTracker.Discord.Scraper;
@@ -22,7 +23,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("player", "Register to the bot!")]
     [CommandContextType(InteractionContextType.BotDm, InteractionContextType.Guild,
         InteractionContextType.PrivateChannel)]
-    public async Task Player(string name, IUser? user = null)
+    public async Task Player(string name, bool ping, IUser? user = null)
     {
         var curr = Context.Interaction.User;
         if (user != null)
@@ -78,7 +79,24 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         }
         else
         {
-            await GooberManager.Instance.Add(curr.Id, player);
+            currGoob = await GooberManager.Instance.Add(curr.Id, player);
+        }
+
+        if (currGoob != null)
+        {
+            var channel = await ChannelManager.Instance.Get((long)Context.Channel.Id);
+            if (channel != null)
+            {
+                var playerPing = await PlayerPingManager.Instance.Get(currGoob, channel);
+                if (playerPing == null)
+                {
+                    await PlayerPingManager.Instance.Add(currGoob, channel, ping);
+                }
+                else
+                {
+                    await PlayerPingManager.Instance.Patch(playerPing.Id, currGoob, channel, ping);
+                }
+            }
         }
 
         await RespondAsync("Welcome...... To Gooberville.....");
