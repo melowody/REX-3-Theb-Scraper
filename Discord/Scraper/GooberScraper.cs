@@ -23,7 +23,7 @@ public class GooberScraper
     private readonly List<Task> _senderTasks = [];
     private readonly Lock _senderLock = new();
 
-    private bool _reconnecting;
+    private int _reconnecting;
 
     public GooberScraper()
     {
@@ -51,10 +51,16 @@ public class GooberScraper
             {
                 try
                 {
-                    await Utils.LogExceptions(ReadLoop());
+                    await ReadLoop();
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException) when (_cts.IsCancellationRequested)
                 {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Read] Reader stopped: {ex}");
+                    Restart();
                     break;
                 }
             }
@@ -65,10 +71,16 @@ public class GooberScraper
             {
                 try
                 {
-                    await Utils.LogExceptions(ProcessLoop());
+                    await ProcessLoop();
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException) when (_cts.IsCancellationRequested)
                 {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Process] Processor stopped: {ex}");
+                    Restart();
                     break;
                 }
             }
@@ -79,10 +91,16 @@ public class GooberScraper
             {
                 try
                 {
-                    await Utils.LogExceptions(WriteLoop());
+                    await WriteLoop();
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException) when (_cts.IsCancellationRequested)
                 {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Write] Writer stopped: {ex}");
+                    Restart();
                     break;
                 }
             }
@@ -113,8 +131,7 @@ public class GooberScraper
 
     public void Restart()
     {
-        if (_reconnecting) return;
-        _reconnecting = true;
+        if (Interlocked.CompareExchange(ref _reconnecting, 1, 0) != 0) return;
 
         _ = Task.Run(async () =>
         {
@@ -131,7 +148,7 @@ public class GooberScraper
             }
             finally
             {
-                _reconnecting = false;
+                Interlocked.Exchange(ref _reconnecting, 0);
             }
         });
     }
