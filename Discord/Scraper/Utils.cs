@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
+using System.Threading.Channels;
 using Discord;
 using Discord.Interactions;
 
@@ -10,7 +11,7 @@ namespace GooberTracker.Discord.Scraper;
 
 public static class Utils
 {
-    public static async Task<string> ReceiveAsync(this ClientWebSocket ws, CancellationToken cancellationToken)
+    public static async Task<string?> ReceiveAsync(this ClientWebSocket ws, CancellationToken cancellationToken)
     {
         var bytes = new byte[1024];
         using var stream = new MemoryStream();
@@ -20,7 +21,25 @@ public static class Utils
         do
         {
             res = await ws.ReceiveAsync(bytes, cancellationToken);
-            if (res.MessageType == WebSocketMessageType.Close) throw new WebException("Connection closed 3:");
+            
+            if (res.MessageType == WebSocketMessageType.Close)
+            {
+                Console.WriteLine($"[ReceiveAsync] Close received: {res.CloseStatus} | {res.CloseStatusDescription}");
+
+                if (ws.State == WebSocketState.CloseReceived)
+                {
+                    await ws.CloseOutputAsync(
+                        WebSocketCloseStatus.NormalClosure,
+                        "Blehhh",
+                        CancellationToken.None
+                    );
+                }
+
+                return null;
+            }
+
+            if (res.MessageType != WebSocketMessageType.Text) continue;
+            
             stream.Write(bytes, 0, res.Count);
         } while (!res.EndOfMessage);
         
@@ -31,6 +50,7 @@ public static class Utils
     {
         private readonly Stack<T> _stack = new();
         private readonly Lock _lock = new();
+        private readonly SemaphoreSlim _semaphore = new(0);
 
         public void Push(T item)
         {
@@ -38,14 +58,17 @@ public static class Utils
             {
                 _stack.Push(item);
             }
+            
+            _semaphore.Release();
         }
 
-        public T? Pop()
+        public async Task<T?> Pop()
         {
+            await _semaphore.WaitAsync(cts.Token);
 
             lock (_lock)
             {
-                return _stack.Count == 0 ? null : _stack.Pop();
+                return _stack.Pop();
             }
         }
     }

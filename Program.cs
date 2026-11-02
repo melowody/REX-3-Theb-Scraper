@@ -28,9 +28,6 @@ public static class Program
         bot.Log += Log;
         await bot.StartAsync();
 
-        var guild = await bot.Rest.GetGuildAsync(1409296527561592964);
-        Console.WriteLine(guild.EveryoneRole.Id);
-
         await GooberScraper.Instance.Start();
         
         await Task.Delay(-1);

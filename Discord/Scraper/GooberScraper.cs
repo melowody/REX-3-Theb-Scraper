@@ -1,4 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using System.Net;
+using System.Net.WebSockets;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using GooberTracker.Discord.Scraper.Sender;
@@ -14,11 +15,7 @@ public class GooberScraper
     private Utils.AsyncStack<JsonNode> _readQueue = new(_cts);
     public Utils.AsyncStack<JsonNode> WriteQueue = new(_cts);
 
-    private readonly List<Utils.JsonSender> _senders = [
-        new Heartbeat(_cts),
-        new Reconnect(_cts),
-        new Sender.Scraper(_cts)
-    ];
+    private List<Utils.JsonSender> _senders = [];
     
     private static readonly Lazy<GooberScraper> InstanceImpl = new(() => new GooberScraper());
     public static GooberScraper Instance => InstanceImpl.Value;
@@ -26,6 +23,12 @@ public class GooberScraper
     public async Task Start()
     {
         _cts = new CancellationTokenSource();
+        _senders =
+        [
+            new Heartbeat(_cts),
+            new Reconnect(_cts),
+            new Sender.Scraper(_cts)
+        ];
         Socket = new ClientWebSocket();
         await Socket.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=10&encoding=json"), _cts.Token);
         _readQueue = new Utils.AsyncStack<JsonNode>(_cts);
@@ -62,6 +65,13 @@ public class GooberScraper
     private async Task ReadLoop()
     {
         var message = await Socket.ReceiveAsync(_cts.Token);
+
+        if (message == null)
+        {
+            Console.WriteLine("[Read] No Message");
+            throw new WebException("Socket connection closed");
+        }
+        
         Console.WriteLine($"[Read] {message}");
         var e = JsonNode.Parse(message);
         if (e == null) return;
@@ -70,7 +80,7 @@ public class GooberScraper
 
     private async Task ProcessLoop()
     {
-        var message = _readQueue.Pop();
+        var message = await _readQueue.Pop();
         if (message is not JsonObject) return;
         Console.WriteLine($"[Process] Processing: {message.ToString()[..Math.Min(message.ToString().Length, 500)]}");
         foreach (var sender in _senders)
@@ -84,17 +94,27 @@ public class GooberScraper
 
     private async Task WriteLoop()
     {
-        var e = WriteQueue.Pop();
-        if (e == null) return;
+        var e = await WriteQueue.Pop();
+
+        if (Socket.State != WebSocketState.Open)
+        {
+            Console.WriteLine("[Write] Connection Closed");
+            return;
+        }
+        
         Console.WriteLine($"[Write] {e}");
+
         try
         {
-            await Socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(e), WebSocketMessageType.Text, true,
-                _cts.Token);
+            await Socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(e), WebSocketMessageType.Text, true, _cts.Token);
         }
         catch (OperationCanceledException)
         {
             Console.WriteLine("[Write] Cancelled");
+        }
+        catch (WebSocketException ex)
+        {
+            Console.WriteLine($"[Write] Error: {ex}");
         }
     }
 }

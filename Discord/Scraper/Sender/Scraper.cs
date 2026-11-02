@@ -17,7 +17,7 @@ public partial class Scraper : Utils.JsonSender
 {
     private static Utils.AsyncStack<Track>? _trackStack;
 
-    public static Track? GetTrack() => _trackStack?.Pop();
+    public static Task<Track?> GetTrack() => _trackStack?.Pop() ?? Task.FromResult<Track?>(null);
 
     public Scraper(CancellationTokenSource cts) : base(cts)
     {

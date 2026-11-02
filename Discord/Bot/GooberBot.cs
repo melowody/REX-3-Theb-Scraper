@@ -88,7 +88,7 @@ public class GooberBot : DiscordSocketClient
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            var track = Scraper.Sender.Scraper.GetTrack();
+            var track = await Scraper.Sender.Scraper.GetTrack();
             if (track == null) continue;
             Console.WriteLine("[Bot] Got track!");
             try
