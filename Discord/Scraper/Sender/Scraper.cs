@@ -13,16 +13,11 @@ using GooberTracker.Core.Types.World;
 
 namespace GooberTracker.Discord.Scraper.Sender;
 
-public partial class Scraper : Utils.JsonSender
+public partial class Scraper(CancellationTokenSource cts) : Utils.JsonSender(cts)
 {
-    private static Utils.AsyncStack<Track>? _trackStack;
+    private static readonly Utils.AsyncStack<Track>? TrackStack = new(CancellationToken.None);
 
-    public static Task<Track?> GetTrack() => _trackStack?.Pop() ?? Task.FromResult<Track?>(null);
-
-    public Scraper(CancellationTokenSource cts) : base(cts)
-    {
-        _trackStack = new Utils.AsyncStack<Track>(cts.Token);
-    }
+    public static Task<Track?> GetTrack() => TrackStack?.Pop() ?? Task.FromResult<Track?>(null);
 
     private async Task<Track?> ParseTrack(JsonObject e)
     {
@@ -190,9 +185,9 @@ public partial class Scraper : Utils.JsonSender
             if (Cts.IsCancellationRequested) return;
             var track = await ParseTrack((embed as JsonObject)!);
             Cts.Token.ThrowIfCancellationRequested();
-            if (track == null || _trackStack == null) continue;
+            if (track == null || TrackStack == null) continue;
             Console.WriteLine("[Scraper] Pushing track");
-            _trackStack.Push(track);
+            TrackStack.Push(track);
         }
     }
 

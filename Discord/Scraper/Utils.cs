@@ -51,6 +51,7 @@ public static class Utils
         private readonly Stack<T> _stack = new();
         private readonly Lock _lock = new();
         private readonly SemaphoreSlim _semaphore = new(0);
+        public CancellationToken Token = token;
 
         public void Push(T item)
         {
@@ -64,7 +65,7 @@ public static class Utils
 
         public async Task<T?> Pop()
         {
-            await _semaphore.WaitAsync(token);
+            await _semaphore.WaitAsync(Token);
 
             lock (_lock)
             {
