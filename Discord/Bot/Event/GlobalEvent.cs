@@ -2,6 +2,7 @@
 using Discord;
 using Discord.Net;
 using GooberTracker.Core.Types.Channel;
+using GooberTracker.Core.Types.Multiplier;
 using GooberTracker.Core.Types.Ping;
 using GooberTracker.Core.Types.Spawner;
 using GooberTracker.Core.Types.Track;
@@ -72,6 +73,9 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         var eOre = e == null ? null : await e.Ore;
         var eStr = eOre?.Name ?? "None";
         
+        Multiplier? multiplier = null;
+        if (variant != null && tier != null) multiplier = await MultiplierManager.Instance.Get(variant, tier);
+        
         return Smart.Format(message, new
         {
             guild = "GLOBAL".Extend(),
@@ -83,7 +87,7 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
             tier = tierName.Extend(),
             tier_variant = (variantName is { Length: > 0 } ? $" ({variantName})" : "").Extend(),
             ping = pingStr.Extend(),
-            base_rarity = spawn?.Rarity ?? -1,
+            base_rarity = (spawn?.Rarity ?? -1) * (multiplier?.Multi ?? 1),
             adjusted_rarity = await track.Rarity ?? -1,
             blocks = track.Mined,
             loadout = track.EquipmentStr.Extend(),
