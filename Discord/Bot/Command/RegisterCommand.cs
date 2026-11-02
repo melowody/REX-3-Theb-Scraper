@@ -99,7 +99,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             }
         }
 
-        await RespondAsync("Welcome...... To Gooberville.....");
+        await RespondAsync("Welcome...... To Gooberville.....", ephemeral: true);
     }
 
     [SlashCommand("channel", "Register a channel!")]
