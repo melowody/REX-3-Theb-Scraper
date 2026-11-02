@@ -21,10 +21,10 @@ public partial class Scraper : Utils.JsonSender
 
     public Scraper(CancellationTokenSource cts) : base(cts)
     {
-        _trackStack = new Utils.AsyncStack<Track>(cts);
+        _trackStack = new Utils.AsyncStack<Track>(cts.Token);
     }
 
-    private static async Task<Track?> ParseTrack(JsonObject e)
+    private async Task<Track?> ParseTrack(JsonObject e)
     {
         Console.WriteLine($"[Scraper] Parsing: {e}");
 
@@ -49,18 +49,25 @@ public partial class Scraper : Utils.JsonSender
         Console.WriteLine("[Scraper] Getting Variant");
         
         var variant = await VariantManager.Instance.Get("Normal");
+        Cts.Token.ThrowIfCancellationRequested();
         if (variantText.Length > 0)
-            variant = await VariantManager.Instance.Get(new CultureInfo("en-US", false).TextInfo.ToTitleCase(variantText));
+        {
+            variant = await VariantManager.Instance.Get(
+                new CultureInfo("en-US", false).TextInfo.ToTitleCase(variantText));
+            Cts.Token.ThrowIfCancellationRequested();
+        }
         if (variant == null) return null;
 
         Console.WriteLine("[Scraper] Getting Ore");
         
         var ore = await OreManager.Instance.Get(oreText);
+        Cts.Token.ThrowIfCancellationRequested();
         if (ore == null) return null;
         
         Console.WriteLine("[Scraper] Getting World");
         
         var world = await WorldManager.Instance.Get(worldText);
+        Cts.Token.ThrowIfCancellationRequested();
         if (world == null) return null;
 
         Console.WriteLine("[Scraper] Getting Spawner");
@@ -69,22 +76,26 @@ public partial class Scraper : Utils.JsonSender
         if (caveText.Length > 0)
         {
             spawner = await SpawnerManager.Instance.Get(caveText);
+            Cts.Token.ThrowIfCancellationRequested();
         }
         else
         {
             var spawns = new List<Spawn>();
 
             Console.WriteLine(ore.Name);
-            foreach (var spawn in await SpawnManager.Instance.GetAll(ore))
+            var spawnList = await SpawnManager.Instance.GetAll(ore);
+            Cts.Token.ThrowIfCancellationRequested();
+            foreach (var spawn in spawnList)
             {
-                Console.WriteLine("[Scraper] Blehhhh");
                 var inSpawner = await spawn.Spawner;
+                Cts.Token.ThrowIfCancellationRequested();
                 if (inSpawner == null || inSpawner.Type == SpawnerType.Cave)
                 {
                     Console.WriteLine("[Scraper] Found either null or cave");
                     continue;
                 }
                 var inWorld = await inSpawner.World;
+                Cts.Token.ThrowIfCancellationRequested();
                 if (inWorld == world) spawns.Add(spawn);
             }
             
@@ -95,6 +106,8 @@ public partial class Scraper : Utils.JsonSender
             }
             spawner = await spawns.First().Spawner;
         }
+
+        Cts.Token.ThrowIfCancellationRequested();
         if (spawner == null) return null;
 
         Console.WriteLine("[Scraper] Getting Event/Blocks Mined");
@@ -115,7 +128,8 @@ public partial class Scraper : Utils.JsonSender
                 {
                     case "Blocks Mined":
                     {
-                        Console.WriteLine($"[Scraper] Blocks Mined: {(field["value"]?.GetValue<string>() ?? "-1").Replace(",", "")}");
+                        Console.WriteLine(
+                            $"[Scraper] Blocks Mined: {(field["value"]?.GetValue<string>() ?? "-1").Replace(",", "")}");
                         blocksMined = long.Parse((field["value"]?.GetValue<string>() ?? "-1").Replace(",", ""));
                         break;
                     }
@@ -124,8 +138,10 @@ public partial class Scraper : Utils.JsonSender
                         var ev = field["value"]?.GetValue<string>();
                         if (ev is null or "None") continue;
                         var eventOre = await OreManager.Instance.Get(ev);
+                        Cts.Token.ThrowIfCancellationRequested();
                         if (eventOre == null) continue;
                         var eventImpl = await EventManager.Instance.Get(eventOre);
+                        Cts.Token.ThrowIfCancellationRequested();
                         eventId = eventImpl?.Id;
                         break;
                     }
@@ -136,6 +152,10 @@ public partial class Scraper : Utils.JsonSender
                     }
                 }
             }
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -157,7 +177,9 @@ public partial class Scraper : Utils.JsonSender
         if (obj["d"]! is not JsonObject d || !d.ContainsKey("author")) return false;
         if (d["author"]! is not JsonObject author || !author.ContainsKey("id")) return false;
         Console.WriteLine($"[Scraper] Author: {author} | String: {author["id"]!.GetValue<string>()} | Long: {long.Parse(author["id"]!.GetValue<string>())}");
-        return await TrackerManager.Instance.Get(long.Parse(author["id"]!.GetValue<string>())) != null;
+        var ret = await TrackerManager.Instance.Get(long.Parse(author["id"]!.GetValue<string>())) != null;
+        Cts.Token.ThrowIfCancellationRequested();
+        return ret;
     }
         
 
@@ -167,6 +189,7 @@ public partial class Scraper : Utils.JsonSender
         {
             if (Cts.IsCancellationRequested) return;
             var track = await ParseTrack((embed as JsonObject)!);
+            Cts.Token.ThrowIfCancellationRequested();
             if (track == null || _trackStack == null) continue;
             Console.WriteLine("[Scraper] Pushing track");
             _trackStack.Push(track);

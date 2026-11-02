@@ -6,16 +6,13 @@ namespace GooberTracker.Discord.Scraper.Sender;
 public class Reconnect(CancellationTokenSource cts) : Utils.JsonSender(cts)
 {
 
-    public override async Task<bool> ShouldHandle(JsonNode e) =>
-        e is JsonObject obj && obj.ContainsKey("op") && obj["op"]!.GetValue<int>() == 7;
+    public override Task<bool> ShouldHandle(JsonNode e) =>
+        Task.FromResult(e is JsonObject obj && obj.ContainsKey("op") && obj["op"]!.GetValue<int>() == 7);
 
-    public override async Task HandleEvent(JsonNode e, GooberScraper scraper)
+    public override Task HandleEvent(JsonNode e, GooberScraper scraper)
     {
-        await scraper.Cancel();
-
-        await scraper.Socket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-        await Task.Delay(1000);
-        _ = Utils.LogExceptions(scraper.Start());
+       scraper.Restart();
+       return Task.CompletedTask;
     }
     
 }

@@ -8,18 +8,29 @@ namespace GooberTracker.Discord.Scraper;
 
 public class GooberScraper
 {
-
-    public ClientWebSocket Socket = new();
-    private static CancellationTokenSource _cts = new();
+    private ClientWebSocket Socket = new();
+    private CancellationTokenSource _cts = new();
     
-    private Utils.AsyncStack<JsonNode> _readQueue = new(_cts);
-    public Utils.AsyncStack<JsonNode> WriteQueue = new(_cts);
+    private Utils.AsyncStack<JsonNode> _readQueue;
+    public Utils.AsyncStack<JsonNode> WriteQueue;
 
     private List<Utils.JsonSender> _senders = [];
     
     private static readonly Lazy<GooberScraper> InstanceImpl = new(() => new GooberScraper());
     public static GooberScraper Instance => InstanceImpl.Value;
-    
+
+    private readonly List<Task> _tasks = [];
+    private readonly List<Task> _senderTasks = [];
+    private readonly Lock _senderLock = new();
+
+    private bool _reconnecting;
+
+    public GooberScraper()
+    {
+        WriteQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
+        _readQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
+    }
+
     public async Task Start()
     {
         _cts = new CancellationTokenSource();
@@ -31,40 +42,105 @@ public class GooberScraper
         ];
         Socket = new ClientWebSocket();
         await Socket.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=10&encoding=json"), _cts.Token);
-        _readQueue = new Utils.AsyncStack<JsonNode>(_cts);
-        WriteQueue = new Utils.AsyncStack<JsonNode>(_cts);
+        _readQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
+        WriteQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
 
-        _ = Task.Run(async () =>
+        _tasks.Add(Task.Run(async () =>
         {
             while (!_cts.IsCancellationRequested)
             {
-                await Utils.LogExceptions(ReadLoop());
+                try
+                {
+                    await Utils.LogExceptions(ReadLoop());
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
             }
-        });
-        _ = Task.Run(async () =>
+        }));
+        _tasks.Add(Task.Run(async () =>
         {
             while (!_cts.IsCancellationRequested)
             {
-                await Utils.LogExceptions(ProcessLoop());
+                try
+                {
+                    await Utils.LogExceptions(ProcessLoop());
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
             }
-        });
-        _ = Task.Run(async () =>
+        }));
+        _tasks.Add(Task.Run(async () =>
         {
             while (!_cts.IsCancellationRequested)
             {
-                await Utils.LogExceptions(WriteLoop());
+                try
+                {
+                    await Utils.LogExceptions(WriteLoop());
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
             }
-        });
+        }));
     }
 
-    public async Task Cancel()
+    private async Task Cancel()
     {
         await _cts.CancelAsync();
+
+        try
+        {
+            await Task.WhenAll(_tasks);
+            Task[] tasks;
+            lock (_senderLock)
+            {
+                tasks = [.. _senderTasks];
+                _senderTasks.Clear();
+            }
+
+            await Task.WhenAll(tasks);
+        }
+        finally
+        {
+            _tasks.Clear();
+        }
+    }
+
+    public void Restart()
+    {
+        if (_reconnecting) return;
+        _reconnecting = true;
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await Cancel();
+                Socket.Dispose();
+                await Task.Delay(1000);
+                await Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[Restart] Error: {e}");
+            }
+            finally
+            {
+                _reconnecting = false;
+            }
+        });
     }
     
     private async Task ReadLoop()
     {
         var message = await Socket.ReceiveAsync(_cts.Token);
+        
+        _cts.Token.ThrowIfCancellationRequested();
 
         if (message == null)
         {
@@ -81,20 +157,30 @@ public class GooberScraper
     private async Task ProcessLoop()
     {
         var message = await _readQueue.Pop();
+        _cts.Token.ThrowIfCancellationRequested();
         if (message is not JsonObject) return;
         Console.WriteLine($"[Process] Processing: {message.ToString()[..Math.Min(message.ToString().Length, 500)]}");
         foreach (var sender in _senders)
         {
+            _cts.Token.ThrowIfCancellationRequested();
             Console.WriteLine($"[Process] Attempting Sender {sender.GetType().Name}");
             if (!await sender.ShouldHandle(message)) continue;
+            _cts.Token.ThrowIfCancellationRequested();
             Console.WriteLine("[Process] Sending...");
-            _ = Utils.LogExceptions(sender.HandleEvent(message, this));
+            lock (_senderLock)
+            {
+                if (_cts.IsCancellationRequested) break;
+                _senderTasks.RemoveAll(x => x.IsCompleted);
+                _senderTasks.Add(Task.Run(() => Utils.LogExceptions(sender.HandleEvent(message, this))));
+            }
         }
     }
 
     private async Task WriteLoop()
     {
         var e = await WriteQueue.Pop();
+        
+        _cts.Token.ThrowIfCancellationRequested();
 
         if (Socket.State != WebSocketState.Open)
         {

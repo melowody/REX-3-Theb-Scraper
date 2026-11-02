@@ -31,7 +31,7 @@ public class Heartbeat(CancellationTokenSource cts) : Utils.JsonSender(cts)
         });
         while (!Cts.IsCancellationRequested)
         {
-            await Task.Delay((int)(interval * .75));
+            await Task.Delay((int)(interval * .75), Cts.Token);
             scraper.WriteQueue.Push(new JsonObject
             {
                 ["op"] = 1,

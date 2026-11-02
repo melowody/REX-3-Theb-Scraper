@@ -46,7 +46,7 @@ public static class Utils
         return Encoding.UTF8.GetString(stream.ToArray());
     }
 
-    public class AsyncStack<T>(CancellationTokenSource cts) where T : class
+    public class AsyncStack<T>(CancellationToken token) where T : class
     {
         private readonly Stack<T> _stack = new();
         private readonly Lock _lock = new();
@@ -64,7 +64,7 @@ public static class Utils
 
         public async Task<T?> Pop()
         {
-            await _semaphore.WaitAsync(cts.Token);
+            await _semaphore.WaitAsync(token);
 
             lock (_lock)
             {
@@ -119,6 +119,10 @@ public static class Utils
         try
         {
             await awaitable;
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine($"Shutting down");
         }
         catch (Exception e)
         {
