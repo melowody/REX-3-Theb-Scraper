@@ -27,7 +27,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         var curr = Context.Interaction.User;
         if (user != null)
         {
-            if (GooberBot.Owners.Contains(Context.Interaction.User.Id))
+            if (!GooberBot.Owners.Contains(Context.Interaction.User.Id))
             {
                 await RespondAsync("You must be an owner of the bot to do this!", ephemeral: true);
                 return;
