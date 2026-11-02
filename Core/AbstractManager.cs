@@ -290,6 +290,8 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
             }
         );
 
+        Console.WriteLine($"[{GetType().Name}] Result: {JsonSerializer.Serialize(result, Options)}");
+        
         return result?.Value ?? [];
     }
 

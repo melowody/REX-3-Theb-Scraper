@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Discord.Net;
 using Discord.WebSocket;
 using GooberTracker.Core.Types.Channel;
 using GooberTracker.Core.Types.Goober;
@@ -41,9 +42,16 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         List<Channel> o = [];
         foreach (var channel in await ChannelManager.Instance.GetAll(ChannelType.Player))
         {
-            var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
-            if (guildChannel is not ITextChannel) continue;
-            o.Add(channel);
+            try
+            {
+                var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
+                if (guildChannel is not ITextChannel) continue;
+                o.Add(channel);
+            }
+            catch (HttpException e)
+            {
+                Console.WriteLine($"[GlobalEvent] Error: Couldn't get channel {channel.ChannelId} | {e}");
+            }
         }
 
         return o;
@@ -88,7 +96,7 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
 
         var e = await track.Event;
         var eOre = e == null ? null : await e.Ore;
-        var eStr = eOre?.Name ?? "Invalid Event";
+        var eStr = eOre?.Name ?? "None";
         
         return Smart.Format(message, new
         {
