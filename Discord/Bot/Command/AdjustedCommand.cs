@@ -74,12 +74,13 @@ public class AdjustedCommand : InteractionModuleBase<SocketInteractionContext>
             var spawner = await spawn.Spawner;
             if (spawner == null) continue;
             if (spawner.Type == SpawnerType.Layer) continue;
+            var rarity = await new Track(-1, "", variant.Id, ore.Id, spawner.Id, null, "0", "", "").Rarity;
             entries.Add(Smart.Format(AdjustedFormat, new
             {
                 cave = spawner.Name.Extend(),
                 cave_rarity = spawner.CaveRarity ?? -1,
-                base_rarity = spawn.Rarity * multiplier,
-                adjusted_rarity = await new Track(-1, "", variant.Id, ore.Id, spawner.Id, null, "0", "", "").Rarity ?? -1.0
+                base_rarity = rarity?.Base ?? -1.0,
+                adjusted_rarity = rarity?.Adjusted ?? -1.0
             }));
         }
 
