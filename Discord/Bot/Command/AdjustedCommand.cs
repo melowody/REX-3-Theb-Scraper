@@ -49,31 +49,28 @@ public class AdjustedCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
 
-        var multi = await MultiplierManager.Instance.Get(variant, tier);
-        var multiplier = multi?.Multi ?? 1;
-
         var titleVariant = variant.Name == "Normal" ? "" : $"{variant.Name} ";
         var title = $"# {titleVariant}{ore.Name}";
 
-        var spawns = await SpawnManager.Instance.GetAll(ore);
-        foreach (var spawn in spawns)
+        List<Spawner> spawners = [];
+        var addedGilded = false;
+        foreach (var spawn in await SpawnManager.Instance.GetAll(ore))
         {
             var spawner = await spawn.Spawner;
-            if (spawner == null || spawner.Type == SpawnerType.Cave) continue;
+            if (spawner == null) continue;
+            if (spawner.Type == SpawnerType.Cave) spawners.Add(spawner);
+            if (spawner.Type == SpawnerType.Cave || addedGilded) continue;
             var world = await spawner.World;
             if (world == null) continue;
             var gilded = await SpawnerManager.Instance.Get("Gilded Cave", world);
             if (gilded == null) continue;
-            spawns.Add(new Spawn(-1, ore.Id, gilded.Id, $"{2.5 * spawn.Rarity}"));
-            break;
+            spawners.Add(gilded);
+            addedGilded = true;
         }
 
         List<string> entries = [];
-        foreach (var spawn in spawns)
+        foreach (var spawner in spawners)
         {
-            var spawner = await spawn.Spawner;
-            if (spawner == null) continue;
-            if (spawner.Type == SpawnerType.Layer) continue;
             var rarity = await new Track(-1, "", variant.Id, ore.Id, spawner.Id, null, "0", "", "").Rarity;
             entries.Add(Smart.Format(AdjustedFormat, new
             {

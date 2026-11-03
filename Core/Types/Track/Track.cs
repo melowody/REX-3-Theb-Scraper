@@ -61,55 +61,6 @@ public record Track(
     }
     
     [JsonIgnore] public Task<Multiplier.Multiplier?> Multiplier => GetMultiplier();
-
-    private async Task<Spawn.Spawn?> GetSpecialRarity()
-    {
-        var spawn = await Spawner;
-        if (spawn == null) return null;
-
-        var ore = await Ore;
-        if (ore == null) return null;
-
-        if (spawn.Name == "Gilded Cave")
-        {
-            var oreSpawns = await SpawnManager.Instance.GetAll(ore);
-            Spawn.Spawn? layerSpawn = null;
-            foreach (var oreSpawn in oreSpawns)
-            {
-                var oreSpawner = await oreSpawn.Spawner;
-                if (oreSpawner?.Type is not SpawnerType.Layer) continue;
-                break;
-            }
-
-            var divisor = 1.0;
-            if (EquipmentStr.Contains("100 Leaf Clover"))
-            {
-                divisor = 1.0 / 57.0;
-            }
-
-            if (EquipmentStr.Contains("Ambrosia Salad") || EquipmentStr.Contains("57 Leaf Clover"))
-            {
-                divisor = 1.0 / 100.0;
-            }
-            return layerSpawn == null ? null : new Spawn.Spawn(-1, ore.Id, spawn.Id, $"{layerSpawn.Rarity * 2.5 * divisor}");
-        }
-        
-        var ev = await Event;
-        if (ev == null) return null;
-
-        var evOre = await ev.Ore;
-        if (evOre == null) return null;
-
-        if (evOre.Name != "Nebulova") return null;
-        {
-            var starry = await SpawnerManager.Instance.Get("Starry Cave");
-            if (starry == null) return null;
-
-            var oreSpawn = await SpawnManager.Instance.Get(ore, starry);
-            return oreSpawn == null ? null : new Spawn.Spawn(-1, ore.Id, spawn.Id, $"{oreSpawn.Rarity * 3.0}");
-        }
-
-    }
     
     private async Task<TrackRarity?> GetRarity()
     {
@@ -120,7 +71,7 @@ public record Track(
             return null;
         }
 
-        var spawn = await Spawn ?? await GetSpecialRarity();
+        var spawn = await Spawn ?? await this.GetSpecialRarity();
         if (spawn == null)
         {
             Console.WriteLine($"[Track] Could not find spawn: {SpawnerId} + {OreId}");
@@ -135,7 +86,7 @@ public record Track(
         var adjusted = rarity;
         if (spawner.Type == SpawnerType.Cave)
         {
-            adjusted *= 1.88 * spawner.CaveRarity ?? 1.0;
+            adjusted *= HardCoded.CaveConstant * spawner.CaveRarity ?? 1.0;
         }
 
         return new TrackRarity(rarity, adjusted);

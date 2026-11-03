@@ -20,25 +20,18 @@ public class SpawnerManager : AbstractDirectusManager<Spawner>
         world == null ? new {name} : new {name, world = world.Id}
     );
 
-    public async Task<List<Spawner>> GetAll(string name) => await GetAllImpl(
+    private async Task<List<Spawner>> GetAll(string name) => await GetAllImpl(
         x => name == "" || x.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase),
         name == "" ? null : new { name = new { _contains = name }}
     );
     
     public class CaveAutocompleteHandler : AutocompleteHandler
     {
-        private static async Task<string> GetName(Spawner spawner)
-        {
-            if (spawner.Name != "Gilded Cave") return spawner.Name;
-            var world = await spawner.World;
-            return world == null ? spawner.Name : $"{spawner.Name} ({world.Name})";
-        }
-        
         public override async Task<AutocompletionResult> GenerateSuggestionsAsync(IInteractionContext context, IAutocompleteInteraction autocompleteInteraction,
             IParameterInfo parameter, IServiceProvider services)
         {
             var caves = (await Instance.GetAll(autocompleteInteraction.Data.Current.Value.ToString() ?? "")).Where(x => x.Type == SpawnerType.Cave);
-            return AutocompletionResult.FromSuccess(caves.Select(async cave => new AutocompleteResult(await GetName(cave), cave.Id)).Select(t => t.Result).Take(25));
+            return AutocompletionResult.FromSuccess(caves.Select(async cave => new AutocompleteResult(await this.GetName(cave), cave.Id)).Select(t => t.Result).Take(25));
         }
     }
 }

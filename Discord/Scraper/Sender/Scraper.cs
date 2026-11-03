@@ -43,7 +43,7 @@ public partial class Scraper(CancellationTokenSource cts) : Utils.JsonSender(cts
         
         Console.WriteLine("[Scraper] Getting Variant");
         
-        var variant = await VariantManager.Instance.Get("Normal");
+        var variant = await HardCoded.DefaultVariant;
         Cts.Token.ThrowIfCancellationRequested();
         if (variantText.Length > 0)
         {
