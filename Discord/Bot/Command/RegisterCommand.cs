@@ -42,7 +42,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
         
-        var robloxId = await Utils.GetRobloxId(name);
+        var robloxId = await Utils.GetRobloxData(name);
         if (robloxId == null)
         {
             await RespondAsync("Couldn't get user ID, try again in a minute", ephemeral: true);

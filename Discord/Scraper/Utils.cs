@@ -137,7 +137,7 @@ public static class Utils
 
     private static long _lastCalled = 0L;
 
-    public static async Task<RobloxData?> GetRobloxId(string name)
+    public static async Task<RobloxData?> GetRobloxData(string name)
     {
         var response = await Client.PostAsync("https://users.roblox.com/v1/usernames/users", new StringContent($"{{\r\n  \"usernames\": [\r\n    \"{name}\"\r\n  ],\r\n  \"excludeBannedUsers\": false\r\n}}", null, "application/json"));
 
@@ -172,6 +172,42 @@ public static class Utils
         Console.WriteLine($"[GetRobloxId] Couldn't get username from: {data}");
         return null;
 
+    }
+    
+    public static async Task<RobloxData?> GetRobloxData(long robloxId)
+    {
+        var response = await Client.GetAsync($"https://apis.roblox.com/cloud/v2/users/{robloxId}");
+
+        var output = await response.Content.ReadAsStringAsync();
+        
+        Console.WriteLine($"[GetRobloxId] {output} | {response.StatusCode}");
+
+        try
+        {
+            response.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException)
+        {
+            Console.WriteLine("[GetRobloxId] Poor status code!");
+            return null;
+        }
+
+        if (JsonNode.Parse(output) is not JsonObject data)
+        {
+            return null;
+        }
+        
+        var id = data["id"]?.GetValue<long>();
+        if (id == null)
+        {
+            Console.WriteLine($"[GetRobloxId] Couldn't get ID from: {data}");
+            return null;
+        }
+        
+        var username = data["name"]?.GetValue<string>();
+        if (username != null) return new RobloxData(id.Value, username);
+        Console.WriteLine($"[GetRobloxId] Couldn't get username from: {data}");
+        return null;
     }
 
     public static async Task<List<string>?> GetRobloxNames(long id, string? cursor = null)

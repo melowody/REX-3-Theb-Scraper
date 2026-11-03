@@ -46,8 +46,12 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
             try
             {
                 var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
-                if (guildChannel is not ITextChannel) continue;
-                o.Add(channel);
+                if (guildChannel is not ITextChannel textChannel) continue;
+                var guild = await ((IDiscordClient)bot).GetGuildAsync(textChannel.GuildId);
+                if ((await guild.GetUsersAsync()).Any(x => x.Id == user.Id))
+                {
+                    o.Add(channel);
+                }
             }
             catch (HttpException e)
             {
