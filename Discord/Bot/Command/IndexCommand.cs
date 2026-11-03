@@ -24,27 +24,29 @@ public class IndexCommand : InteractionModuleBase<SocketInteractionContext>
                                      {_event}
                                      """;
 
-    public struct VariantComparer(string name, long rarity)
+    private struct VariantComparer(string name, long rarity)
     {
-        public string Name = name;
-        public long Rarity = rarity;
+        public readonly string Name = name;
+        public readonly long Rarity = rarity;
     }
     
     [SlashCommand("ore", "Get information about a REx Ore")]
     [CommandContextType(InteractionContextType.BotDm, InteractionContextType.Guild, InteractionContextType.PrivateChannel)]
     public async Task Ore([Summary("ore"), Autocomplete(typeof(OreManager.OreAutocompleteHandler))] int oreId)
     {
+        await DeferAsync();
+        
         var ore = await OreManager.Instance.Get(oreId);
         if (ore == null)
         {
-            await RespondAsync("You must enter a valid Ore!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You must enter a valid Ore!");
             return;
         }
 
         var tier = await ore.Tier;
         if (tier == null)
         {
-            await RespondAsync("Could not get Tier for Ore!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Could not get Tier for Ore!");
             return;
         }
 
@@ -81,7 +83,7 @@ public class IndexCommand : InteractionModuleBase<SocketInteractionContext>
             ? "This Ore does not have an Event."
             : $"Event Rarity: 1 in {oreEvent.Rarity:N0}";
 
-        await RespondAsync(Smart.Format(OreFormat, new
+        await ModifyOriginalResponseAsync(x => x.Content = Smart.Format(OreFormat, new
         {
             ore = ore.Name.Extend(),
             tier = tier.Name.Extend(),

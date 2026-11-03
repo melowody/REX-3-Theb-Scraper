@@ -25,12 +25,14 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         InteractionContextType.PrivateChannel)]
     public async Task Player(string name, bool ping, IUser? user = null)
     {
+        await DeferAsync(ephemeral: true);
+        
         var curr = Context.Interaction.User;
         if (user != null)
         {
             if (!GooberBot.Owners.Contains(Context.Interaction.User.Id))
             {
-                await RespondAsync("You must be an owner of the bot to do this!", ephemeral: true);
+                await ModifyOriginalResponseAsync(x => x.Content = "You must be an owner of the bot to do this!");
                 return;
             }
             curr = user as SocketUser;
@@ -38,28 +40,28 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
 
         if (curr == null)
         {
-            await RespondAsync("Couldn't find the correct user, please contact Mel", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't find the correct user, please contact Mel");
             return;
         }
         
         var robloxId = await Utils.GetRobloxData(name);
         if (robloxId == null)
         {
-            await RespondAsync("Couldn't get user ID, try again in a minute", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't get user ID, try again in a minute");
             return;
         }
         
         var player = await PlayerManager.Instance.FromRoblox(robloxId.Id) ?? await PlayerManager.Instance.Add(robloxId.Id);
         if (player == null)
         {
-            await RespondAsync("Couldn't access CMS, please contact Mel pweaaseeeee :3", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access CMS, please contact Mel pweaaseeeee :3");
             return;
         }
 
         var robloxNames = await Utils.GetRobloxNames(robloxId.Id);
         if (robloxNames == null)
         {
-            await RespondAsync("Couldn't get names, try again in a minute", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't get names, try again in a minute");
             return;
         }
 
@@ -98,25 +100,27 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             }
         }
 
-        await RespondAsync("Welcome...... To Gooberville.....", ephemeral: true);
+        await ModifyOriginalResponseAsync(x => x.Content = "Welcome...... To Gooberville.....");
     }
 
     [SlashCommand("channel", "Register a channel!")]
     [CommandContextType(InteractionContextType.Guild)]
     public async Task Channel(ChannelType type)
     {
+        await DeferAsync(ephemeral: true);
+        
         if (Context.Interaction.User is not SocketGuildUser user || !(user.GuildPermissions.ManageChannels || GooberBot.Owners.Contains(user.Id)))
         {
-            await RespondAsync("You must have the `Manage Channels` permission dummy!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You must have the `Manage Channels` permission dummy!");
             return;
         }
 
         if (await ChannelManager.Instance.AddChannel(Context.Channel.Id, type) == null)
         {
-            await RespondAsync("Couldn't access directus, please message Mel", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access directus, please message Mel");
             return;
         }
-        await RespondAsync($"Channel subscribed to {type} tracks!", ephemeral: true);
+        await ModifyOriginalResponseAsync(x => x.Content = $"Channel subscribed to {type} tracks!");
     }
     
     [SlashCommand("ping", "Register the pings for the channel!")]
@@ -127,35 +131,37 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         string pingStr
     )
     {
+        await DeferAsync(ephemeral: true);
+        
         if (Context.Interaction.User is not SocketGuildUser user || !(user.GuildPermissions.ManageChannels || GooberBot.Owners.Contains(user.Id)))
         {
-            await RespondAsync("You must have the `Manage Channels` permission dummy!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You must have the `Manage Channels` permission dummy!");
             return;
         }
 
         var channel = await ChannelManager.Instance.Get((long)Context.Channel.Id);
         if (channel == null)
         {
-            await RespondAsync("This channel isn't attached to the bot!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "This channel isn't attached to the bot!");
             return;
         }
 
         var variant = await VariantManager.Instance.Get(variantId);
         if (variant == null)
         {
-            await RespondAsync("You silly, you gotta enter a valid variant!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You silly, you gotta enter a valid variant!");
             return;
         }
         
         var tier = await TierManager.Instance.Get(tierId);
         if (tier == null)
         {
-            await RespondAsync("You silly, you gotta enter a valid tier!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You silly, you gotta enter a valid tier!");
             return;
         }
 
         await PingManager.Instance.AddPing(channel, variant, tier, pingStr);
-        await RespondAsync("Signed up channel for pings", ephemeral: true);
+        await ModifyOriginalResponseAsync(x => x.Content = "Signed up channel for pings");
     }
     
 }

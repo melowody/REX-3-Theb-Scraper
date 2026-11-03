@@ -22,6 +22,8 @@ public class CaveCommand : InteractionModuleBase<SocketInteractionContext>
         InteractionContextType.PrivateChannel)]
     public async Task Cave([Summary("cave"), Autocomplete(typeof(SpawnerManager.CaveAutocompleteHandler))] int caveId)
     {
+        await DeferAsync();
+        
         var cave = await SpawnerManager.Instance.Get(caveId);
         if (cave == null)
         {
@@ -36,13 +38,13 @@ public class CaveCommand : InteractionModuleBase<SocketInteractionContext>
             var ore = await spawn.Ore;
             if (ore == null)
             {
-                await RespondAsync($"Could not find ore: {spawn.OreId}");
+                await ModifyOriginalResponseAsync(x => x.Content = $"Could not find ore: {spawn.OreId}");
                 continue;
             }
             spawnList.Add($"{ore.Name}: 1 in {spawn.Rarity:N0}");
         }
         
-        await RespondAsync(Smart.Format(CaveFormat, new
+        await ModifyOriginalResponseAsync(x => x.Content = Smart.Format(CaveFormat, new
         {
             cave = cave.Name.Extend(),
             cave_rarity = cave.CaveRarity ?? -1,

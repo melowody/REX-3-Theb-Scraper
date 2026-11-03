@@ -29,6 +29,8 @@ public class EpinephrineCommand : InteractionModuleBase<SocketInteractionContext
     [CommandContextType(InteractionContextType.BotDm, InteractionContextType.Guild, InteractionContextType.PrivateChannel)]
     public async Task Epinephrine()
     {
+        await DeferAsync();
+        
         var roll = Random.Shared.NextDouble() * (1_000_000_000.0 - 1.0) + 1.0;
 
         var spawner = await SpawnerManager.Instance.Get("Moon Core Layer");
@@ -50,19 +52,27 @@ public class EpinephrineCommand : InteractionModuleBase<SocketInteractionContext
         switch (floorRoll)
         {
             case 999_999_999:
-                await RespondAsync("**YOU GOT EPINEPHRINE!** @everyone\n(rolled 999,999,999)", allowedMentions: AllowedMentions.All);
+                await ModifyOriginalResponseAsync(x =>
+                {
+                    x.Content = "**YOU GOT EPINEPHRINE!** @everyone\n(rolled 999,999,999)";
+                    x.AllowedMentions = AllowedMentions.All;
+                });
                 break;
             case 1:
-                await RespondAsync("**YOU GOT...**as far away from Epinephrine as possible! @everyone\n(rolled 1)", allowedMentions: AllowedMentions.All);
+                await ModifyOriginalResponseAsync(x =>
+                {
+                    x.Content = "**YOU GOT...**as far away from Epinephrine as possible! @everyone\n(rolled 1)";
+                    x.AllowedMentions = AllowedMentions.All;
+                });
                 break;
             default:
                 if (ore == null)
                 {
-                    await RespondAsync($"You didn't get Epinephrine :c\n(got {floorRoll:N0} but needed 999,999,999)");
+                    await ModifyOriginalResponseAsync(x => x.Content = $"You didn't get Epinephrine :c\n(got {floorRoll:N0} but needed 999,999,999)");
                 }
                 else
                 {
-                    await RespondAsync($"You got **{ore.Name}**!\n(got {floorRoll:N0} but needed 999,999,999)");
+                    await ModifyOriginalResponseAsync(x => x.Content = $"You got **{ore.Name}**!\n(got {floorRoll:N0} but needed 999,999,999)");
                 }
                 
                 break;

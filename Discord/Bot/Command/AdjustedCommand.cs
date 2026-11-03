@@ -28,24 +28,26 @@ public class AdjustedCommand : InteractionModuleBase<SocketInteractionContext>
         [Summary("variant"), Autocomplete(typeof(VariantManager.VariantAutocompleteHandler))] int variantId = 3
     )
     {
+        await DeferAsync();
+        
         var ore = await OreManager.Instance.Get(oreId);
         if (ore == null)
         {
-            await RespondAsync("You must enter a valid Ore!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You must enter a valid Ore!");
             return;
         }
         
         var variant = await VariantManager.Instance.Get(variantId);
         if (variant == null)
         {
-            await RespondAsync("You must enter a valid Variant!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "You must enter a valid Variant!");
             return;
         }
 
         var tier = await ore.Tier;
         if (tier == null)
         {
-            await RespondAsync("Could not find Tier for Ore!", ephemeral: true);
+            await ModifyOriginalResponseAsync(x => x.Content = "Could not find Tier for Ore!");
             return;
         }
 
@@ -81,7 +83,7 @@ public class AdjustedCommand : InteractionModuleBase<SocketInteractionContext>
             }));
         }
 
-        await RespondAsync($"{title}\n{string.Join('\n', entries)}");
+        await ModifyOriginalResponseAsync(x => x.Content = $"{title}\n{string.Join('\n', entries)}");
     }
     
 }
