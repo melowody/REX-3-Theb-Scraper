@@ -66,7 +66,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         var currNames = await PlayerNameManager.Instance.GetAll(player);
         if (robloxNames.All(x => x != robloxId.Name)) robloxNames.Add(robloxId.Name);
         robloxNames = [.. robloxNames.Where(x => currNames.All(y => y.Name != x))];
-
+        
         foreach (var robloxName in robloxNames)
         {
             await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
@@ -82,20 +82,19 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             currGoob = await GooberManager.Instance.Add(curr.Id, player);
         }
 
-        if (currGoob != null)
+        var guild = Context.Guild;
+        foreach (var discordChannel in await ((IGuild)guild).GetChannelsAsync())
         {
-            var channel = await ChannelManager.Instance.Get((long)Context.Channel.Id);
-            if (channel != null)
+            var channel = await ChannelManager.Instance.Get((long)discordChannel.Id);
+            if (channel is not { Type: ChannelType.Player } || currGoob == null) continue;
+            var playerPing = await PlayerPingManager.Instance.Get(currGoob, channel);
+            if (playerPing == null)
             {
-                var playerPing = await PlayerPingManager.Instance.Get(currGoob, channel);
-                if (playerPing == null)
-                {
-                    await PlayerPingManager.Instance.Add(currGoob, channel, ping);
-                }
-                else
-                {
-                    await PlayerPingManager.Instance.Patch(playerPing.Id, currGoob, channel, ping);
-                }
+                await PlayerPingManager.Instance.Add(currGoob, channel, ping);
+            }
+            else
+            {
+                await PlayerPingManager.Instance.Patch(playerPing.Id, currGoob, channel, ping);
             }
         }
 
