@@ -10,9 +10,9 @@ public static class HardCoded
 {
     public const double CaveConstant = 1.88;
     public static readonly Task<Variant?> DefaultVariant = VariantManager.Instance.Get("Normal");
-    private static readonly ulong GoobervilleId = 1098291233945813044;
-    
-    public static async Task<string> GetName(this SpawnerManager.CaveAutocompleteHandler thiz, Spawner spawner)
+    private const ulong GoobervilleId = 1098291233945813044;
+
+    public static async Task<string> GetName(this SpawnerManager.CaveAutocompleteHandler _, Spawner spawner)
     {
         if (spawner.Name != "Gilded Cave") return spawner.Name;
         var world = await spawner.World;

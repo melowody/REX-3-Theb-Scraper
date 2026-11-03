@@ -17,12 +17,18 @@ public class PlayerPingManager : AbstractDirectusManager<PlayerPing>
         new {goober = goober.Id, channel = channel.Id}
     );
 
-    public async Task Add(Goober.Goober goober, Channel.Channel channel, bool ping) => await PostImpl(
-        new { goober = goober.Id, channel = channel.Id, ping }
-    );
-    
-    public async Task Patch(int id, Goober.Goober goober, Channel.Channel channel, bool ping) => await PatchImpl(
-        id,
-        new { goober = goober.Id, channel = channel.Id, ping }
-    );
+    public async Task<PlayerPing?> Add(Goober.Goober goober, Channel.Channel channel, bool ping)
+    {
+        var playerPing = await Get(goober, channel);
+        if (playerPing != null)
+        {
+            return await PatchImpl(
+                playerPing.Id,
+                new { goober = goober.Id, channel = channel.Id, ping }
+            );
+        }
+        return await PostImpl(
+            new { goober = goober.Id, channel = channel.Id, ping }
+        ); 
+    }
 }

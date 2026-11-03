@@ -22,12 +22,15 @@ public class GooberManager : AbstractDirectusManager<Goober>
         new { player_id = player.Id }
     );
 
-    public async Task<Goober?> Add(ulong discordId, Player.Player player) => await PostImpl(
-        new { discord_id = discordId.ToString(), player_id = player.Id }
-    );
-
-    public async Task<Goober?> Patch(int id, ulong discordId, Player.Player player) => await PatchImpl(
-        id,
-        new { discord_id = discordId.ToString(), player_id = player.Id }
-    );
+    public async Task<Goober?> Add(ulong discordId, Player.Player player)
+    {
+        var goober = await Get(discordId);
+        if (goober != null)
+        {
+            return await PatchImpl(goober.Id, new { discord_id = discordId.ToString(), player_id = player.Id });
+        }
+        return await PostImpl(
+            new { discord_id = discordId.ToString(), player_id = player.Id }
+        );
+    }
 }

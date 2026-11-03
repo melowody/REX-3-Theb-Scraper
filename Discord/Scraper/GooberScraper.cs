@@ -8,7 +8,7 @@ namespace GooberTracker.Discord.Scraper;
 
 public class GooberScraper
 {
-    private ClientWebSocket Socket = new();
+    private ClientWebSocket _socket = new();
     private CancellationTokenSource _cts = new();
     
     private Utils.AsyncStack<JsonNode> _readQueue;
@@ -40,8 +40,8 @@ public class GooberScraper
             new Reconnect(_cts),
             new Sender.Scraper(_cts)
         ];
-        Socket = new ClientWebSocket();
-        await Socket.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=10&encoding=json"), _cts.Token);
+        _socket = new ClientWebSocket();
+        await _socket.ConnectAsync(new Uri("wss://gateway.discord.gg/?v=10&encoding=json"), _cts.Token);
         _readQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
         WriteQueue = new Utils.AsyncStack<JsonNode>(_cts.Token);
 
@@ -138,7 +138,7 @@ public class GooberScraper
             try
             {
                 await Cancel();
-                Socket.Dispose();
+                _socket.Dispose();
                 await Task.Delay(1000);
                 await Start();
             }
@@ -155,7 +155,7 @@ public class GooberScraper
     
     private async Task ReadLoop()
     {
-        var message = await Socket.ReceiveAsync(_cts.Token);
+        var message = await _socket.ReceiveAsync(_cts.Token);
         
         _cts.Token.ThrowIfCancellationRequested();
 
@@ -199,7 +199,7 @@ public class GooberScraper
         
         _cts.Token.ThrowIfCancellationRequested();
 
-        if (Socket.State != WebSocketState.Open)
+        if (_socket.State != WebSocketState.Open)
         {
             Console.WriteLine("[Write] Connection Closed");
             return;
@@ -209,7 +209,7 @@ public class GooberScraper
 
         try
         {
-            await Socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(e), WebSocketMessageType.Text, true, _cts.Token);
+            await _socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(e), WebSocketMessageType.Text, true, _cts.Token);
         }
         catch (OperationCanceledException)
         {

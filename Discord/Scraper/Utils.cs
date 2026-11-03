@@ -1,9 +1,7 @@
-﻿using System.Collections.Concurrent;
-using System.Net;
+﻿using System.Globalization;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json.Nodes;
-using System.Threading.Channels;
 using Discord;
 using Discord.Interactions;
 
@@ -51,7 +49,6 @@ public static class Utils
         private readonly Stack<T> _stack = new();
         private readonly Lock _lock = new();
         private readonly SemaphoreSlim _semaphore = new(0);
-        private CancellationToken Token = token;
 
         public void Push(T item)
         {
@@ -65,7 +62,7 @@ public static class Utils
 
         public async Task<T?> Pop()
         {
-            await _semaphore.WaitAsync(Token);
+            await _semaphore.WaitAsync(token);
 
             lock (_lock)
             {
@@ -93,21 +90,19 @@ public static class Utils
 
     public class ExtendedFormat<T>(T obj) : IFormattable where T : class
     {
-        private readonly T _obj = obj;
-
         private static string Modify(string toFormat, string format)
         {
             return format switch
             {
-                "lower" => toFormat.ToLower(),
-                "upper" => toFormat.ToUpper(),
+                "lower" => toFormat.ToLower(CultureInfo.CurrentCulture),
+                "upper" => toFormat.ToUpper(CultureInfo.CurrentCulture),
                 _ => toFormat
             };
         }
         
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            var toFormat = _obj.ToString();
+            var toFormat = obj.ToString();
             if (string.IsNullOrEmpty(format)) return toFormat ?? "";
             return Modify(toFormat ?? "", format);
         }
@@ -123,7 +118,7 @@ public static class Utils
         }
         catch (OperationCanceledException)
         {
-            Console.WriteLine($"Shutting down");
+            Console.WriteLine("Shutting down");
         }
         catch (Exception e)
         {
@@ -135,7 +130,7 @@ public static class Utils
     
     private static readonly HttpClient Client = new();
 
-    private static long _lastCalled = 0L;
+    private static long _lastCalled;
 
     public static async Task<RobloxData?> GetRobloxData(string name)
     {
@@ -149,9 +144,9 @@ public static class Utils
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (HttpRequestException e)
+        catch (HttpRequestException)
         {
-            Console.WriteLine($"[GetRobloxId] Poor status code!");
+            Console.WriteLine("[GetRobloxId] Poor status code!");
             return null;
         }
 

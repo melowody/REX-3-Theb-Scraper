@@ -30,15 +30,34 @@ public class ChannelManager : AbstractDirectusManager<Channel>
         }
     );
 
-    public async Task<Channel?> AddChannel(ulong channelId, ChannelType type) => await PostImpl(
-        new
+    public async Task<Channel?> Add(ulong channelId, ChannelType type)
+    {
+        var channel = await Get((long)channelId);
+        if (channel != null)
         {
-            channel_id = channelId.ToString(), type = type switch
-            {
-                ChannelType.Beginner => "beginner",
-                ChannelType.Global => "global",
-                _ => "player"
-            }
+            return await PatchImpl(
+                channel.Id,
+                new
+                {
+                    channel_id = channelId.ToString(), type = type switch
+                    {
+                        ChannelType.Beginner => "beginner",
+                        ChannelType.Global => "global",
+                        _ => "player"
+                    }
+                }
+            );
         }
-    );
+        return await PostImpl(
+            new
+            {
+                channel_id = channelId.ToString(), type = type switch
+                {
+                    ChannelType.Beginner => "beginner",
+                    ChannelType.Global => "global",
+                    _ => "player"
+                }
+            }
+        );
+    }
 }

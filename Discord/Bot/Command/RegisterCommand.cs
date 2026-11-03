@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Nodes;
-using Discord;
+﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
 using GooberTracker.Core.Types.Channel;
@@ -74,30 +72,14 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
         }
 
-        var currGoob = await GooberManager.Instance.Get(curr.Id);
-        if (currGoob != null)
-        {
-            await GooberManager.Instance.Patch(currGoob.Id, curr.Id, player);
-        }
-        else
-        {
-            currGoob = await GooberManager.Instance.Add(curr.Id, player);
-        }
+        var currGoob = await GooberManager.Instance.Add(curr.Id, player);
 
         var guild = Context.Guild;
         foreach (var discordChannel in await ((IGuild)guild).GetChannelsAsync())
         {
             var channel = await ChannelManager.Instance.Get((long)discordChannel.Id);
             if (channel is not { Type: ChannelType.Player } || currGoob == null) continue;
-            var playerPing = await PlayerPingManager.Instance.Get(currGoob, channel);
-            if (playerPing == null)
-            {
-                await PlayerPingManager.Instance.Add(currGoob, channel, ping);
-            }
-            else
-            {
-                await PlayerPingManager.Instance.Patch(playerPing.Id, currGoob, channel, ping);
-            }
+            await PlayerPingManager.Instance.Add(currGoob, channel, ping);
         }
 
         await ModifyOriginalResponseAsync(x => x.Content = "Welcome...... To Gooberville.....");
@@ -115,7 +97,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
 
-        if (await ChannelManager.Instance.AddChannel(Context.Channel.Id, type) == null)
+        if (await ChannelManager.Instance.Add(Context.Channel.Id, type) == null)
         {
             await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access directus, please message Mel");
             return;
@@ -128,7 +110,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
     public async Task Ping(
         [Summary("variant"), Autocomplete(typeof(VariantManager.VariantAutocompleteHandler))] int variantId,
         [Summary("tier"), Autocomplete(typeof(TierManager.TierAutocompleteHandler))] int tierId,
-        string pingStr
+        [Summary("ping"), Autocomplete(typeof(Utils.PingAutocompleteHandler))] string pingStr
     )
     {
         await DeferAsync(ephemeral: true);
@@ -160,7 +142,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
 
-        await PingManager.Instance.AddPing(channel, variant, tier, pingStr);
+        await PingManager.Instance.Add(channel, variant, tier, pingStr);
         await ModifyOriginalResponseAsync(x => x.Content = "Signed up channel for pings");
     }
     
