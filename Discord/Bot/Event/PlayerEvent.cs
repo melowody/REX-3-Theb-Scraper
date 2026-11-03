@@ -34,12 +34,6 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         var goober = await GetGoober();
         if (goober == null) return [];
 
-        var user = await bot.GetUserAsync(goober.DiscordId);
-        if (user == null)
-        {
-            return [];
-        }
-
         List<Channel> o = [];
         foreach (var channel in await ChannelManager.Instance.GetAll(ChannelType.Player))
         {
@@ -48,7 +42,7 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
                 var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
                 if (guildChannel is not ITextChannel textChannel) continue;
                 var guild = await ((IDiscordClient)bot).GetGuildAsync(textChannel.GuildId);
-                if ((await guild.GetUsersAsync()).Any(x => x.Id == user.Id))
+                if (await guild.GetUserAsync(goober.DiscordId) != null)
                 {
                     o.Add(channel);
                 }
