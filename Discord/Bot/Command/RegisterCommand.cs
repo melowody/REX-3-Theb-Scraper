@@ -106,7 +106,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
     [CommandContextType(InteractionContextType.Guild)]
     public async Task Channel(ChannelType type)
     {
-        if (Context.Interaction.User is not SocketGuildUser user || !user.GuildPermissions.ManageChannels)
+        if (Context.Interaction.User is not SocketGuildUser user || !(user.GuildPermissions.ManageChannels || GooberBot.Owners.Contains(user.Id)))
         {
             await RespondAsync("You must have the `Manage Channels` permission dummy!", ephemeral: true);
             return;
@@ -128,7 +128,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         string pingStr
     )
     {
-        if (Context.Interaction.User is not SocketGuildUser user || !user.GuildPermissions.ManageChannels)
+        if (Context.Interaction.User is not SocketGuildUser user || !(user.GuildPermissions.ManageChannels || GooberBot.Owners.Contains(user.Id)))
         {
             await RespondAsync("You must have the `Manage Channels` permission dummy!", ephemeral: true);
             return;
