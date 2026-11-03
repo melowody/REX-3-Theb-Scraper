@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -166,7 +167,40 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
 
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
-    private async Task<DirectusGetResponse<T>?> MakeRequest(
+    private static async Task<string> MakeRequest(
+        Func<Task<HttpResponseMessage>> requestFunc
+    )
+    {
+        const int attempts = 4;
+
+        for (var attempt = 0;; attempt++)
+        {
+            var delay = TimeSpan.FromSeconds(Math.Min(30, Math.Pow(1.25, attempt) + Random.Shared.NextDouble()));
+            try
+            {
+                var response = await requestFunc();
+
+                if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync();
+
+                if (!(response.StatusCode is HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests ||
+                      (int)response.StatusCode >= 500) || attempt == attempts - 1)
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+
+                var retryAfter = response.Headers.RetryAfter?.Delta;
+                var d = retryAfter ?? delay;
+
+                await Task.Delay(d);
+            }
+            catch (HttpRequestException) when (attempt < attempts - 1)
+            {
+                await Task.Delay(delay);
+            }
+        }
+    }
+    
+    private async Task<DirectusGetResponse<T>?> MakeGet(
         Func<string, JsonNode> modifier,
         object? parameters = null,
         object? extraParameters = null
@@ -193,13 +227,7 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
         
         Console.WriteLine($"[{GetType().Name}] Get: {url}");
 
-        var response = await Client.GetAsync(url);
-
-        Console.WriteLine($"[{GetType().Name}] {response.StatusCode}");
-
-        response.EnsureSuccessStatusCode();
-
-        var json = await response.Content.ReadAsStringAsync();
+        var json = await MakeRequest(async () => await Client.GetAsync(url));
 
         Console.WriteLine($"[{GetType().Name}] {json}");
 
@@ -217,13 +245,7 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
         
         var content = JsonContent.Create(data);
 
-        var response = await Client.PostAsync(url, content);
-        
-        Console.WriteLine($"[{GetType().Name}] {response.StatusCode}");
-
-        response.EnsureSuccessStatusCode();
-        
-        var json = await response.Content.ReadAsStringAsync();
+        var json = await MakeRequest(async () => await Client.PostAsync(url, content));
 
         Console.WriteLine($"[{GetType().Name}] {json}");
 
@@ -242,13 +264,7 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
         
         var content = JsonContent.Create(data);
 
-        var response = await Client.PatchAsync(url, content);
-        
-        Console.WriteLine($"[{GetType().Name}] {response.StatusCode}");
-
-        response.EnsureSuccessStatusCode();
-        
-        var json = await response.Content.ReadAsStringAsync();
+        var json = await MakeRequest(async () => await Client.PatchAsync(url, content));
 
         Console.WriteLine($"[{GetType().Name}] {json}");
 
@@ -263,11 +279,7 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
         
         Console.WriteLine($"[{GetType().Name}] Delete: {url}");
 
-        var response = await Client.DeleteAsync(url);
-        
-        Console.WriteLine($"[{GetType().Name}] {response.StatusCode}");
-
-        response.EnsureSuccessStatusCode();
+        await MakeRequest(async () => await Client.DeleteAsync(url));
     }
 
     protected async Task<List<T>> GetAllImpl(Predicate<T> predicate, Func<string, JsonNode> modifier, object? parameters = null, object? extraParameters = null)
@@ -282,7 +294,7 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
             {
                 x.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(5);
 
-                var response = (await MakeRequest(modifier, parameters, extraParameters) ?? new DirectusGetResponse<T>(null, [])).Data;
+                var response = (await MakeGet(modifier, parameters, extraParameters) ?? new DirectusGetResponse<T>(null, [])).Data;
                 if (response.Count == 0) return new CacheResult([]);
         
                 response.ForEach(Add);

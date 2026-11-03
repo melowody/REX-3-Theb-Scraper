@@ -51,7 +51,7 @@ public static class Utils
         private readonly Stack<T> _stack = new();
         private readonly Lock _lock = new();
         private readonly SemaphoreSlim _semaphore = new(0);
-        public CancellationToken Token = token;
+        private CancellationToken Token = token;
 
         public void Push(T item)
         {
