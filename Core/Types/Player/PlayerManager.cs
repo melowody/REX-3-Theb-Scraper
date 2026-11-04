@@ -26,4 +26,6 @@ public class PlayerManager : AbstractDirectusManager<Player>
         new { roblox_id = robloxId.ToString() },
         new { roblox_id = robloxId.ToString() }
     );
+
+    public async Task Remove(int id) => await DeleteImpl(id);
 }

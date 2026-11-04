@@ -6,7 +6,8 @@ public enum ChannelType
 {
     Beginner,
     Player,
-    Global
+    Global,
+    ServerGlobal
 }
 
 public record Channel(
@@ -25,6 +26,7 @@ public record Channel(
     {
         "beginner" => ChannelType.Beginner,
         "global" => ChannelType.Global,
+        "server_global" => ChannelType.ServerGlobal,
         _ => ChannelType.Player
     };
 

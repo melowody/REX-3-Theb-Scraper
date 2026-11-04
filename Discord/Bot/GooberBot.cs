@@ -19,7 +19,8 @@ public class GooberBot : DiscordSocketClient
         typeof(IndexCommand),
         typeof(AdjustedCommand),
         typeof(CaveCommand),
-        typeof(RegisterCommand)
+        typeof(RegisterCommand),
+        typeof(RemoveCommand)
     ];
     
     private bool _commandsRegistered;

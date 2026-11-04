@@ -28,4 +28,6 @@ public class GooberManager : AbstractDirectusManager<Goober>
         new { discord_id = discordId.ToString(), player_id = player.Id },
         new { discord_id = discordId.ToString(), player_id = player.Id }
     );
+
+    public async Task Remove(int id) => await DeleteImpl(id);
 }

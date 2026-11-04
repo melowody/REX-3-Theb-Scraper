@@ -98,7 +98,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         foreach (var discordChannel in await ((IGuild)guild).GetChannelsAsync())
         {
             var channel = await ChannelManager.Instance.Get((long)discordChannel.Id);
-            if (channel is not { Type: ChannelType.Player }) continue;
+            if (channel is not { Type: ChannelType.Player or ChannelType.ServerGlobal }) continue;
             if (await PlayerPingManager.Instance.Add(currGoob, channel, ping) != null) continue;
             await ModifyOriginalResponseAsync(x => x.Content = "Couldn't save ping settings, please try again");
             return;

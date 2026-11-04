@@ -14,7 +14,11 @@ public class EventTracker(GooberBot bot)
 
     public abstract class Event(GooberBot bot, Track track)
     {
+        protected readonly GooberBot Bot = bot;
+        protected readonly Track Track = track;
+        
         protected abstract Task<List<Channel>> Channels { get; }
+        protected abstract Task<string> Title { get; }
 
         private const string BaseMessage = """
                                             ---------------------------------------------
@@ -45,7 +49,7 @@ public class EventTracker(GooberBot bot)
         {
             string ret;
             var message = await TrackerFormatManager.Instance.GetAll(DateTime.Today);
-            if ((await track.Spawner)?.Type == SpawnerType.Cave)
+            if ((await Track.Spawner)?.Type == SpawnerType.Cave)
             {
                 ret = AdjustedMessage;
                 if (message.Count > 0) ret = message[Random.Shared.Next(0, message.Count)].AdjustedFormat;
@@ -63,7 +67,7 @@ public class EventTracker(GooberBot bot)
         {
             foreach (var channel in await Channels)
             {
-                var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
+                var guildChannel = await Bot.GetChannelAsync((ulong)channel.ChannelId);
                 if (guildChannel is not ITextChannel textChannel) continue;
                 await textChannel.SendMessageAsync(await GetMessage(channel, await GetFormat()));
             }
@@ -75,7 +79,11 @@ public class EventTracker(GooberBot bot)
     public async Task<List<Event>> GetEvents(Track track)
     {
         List<Event> o = [];
-        if (await PlayerEvent.ShouldHandle(track))
+        if (await ServerGlobalEvent.ShouldHandle(track))
+        {
+            o.Add(new ServerGlobalEvent(bot, track));
+        }
+        else if (await PlayerEvent.ShouldHandle(track))
         {
             o.Add(new PlayerEvent(bot, track));
             // await TrackManager.Instance.Post(track);

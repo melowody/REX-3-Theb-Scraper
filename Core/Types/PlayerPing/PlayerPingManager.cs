@@ -21,6 +21,16 @@ public class PlayerPingManager : AbstractDirectusManager<PlayerPing>
 
     public async Task<PlayerPing?> Get(GetParams getParams) => await Get(getParams.Goober, getParams.Channel);
 
+    public async Task<List<PlayerPing>> GetAll(Goober.Goober goober) => await GetAllImpl(
+        x => x.GooberId == goober.Id,
+        new { goober = goober.Id }
+    );
+    
+    public async Task<List<PlayerPing>> GetAll(Channel.Channel channel) => await GetAllImpl(
+        x => x.ChannelId == channel.Id,
+        new { channel = channel.Id }
+    );
+    
     public async Task<PlayerPing?> Add(GetParams getParams, bool ping) => await UpsertImpl(
         Get,
         getParams,
@@ -29,4 +39,25 @@ public class PlayerPingManager : AbstractDirectusManager<PlayerPing>
     );
     
     public async Task<PlayerPing?> Add(Goober.Goober goober, Channel.Channel channel, bool ping) => await Add(new GetParams(goober, channel), ping);
+
+    public async Task Remove(int id) => await DeleteImpl(id);
+    
+    public async Task Remove(Goober.Goober goober, Channel.Channel channel) =>
+        await DeleteImpl((await Get(goober, channel))?.Id);
+
+    public async Task Remove(Goober.Goober goober)
+    {
+        foreach (var ping in await GetAll(goober))
+        {
+            await Remove(ping.Id);
+        }
+    }
+    
+    public async Task Remove(Channel.Channel goober)
+    {
+        foreach (var ping in await GetAll(goober))
+        {
+            await Remove(ping.Id);
+        }
+    }
 }

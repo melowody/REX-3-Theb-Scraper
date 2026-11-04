@@ -25,6 +25,7 @@ public class ChannelManager : AbstractDirectusManager<Channel>
             {
                 ChannelType.Beginner => "beginner",
                 ChannelType.Global => "global",
+                ChannelType.ServerGlobal => "server_global",
                 _ => "player"
             }
         }
@@ -39,6 +40,7 @@ public class ChannelManager : AbstractDirectusManager<Channel>
             {
                 ChannelType.Beginner => "beginner",
                 ChannelType.Global => "global",
+                ChannelType.ServerGlobal => "server_global",
                 _ => "player"
             }
         },
@@ -48,8 +50,11 @@ public class ChannelManager : AbstractDirectusManager<Channel>
             {
                 ChannelType.Beginner => "beginner",
                 ChannelType.Global => "global",
+                ChannelType.ServerGlobal => "server_global",
                 _ => "player"
             }
         }
     );
+    
+    public async Task Remove(int id) => await DeleteImpl(id);
 }

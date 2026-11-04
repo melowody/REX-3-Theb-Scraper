@@ -21,6 +21,11 @@ public class PingManager : AbstractDirectusManager<Ping>
 
     public async Task<Ping?> Get(GetParams getParams) => await Get(getParams.Channel, getParams.Variant, getParams.Tier);
 
+    public async Task<List<Ping>> GetAll(Channel.Channel channel) => await GetAllImpl(
+        x => x.InternalChannelId == channel.Id,
+        new { channel = channel.Id }
+    );
+
 
     public async Task<Ping?> Add(GetParams getParams, string pingStr) => await UpsertImpl(
         Get,
@@ -34,5 +39,15 @@ public class PingManager : AbstractDirectusManager<Ping>
 
     public async Task<Ping?> Add(Channel.Channel channel, Variant.Variant variant, Tier.Tier tier, string pingStr) =>
         await Add(new GetParams(channel, variant, tier), pingStr);
-        
+
+    public async Task Remove(int id) => await DeleteImpl(id);
+
+    public async Task Remove(Channel.Channel channel)
+    {
+        var pings = await GetAll(channel);
+        foreach (var ping in pings)
+        {
+            await Remove(ping.Id);
+        }
+    }
 }

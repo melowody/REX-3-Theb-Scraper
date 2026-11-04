@@ -27,4 +27,15 @@ public class PlayerNameManager : AbstractDirectusManager<PlayerName>
     );
     
     public async Task<PlayerName?> Add(Player.Player player, string name) => await Add(player.Id, name);
+
+    public async Task Remove(int id) => await DeleteImpl(id);
+
+    public async Task Remove(Player.Player player)
+    {
+        var names = await GetAll(player);
+        foreach (var name in names)
+        {
+            await Remove(name.Id);
+        }
+    }
 }

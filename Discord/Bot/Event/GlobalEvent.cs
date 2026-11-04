@@ -15,7 +15,8 @@ namespace GooberTracker.Discord.Bot.Event;
 public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, track)
 {
     protected override Task<List<Channel>> Channels => GetChannels();
-    
+    protected override Task<string> Title => Task.FromResult("Global");
+
     private async Task<List<Channel>> GetChannels()
     {
         var channels = await ChannelManager.Instance.GetAll(ChannelType.Global);
@@ -24,7 +25,7 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         {
             try
             {
-                var guildChannel = await bot.GetChannelAsync((ulong)channel.ChannelId);
+                var guildChannel = await Bot.GetChannelAsync((ulong)channel.ChannelId);
                 if (guildChannel is not ITextChannel) continue;
                 o.Add(channel);
             }
@@ -48,16 +49,16 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
     
     protected override async Task<string> GetMessage(Channel channel, string message)
     {
-        var ore = await track.Ore;
+        var ore = await Track.Ore;
         var oreName = ore?.Name ?? "Invalid Ore";
 
         var tier = ore == null ? null : await ore.Tier;
         var tierName = tier?.Name ?? "Invalid Tier";
         
-        var variant = await track.Variant;
+        var variant = await Track.Variant;
         var variantName = variant?.Name == "Normal" ? "" : variant?.Name;
 
-        var spawner = await track.Spawner;
+        var spawner = await Track.Spawner;
         var cave = "Invalid Cave";
         if (spawner?.Type == SpawnerType.Cave)
         {
@@ -67,18 +68,16 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         var ping = variant != null && tier != null ? await PingManager.Instance.Get(channel, variant, tier) : null;
         var pingStr = ping?.PingStr ?? "";
 
-        var spawn = await track.Spawn;
-
-        var e = await track.Event;
+        var e = await Track.Event;
         var eOre = e == null ? null : await e.Ore;
         var eStr = eOre?.Name ?? "None";
         
-        var rarity = await track.Rarity;
+        var rarity = await Track.Rarity;
         
         return Smart.Format(message, new
         {
-            guild = "GLOBAL".Extend(),
-            player = track.PlayerStr.Extend(),
+            guild = (await Title).Extend(),
+            player = Track.PlayerStr.Extend(),
             player_ping = "".Extend(),
             variant = (variantName is { Length: > 0 } ? $"{variantName} " : "").Extend(),
             ore = oreName.Extend(),
@@ -88,8 +87,8 @@ public class GlobalEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
             ping = pingStr.Extend(),
             base_rarity = rarity?.Base ?? -1,
             adjusted_rarity = rarity?.Adjusted ?? -1,
-            blocks = track.Mined,
-            loadout = track.EquipmentStr.Extend(),
+            blocks = Track.Mined,
+            loadout = Track.EquipmentStr.Extend(),
             _event = eStr.Extend()
         });
     }
