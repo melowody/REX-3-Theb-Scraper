@@ -19,9 +19,18 @@ namespace GooberTracker.Discord.Bot.Command;
 public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
 {
     public static readonly Utils.AsyncStack<Utils.RobloxData> Ids = new(CancellationToken.None);
+    private static long _lastUpload;
 
     public static async Task UploadPlayerName(Utils.RobloxData data)
     {
+        var curr = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if (curr - _lastUpload < 1000)
+        {
+            return;
+        }
+
+        _lastUpload = curr;
+        
         var player = await PlayerManager.Instance.Get(data.Id);
         if (player == null)
         {
