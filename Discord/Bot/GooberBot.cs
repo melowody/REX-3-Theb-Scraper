@@ -113,7 +113,8 @@ public class GooberBot : DiscordSocketClient
         {
             var data = await RegisterCommand.Ids.Pop();
             if (data == null) continue;
-            await RegisterCommand.UploadPlayerName(data);
+            var uploaded = await RegisterCommand.UploadPlayerName(data);
+            if (!uploaded) RegisterCommand.Ids.Push(data);
         }
     }
     

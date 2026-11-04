@@ -21,12 +21,12 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
     public static readonly Utils.AsyncStack<Utils.RobloxData> Ids = new(CancellationToken.None);
     private static long _lastUpload;
 
-    public static async Task UploadPlayerName(Utils.RobloxData data)
+    public static async Task<bool> UploadPlayerName(Utils.RobloxData data)
     {
         var curr = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         if (curr - _lastUpload < 1000)
         {
-            return;
+            return false;
         }
 
         _lastUpload = curr;
@@ -34,13 +34,13 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         var player = await PlayerManager.Instance.Get(data.Id);
         if (player == null)
         {
-            return;
+            return false;
         }
         
         var robloxNames = await Utils.GetRobloxNames(data.Id);
         if (robloxNames == null)
         {
-            return;
+            return false;
         }
 
         var currNames = await PlayerNameManager.Instance.GetAll(player);
@@ -51,6 +51,8 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         {
             await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
         }
+
+        return true;
     }
     
     [SlashCommand("player", "Register to the bot!")]
