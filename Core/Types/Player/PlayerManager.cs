@@ -20,7 +20,10 @@ public class PlayerManager : AbstractDirectusManager<Player>
         new {roblox_id = robloxId.ToString()}
     );
 
-    public async Task<Player?> Add(long robloxId) => await PostImpl(
+    public async Task<Player?> Add(long robloxId) => await UpsertImpl(
+        Get,
+        robloxId,
+        new { roblox_id = robloxId.ToString() },
         new { roblox_id = robloxId.ToString() }
     );
 }

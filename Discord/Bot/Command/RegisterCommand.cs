@@ -19,26 +19,17 @@ namespace GooberTracker.Discord.Bot.Command;
 public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
 {
     public static readonly Utils.AsyncStack<Utils.RobloxData> Ids = new(CancellationToken.None);
-    private static long _lastUpload;
 
     public static async Task<bool> UploadPlayerName(Utils.RobloxData data)
     {
-        var curr = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (curr - _lastUpload < 1000)
+        var robloxNames = await Utils.GetRobloxNames(data.Id);
+        if (robloxNames == null)
         {
             return false;
         }
-
-        _lastUpload = curr;
         
         var player = await PlayerManager.Instance.Get(data.Id);
         if (player == null)
-        {
-            return false;
-        }
-        
-        var robloxNames = await Utils.GetRobloxNames(data.Id);
-        if (robloxNames == null)
         {
             return false;
         }
@@ -49,7 +40,8 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         
         foreach (var robloxName in robloxNames)
         {
-            await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
+            var created = await PlayerNameManager.Instance.Add(player, robloxName);
+            if (created == null) return false;
         }
 
         return true;
@@ -86,7 +78,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
         
-        var player = await PlayerManager.Instance.Get(robloxId.Id) ?? await PlayerManager.Instance.Add(robloxId.Id);
+        var player = await PlayerManager.Instance.Add(robloxId.Id);
         if (player == null)
         {
             await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access CMS, please contact Mel pweaaseeeee :3");
@@ -96,13 +88,20 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
         Ids.Push(robloxId);
 
         var currGoob = await GooberManager.Instance.Add(curr.Id, player);
+        if (currGoob == null)
+        {
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't link discord, please try again");
+            return;
+        }
 
         var guild = Context.Guild;
         foreach (var discordChannel in await ((IGuild)guild).GetChannelsAsync())
         {
             var channel = await ChannelManager.Instance.Get((long)discordChannel.Id);
-            if (channel is not { Type: ChannelType.Player } || currGoob == null) continue;
-            await PlayerPingManager.Instance.Add(currGoob, channel, ping);
+            if (channel is not { Type: ChannelType.Player }) continue;
+            if (await PlayerPingManager.Instance.Add(currGoob, channel, ping) != null) continue;
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't save ping settings, please try again");
+            return;
         }
 
         await ModifyOriginalResponseAsync(x => x.Content = "Welcome...... To Gooberville.....");
@@ -120,7 +119,7 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
 
-        if (await ChannelManager.Instance.Add(Context.Channel.Id, type) == null)
+        if (await ChannelManager.Instance.Add((long)Context.Channel.Id, type) == null)
         {
             await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access directus, please message Mel");
             return;
@@ -165,7 +164,12 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
 
-        await PingManager.Instance.Add(channel, variant, tier, pingStr);
+        var ping = await PingManager.Instance.Add(channel, variant, tier, pingStr);
+        if (ping == null)
+        {
+            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't save ping to CMS, contact Mel");
+            return;
+        }
         await ModifyOriginalResponseAsync(x => x.Content = "Signed up channel for pings");
     }
     

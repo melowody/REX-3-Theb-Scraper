@@ -166,6 +166,9 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
     private string Url => $"https://directus.meluhdy.dev/items/{TableName}";
 
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
+
+    private long _generation;
 
     private static async Task<string> MakeRequest(
         Func<Task<HttpResponseMessage>> requestFunc
@@ -281,30 +284,33 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
 
         await MakeRequest(async () => await Client.DeleteAsync(url));
     }
-
+    
+    private string GetCacheKey(object? parameters, object? extraParameters = null) => $"{TableName}/{typeof(T).Name}/{JsonSerializer.Serialize(parameters, Options)}/{JsonSerializer.Serialize(extraParameters, Options)}/{_generation}";
+    
     protected async Task<List<T>> GetAllImpl(Predicate<T> predicate, Func<string, JsonNode> modifier, object? parameters = null, object? extraParameters = null)
     {
-        var cacheString =
-            $"[{GetType().Name}] Getting: {TableName}/{typeof(T).Name}/{JsonSerializer.Serialize(parameters, Options)}/{JsonSerializer.Serialize(extraParameters, Options)}";
-        Console.WriteLine(cacheString);
-        
-        var result = await _cache.GetOrCreateAsync(
-            cacheString,
-            async x =>
-            {
-                x.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(5);
+        var cacheString = GetCacheKey(parameters, extraParameters);
+        Console.WriteLine($"[{GetType().Name}] Getting: {cacheString}");
 
-                var response = (await MakeGet(modifier, parameters, extraParameters) ?? new DirectusGetResponse<T>(null, [])).Data;
-                if (response.Count == 0) return new CacheResult([]);
-        
-                response.ForEach(Add);
-                return new CacheResult(Get(predicate));
-            }
-        );
+        if (_cache.TryGetValue(cacheString, out CacheResult? cachedValue)) return cachedValue?.Value ?? [];
+
+        var response =
+            (await MakeGet(modifier, parameters, extraParameters) ?? new DirectusGetResponse<T>(null, [])).Data;
+        if (response.Count == 0) return [];
+
+        response.ForEach(Upsert);
+        var result = new CacheResult(Get(predicate));
 
         Console.WriteLine($"[{GetType().Name}] Result: {JsonSerializer.Serialize(result, Options)}");
-        
-        return result?.Value ?? [];
+
+        _cache.Set(cacheString, result, TimeSpan.FromHours(5));
+        return result.Value;
+    }
+
+    protected void RemoveCache()
+    {
+        Interlocked.Increment(ref _generation);
+        _cache.Compact(1.0);
     }
 
     protected async Task<List<T>> GetAllImpl(Predicate<T> predicate, object? parameters = null, object? extraParameters = null) =>
@@ -317,12 +323,64 @@ public abstract class AbstractDirectusManager<T> : AbstractManager<T> where T : 
     protected async Task<T?> GetImpl(Predicate<T> predicate, object? parameters = null, object? extraParameters = null) =>
         await GetImpl(predicate, x => JsonNode.Parse(x)!, parameters, extraParameters);
 
-    protected async Task<T?> PostImpl(object parameters) => (await MakePost(x => JsonNode.Parse(x)!, parameters))?.Data;
-    
-    protected async Task<T?> PatchImpl<TU>(Func<string, JsonNode> modifier, TU id, object data) => (await MakePatch(modifier, id, data))?.Data;
+    protected async Task<T?> PostImpl(object parameters)
+    {
+        T? ret = null;
+        try
+        {
+            ret = (await MakePost(x => JsonNode.Parse(x)!, parameters))?.Data;
+        }
+        finally
+        {
+            if (ret != null) RemoveCache();
+        }
+        return ret;
+    }
+
+    protected async Task<T?> PatchImpl<TU>(Func<string, JsonNode> modifier, TU id, object data)
+    {
+        T? ret = null;
+        try
+        {
+            ret = (await MakePatch(modifier, id, data))?.Data;
+        }
+        finally
+        {
+            if (ret != null) RemoveCache();
+        }
+        return ret;
+    }
     
     protected async Task<T?> PatchImpl<TU>(TU id, object data) => await PatchImpl(x => JsonNode.Parse(x)!, id, data);
 
-    protected async Task DeleteImpl<TU>(TU id) => await MakeDelete(id);
+    protected async Task DeleteImpl<TU>(TU id)
+    {
+        try
+        {
+            await MakeDelete(id);
+        }
+        finally
+        {
+            RemoveCache();
+        }
+    }
 
+    protected async Task<T?> UpsertImpl<TU>(Func<TU, Task<T?>> getFunc, TU id, object postParameters, object patchParameters)
+    {
+        await _semaphore.WaitAsync();
+        try
+        {
+            var t = await getFunc(id);
+            if (t == null)
+            {
+                return await PostImpl(postParameters);
+            }
+
+            return await PatchImpl(t.GetKey(), patchParameters);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    } 
 }

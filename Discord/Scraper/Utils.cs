@@ -131,6 +131,7 @@ public static class Utils
     private static readonly HttpClient Client = new();
 
     private static long _lastCalled;
+    private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
     public static async Task<RobloxData?> GetRobloxData(string name)
     {
@@ -207,14 +208,24 @@ public static class Utils
 
     public static async Task<List<string>?> GetRobloxNames(long id, string? cursor = null)
     {
-        var curr = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (curr - _lastCalled < 60_000)
+        await Semaphore.WaitAsync();
+        try
         {
-            return null;
-        }
-        _lastCalled = curr;
+            var curr = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            if (curr - _lastCalled < 60_000)
+            {
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(60_000 - (curr - _lastCalled) + Random.Shared.NextDouble() * 2000));
+            }
 
-        var cursorStr = cursor == null ? "" : "&cursor=" + cursor;
+            _lastCalled = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+        finally
+        {
+            Semaphore.Release();
+        }
+
+        var cursorStr = cursor == null ? "" : "&cursor=" + Uri.EscapeDataString(cursor);
         var response =
             await Client.GetAsync($"https://users.roblox.com/v1/users/{id}/username-history?limit=100&sortOrder=Asc{cursorStr}");
 
@@ -233,13 +244,28 @@ public static class Utils
         }
         
         var data = JsonNode.Parse(responseStr);
-        return
+        List<string> ret =
         [
             .. from entry in data?["data"] as JsonArray ?? []
             let name = entry?["name"]?.GetValue<string>()
             where name != null
             select name
         ];
+
+        var nextCursor = data?["nextPageCursor"]?.GetValue<string>();
+        if (string.IsNullOrEmpty(nextCursor)) return ret;
+        var retries = 0;
+        List<string>? ret2 = null;
+        while (ret2 == null && retries < 5)
+        {
+            ret2 = await GetRobloxNames(id, nextCursor);
+            retries += 1;
+        }
+
+        if (ret2 == null) return null;
+        ret.AddRange(ret2);
+
+        return ret;
     }
     
     public class PingAutocompleteHandler : AutocompleteHandler

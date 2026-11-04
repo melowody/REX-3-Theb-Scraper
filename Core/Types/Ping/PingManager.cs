@@ -2,6 +2,8 @@
 
 public class PingManager : AbstractDirectusManager<Ping>
 {
+    public record GetParams(Channel.Channel Channel, Variant.Variant Variant, Tier.Tier Tier);
+    
     protected override string TableName => "Ping";
     
     private static readonly Lazy<PingManager> InstanceImpl = new(() => new PingManager());
@@ -17,19 +19,20 @@ public class PingManager : AbstractDirectusManager<Ping>
         new {channel = channel.Id, variant = variant.Id, tier = tier.Id}
     );
 
-    public async Task<Ping?> Add(Channel.Channel channel, Variant.Variant variant, Tier.Tier tier, string pingStr)
-    {
-        var ping = await Get(channel, variant, tier);
-        if (ping != null)
+    public async Task<Ping?> Get(GetParams getParams) => await Get(getParams.Channel, getParams.Variant, getParams.Tier);
+
+
+    public async Task<Ping?> Add(GetParams getParams, string pingStr) => await UpsertImpl(
+        Get,
+        getParams,
+        new
         {
-            return await PatchImpl(
-                ping.Id,
-                new { channel = channel.Id, variant = variant.Id, tier = tier.Id, ping = pingStr }
-            );
-        }
-        return await PostImpl(
-            new { channel = channel.Id, variant = variant.Id, tier = tier.Id, ping = pingStr }
-        );
-    }
+            channel = getParams.Channel.Id, variant = getParams.Variant.Id, tier = getParams.Tier.Id, ping = pingStr
+        },
+        new { channel = getParams.Channel.Id, variant = getParams.Variant.Id, tier = getParams.Tier.Id, ping = pingStr }
+    );
+
+    public async Task<Ping?> Add(Channel.Channel channel, Variant.Variant variant, Tier.Tier tier, string pingStr) =>
+        await Add(new GetParams(channel, variant, tier), pingStr);
         
 }

@@ -112,9 +112,24 @@ public class GooberBot : DiscordSocketClient
         while (!cancellationToken.IsCancellationRequested)
         {
             var data = await RegisterCommand.Ids.Pop();
+            var uploaded = false;
             if (data == null) continue;
-            var uploaded = await RegisterCommand.UploadPlayerName(data);
-            if (!uploaded) RegisterCommand.Ids.Push(data);
+            try
+            {
+                uploaded = await RegisterCommand.UploadPlayerName(data);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[UploadPlayer] Upload Failed: {ex}");
+            }
+
+            if (uploaded) continue;
+            await Task.Delay(10_000, cancellationToken);
+            RegisterCommand.Ids.Push(data);
         }
     }
     

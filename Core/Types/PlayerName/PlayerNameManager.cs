@@ -22,9 +22,9 @@ public class PlayerNameManager : AbstractDirectusManager<PlayerName>
         new {player = player.Id}
     );
     
-    public async Task<PlayerName?> AddPlayer(int playerId, string name) => await PostImpl(
+    public async Task<PlayerName?> Add(int playerId, string name) => await PostImpl(
         new { player = playerId, name }
     );
     
-    public async Task<PlayerName?> AddPlayer(Player.Player player, string name) => await AddPlayer(player.Id, name);
+    public async Task<PlayerName?> Add(Player.Player player, string name) => await Add(player.Id, name);
 }
