@@ -15,9 +15,9 @@ public class PlayerManager : AbstractDirectusManager<Player>
         new {id}
     );
     
-    public async Task<Player?> FromRoblox(long id) => await GetImpl(
-        x => x.RobloxId == id,
-        new {roblox_id = id.ToString()}
+    public async Task<Player?> Get(long robloxId) => await GetImpl(
+        x => x.RobloxId == robloxId,
+        new {roblox_id = robloxId.ToString()}
     );
 
     public async Task<Player?> Add(long robloxId) => await PostImpl(

@@ -18,6 +18,32 @@ namespace GooberTracker.Discord.Bot.Command;
 [CommandContextType(InteractionContextType.BotDm, InteractionContextType.Guild, InteractionContextType.PrivateChannel)]
 public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
 {
+    public static readonly Utils.AsyncStack<Utils.RobloxData> Ids = new(CancellationToken.None);
+
+    public static async Task UploadPlayerName(Utils.RobloxData data)
+    {
+        var player = await PlayerManager.Instance.Get(data.Id);
+        if (player == null)
+        {
+            return;
+        }
+        
+        var robloxNames = await Utils.GetRobloxNames(data.Id);
+        if (robloxNames == null)
+        {
+            return;
+        }
+
+        var currNames = await PlayerNameManager.Instance.GetAll(player);
+        if (robloxNames.All(x => x != data.Name)) robloxNames.Add(data.Name);
+        robloxNames = [.. robloxNames.Where(x => currNames.All(y => y.Name != x))];
+        
+        foreach (var robloxName in robloxNames)
+        {
+            await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
+        }
+    }
+    
     [SlashCommand("player", "Register to the bot!")]
     [CommandContextType(InteractionContextType.BotDm, InteractionContextType.Guild,
         InteractionContextType.PrivateChannel)]
@@ -49,28 +75,14 @@ public class RegisterCommand : InteractionModuleBase<SocketInteractionContext>
             return;
         }
         
-        var player = await PlayerManager.Instance.FromRoblox(robloxId.Id) ?? await PlayerManager.Instance.Add(robloxId.Id);
+        var player = await PlayerManager.Instance.Get(robloxId.Id) ?? await PlayerManager.Instance.Add(robloxId.Id);
         if (player == null)
         {
             await ModifyOriginalResponseAsync(x => x.Content = "Couldn't access CMS, please contact Mel pweaaseeeee :3");
             return;
         }
-
-        var robloxNames = await Utils.GetRobloxNames(robloxId.Id);
-        if (robloxNames == null)
-        {
-            await ModifyOriginalResponseAsync(x => x.Content = "Couldn't get names, try again in a minute");
-            return;
-        }
-
-        var currNames = await PlayerNameManager.Instance.GetAll(player);
-        if (robloxNames.All(x => x != robloxId.Name)) robloxNames.Add(robloxId.Name);
-        robloxNames = [.. robloxNames.Where(x => currNames.All(y => y.Name != x))];
         
-        foreach (var robloxName in robloxNames)
-        {
-            await PlayerNameManager.Instance.AddPlayer(player.Id, robloxName);
-        }
+        Ids.Push(robloxId);
 
         var currGoob = await GooberManager.Instance.Add(curr.Id, player);
 

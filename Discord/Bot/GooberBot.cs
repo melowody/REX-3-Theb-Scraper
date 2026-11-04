@@ -61,6 +61,7 @@ public class GooberBot : DiscordSocketClient
         }
         
         _ = Task.Run(() => Utils.LogExceptions(SendEvents(CancellationToken.None)));
+        _ = Task.Run(() => Utils.LogExceptions(UploadPlayer(CancellationToken.None)));
         
         await LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("BOT_TOKEN"));
         await base.StartAsync();
@@ -103,6 +104,16 @@ public class GooberBot : DiscordSocketClient
             {
                 Console.WriteLine($"ERROR: {e}");
             }
+        }
+    }
+
+    private static async Task UploadPlayer(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var data = await RegisterCommand.Ids.Pop();
+            if (data == null) continue;
+            await RegisterCommand.UploadPlayerName(data);
         }
     }
     
