@@ -18,19 +18,18 @@ public class EventTracker(GooberBot bot)
         protected readonly Track Track = track;
         
         protected abstract Task<List<Channel>> Channels { get; }
-        protected abstract Task<string> Title { get; }
 
         private const string BaseMessage = """
-                                            ---------------------------------------------
-                                            **[{guild} TRACKER]**
-                                            **{player}{player_ping}** has found **{variant}{ore}**
-                                            Tier: **{tier}**{tier_variant}{ping}
-                                            Base Rarity: 1 in {base_rarity:N0}
-                                            Blocks: {blocks:N0}
-                                            Loadout: {loadout}
-                                            Event: {_event} 
-                                            ---------------------------------------------
-                                            """;
+                                           ---------------------------------------------
+                                           **[{guild} TRACKER]**
+                                           **{player}{player_ping}** has found **{variant}{ore}**
+                                           Tier: **{tier}**{tier_variant}{ping}
+                                           Base Rarity: 1 in {base_rarity:N0}
+                                           Blocks: {blocks:N0}
+                                           Loadout: {loadout}
+                                           Event: {_event} 
+                                           ---------------------------------------------
+                                           """;
 
         private const string AdjustedMessage = """
                                                 ---------------------------------------------

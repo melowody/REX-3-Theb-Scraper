@@ -13,7 +13,7 @@ namespace GooberTracker.Discord.Bot.Event;
 public class BeginnerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, track)
 {
     protected override Task<List<Channel>> Channels => GetChannels();
-    protected override Task<string> Title => Task.FromResult(":beginner:");
+    protected virtual Task<string> Title => Task.FromResult(":beginner:");
 
     private async Task<List<Channel>> GetChannels()
     {

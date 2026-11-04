@@ -6,9 +6,8 @@ public class ServerGlobalEvent(GooberBot bot, Track track) : PlayerEvent(bot, tr
 {
     protected override Task<string> Title => Task.FromResult("Server Global");
     
-    public static async Task<bool> ShouldHandle(Track track)
+    public new static async Task<bool> ShouldHandle(Track track)
     {
-        if (!await PlayerEvent.ShouldHandle(track)) return false;
-        return await GlobalEvent.ShouldHandle(track);
+        return await PlayerEvent.ShouldHandle(track) && await GlobalEvent.ShouldHandle(track);
     }
 }

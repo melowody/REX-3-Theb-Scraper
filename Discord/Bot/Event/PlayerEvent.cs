@@ -19,7 +19,7 @@ namespace GooberTracker.Discord.Bot.Event;
 public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, track)
 {
     protected override Task<List<Channel>> Channels => GetChannels();
-    protected override Task<string> Title => Task.FromResult("Goober");
+    protected virtual Task<string> Title => Task.FromResult("Goober");
 
     private async Task<Goober?> GetGoober()
     {
@@ -37,7 +37,10 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
 
         List<Channel> o = [];
         var toCheck = await ChannelManager.Instance.GetAll(ChannelType.Player);
-        toCheck.AddRange(await ChannelManager.Instance.GetAll(ChannelType.ServerGlobal));
+        if (this is ServerGlobalEvent)
+        {
+            toCheck.AddRange(await ChannelManager.Instance.GetAll(ChannelType.ServerGlobal));
+        }
         foreach (var channel in toCheck)
         {
             try
