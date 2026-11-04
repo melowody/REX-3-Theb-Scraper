@@ -85,7 +85,6 @@ public class EventTracker(GooberBot bot)
         else if (await PlayerEvent.ShouldHandle(track))
         {
             o.Add(new PlayerEvent(bot, track));
-            // await TrackManager.Instance.Post(track);
         }
         if (await GlobalEvent.ShouldHandle(track)) o.Add(new GlobalEvent(bot, track));
         if (BeginnerEvent.ShouldHandle(track)) o.Add(new BeginnerEvent(bot, track));
