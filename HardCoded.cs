@@ -37,7 +37,9 @@ public static class HardCoded
             {
                 Console.WriteLine($"[Track/Special] Checking Spawner: {oreSpawn.SpawnerId}");
                 var oreSpawner = await oreSpawn.Spawner;
+                Console.WriteLine($"[Track/Special] Spawner {oreSpawner?.Id} is type {oreSpawner?.Type} | {oreSpawner is { Type: SpawnerType.Layer }}");
                 if (oreSpawner is not { Type: SpawnerType.Layer }) continue;
+                layerSpawn = oreSpawn;
                 break;
             }
 
