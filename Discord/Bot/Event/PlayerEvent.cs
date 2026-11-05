@@ -73,7 +73,7 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
         var goober = await GetGoober();
         if (goober == null) return "";
         var playerPing = await PlayerPingManager.Instance.Get(goober, channel);
-        return playerPing is not { Ping: true } ? "" : $" <@{goober.DiscordId}>";
+        return playerPing is not { Ping: true } ? "" : $" (<@{goober.DiscordId}>)";
     } 
     
     protected override async Task<string> GetMessage(Channel channel, string message)
@@ -96,8 +96,7 @@ public class PlayerEvent(GooberBot bot, Track track) : EventTracker.Event(bot, t
 
         var ping = variant != null && tier != null ? await PingManager.Instance.Get(channel, variant, tier) : null;
         var pingStr = ping?.PingStr ?? "";
-
-        var spawn = await track.Spawn;
+        if (pingStr != "" && !pingStr.StartsWith(' ')) pingStr = $" {pingStr}";
 
         var e = await track.Event;
         var eOre = e == null ? null : await e.Ore;

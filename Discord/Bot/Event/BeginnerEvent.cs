@@ -64,6 +64,7 @@ public class BeginnerEvent(GooberBot bot, Track track) : EventTracker.Event(bot,
 
         var ping = variant != null && tier != null ? await PingManager.Instance.Get(channel, variant, tier) : null;
         var pingStr = ping?.PingStr ?? "";
+        if (pingStr != "" && !pingStr.StartsWith(' ')) pingStr = $" {pingStr}";
 
         var e = await Track.Event;
         var eOre = e == null ? null : await e.Ore;
