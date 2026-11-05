@@ -21,6 +21,7 @@ public static class HardCoded
     
     public static async Task<Spawn?> GetSpecialRarity(this Track track)
     {
+        Console.WriteLine("[Track/Special] Checking Special Rarity");
         var spawn = await track.Spawner;
         if (spawn == null) return null;
 
@@ -29,12 +30,14 @@ public static class HardCoded
 
         if (spawn.Name == "Gilded Cave")
         {
+            Console.WriteLine("[Track/Special] Checking Gilded Cave");
             var oreSpawns = await SpawnManager.Instance.GetAll(ore);
             Spawn? layerSpawn = null;
             foreach (var oreSpawn in oreSpawns)
             {
+                Console.WriteLine($"[Track/Special] Checking Spawner: {oreSpawn.SpawnerId}");
                 var oreSpawner = await oreSpawn.Spawner;
-                if (oreSpawner?.Type is not SpawnerType.Layer) continue;
+                if (oreSpawner is not { Type: SpawnerType.Layer }) continue;
                 break;
             }
 
@@ -48,7 +51,14 @@ public static class HardCoded
             {
                 divisor = 1.0 / 100.0;
             }
-            return layerSpawn == null ? null : new Spawn(-1, ore.Id, spawn.Id, $"{layerSpawn.Rarity * 2.5 * divisor}");
+
+            if (layerSpawn == null)
+            {
+                Console.WriteLine($"[Track/Special] Couldn't find layer spawn for ore: {ore.Name}");
+                return null;
+            }
+            Console.WriteLine($"[Track/Special] Out: {layerSpawn.Rarity * 2.5 * divisor}");
+            return new Spawn(-1, ore.Id, spawn.Id, $"{layerSpawn.Rarity * 2.5 * divisor}");
         }
         
         var ev = await track.Event;
